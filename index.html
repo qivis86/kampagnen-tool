@@ -19,6 +19,7 @@
   button.active { outline:2px solid #6aa6ff; border-color:transparent; }
   button.center { text-align:center; }
   button.danger { border-color:#5a2a2a; }
+  button:disabled { opacity:.55; cursor:not-allowed; }
   input { width:100%; padding:10px; background:#0f1117; color:#e8e8e8; border:1px solid #2a3042; border-radius:10px; box-sizing:border-box; }
   .npc-btn { display:grid; gap:2px; }
   .npc-btn .sub { font-size:12px; opacity:.75; }
@@ -54,11 +55,13 @@
     <div class="grid" id="catButtons"></div>
     <div class="hr"></div>
     <div class="grid">
+      <button id="btnSyncLoad" class="center">🔄 Sync laden</button>
       <button id="btnImport" class="center">⬇️ Import</button>
       <button id="btnExport" class="center">⬆️ Export (JSON)</button>
       <button id="btnReset" class="center danger">🧨 Reset</button>
     </div>
     <div class="hr"></div>
+    <div class="muted" id="syncStatus">Sync: —</div>
     <div class="muted">Alles wird lokal im Browser gespeichert (localStorage).</div>
   </div>
 
@@ -82,7 +85,8 @@
     <header>
       <div style="font-weight:600;">⬇️ Import: NPC-Textblöcke</div>
       <div class="muted" style="margin-top:4px;">
-        Wichtig: NPC-Start wird nur über Überschriften erkannt (<code>### 🟢 Name</code>) – Bullets erzeugen keine NPCs mehr.
+        Wichtig: NPC-Start wird über Überschrift erkannt (<code>### 🟢 Name</code>) oder optional „nackte“ Emoji-Zeile.
+        Bullets erzeugen keine NPCs.
       </div>
     </header>
     <textarea id="importText" placeholder="Hier reinpasten …"></textarea>
@@ -97,6 +101,13 @@
 </div>
 
 <script>
+/* =========================
+   CONFIG: Remote JSON
+   Lädt relativ von GitHub Pages:
+   /data/data.json  →  "data/data.json"
+========================= */
+const REMOTE_DATA_URL = "data/data.json";
+
 /* =========================
    STORAGE
 ========================= */
@@ -143,37 +154,18 @@ function isSeparatorLine(line){
   const t = normalizeLine(line);
   return t === "----" || t === "---" || t === "—" || /^-{3,}$/.test(t);
 }
-
-/**
- * ✅ NEU: NPC-Start ist VIEL strenger, damit Bullets niemals als "Name" zählen.
- * Erlaubt:
- *  - "### 🟢 Name" (bevorzugt)
- *  - "🟢 Name" (optional), aber nur wenn:
- *      - NICHT bullet (*,-,•)
- *      - KEIN ":" (damit "**Key:** Value" nicht matcht)
- */
 function isNpcStartLine(line){
   const raw = String(line || "");
   const t = normalizeLine(raw);
   if(!t) return false;
   if(isSeparatorLine(t)) return false;
-
-  // Bullet? Dann NIEMALS NPC-Start
-  if(/^\s*[*\-•]\s+/.test(raw)) return false;
-
-  // Überschrift? Dann JA
-  if(/^#{1,6}\s+/.test(t)) return true;
-
-  // Kein Header: optional "nackte" Namenszeile
-  // aber nicht wenn es eine Feldzeile ist (enthält ':')
-  if(t.includes(":")) return false;
-
-  // Und es sollte "emoji-ish" starten (nicht Buchstabe/Zahl)
+  if(/^\s*[*\-•]\s+/.test(raw)) return false; // Bullet -> niemals NPC
+  if(/^#{1,6}\s+/.test(t)) return true;       // Header -> NPC
+  if(t.includes(":")) return false;           // Feldzeile -> kein NPC
   const first = t[0];
   const looksEmoji = first && !(/[A-Za-z0-9ÄÖÜäöüß]/.test(first));
   return looksEmoji && t.length >= 3;
 }
-
 function slugifyNameToId(name){
   let n = (name || "").trim();
   n = n.replace(/^#{1,6}\s+/, "").trim();
@@ -256,7 +248,7 @@ function findBestFuzzyMatch(importedNpc, existingNpcs){
 }
 
 /* =========================
-   IMPORT PARSER (fix für Bullet-Explosion)
+   IMPORT PARSER
 ========================= */
 function parseNpcBlocks(rawText){
   const text = String(rawText || "").replace(/\r\n/g, "\n");
@@ -334,7 +326,6 @@ function parseNpcBlocks(rawText){
           continue;
         }
 
-        // Sektion: "**Familie (SL-Notiz):**" (value leer)
         if(kv.value === ""){
           currentSection = kv.key;
           if(!(kv.key in npc.fields)) npc.fields[kv.key] = "";
@@ -357,7 +348,6 @@ function parseNpcBlocks(rawText){
         continue;
       }
 
-      // Fortsetzungszeile
       if(lastKey){
         npc.fields[lastKey] = (npc.fields[lastKey] ? npc.fields[lastKey] + "\n" : "") + line;
       }
@@ -385,6 +375,7 @@ const elSearch = document.getElementById("search");
 const elDetailTitle = document.getElementById("detailTitle");
 const elDetailSub = document.getElementById("detailSub");
 const elDetailBody = document.getElementById("detailBody");
+const elSyncStatus = document.getElementById("syncStatus");
 
 function collectCategories(npcs){
   const set = new Set();
@@ -481,6 +472,71 @@ function renderDetail(npc){
 }
 
 /* =========================
+   SYNC LOAD (GitHub Pages /data/data.json)
+========================= */
+function isValidNpc(obj){
+  return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0;
+}
+
+async function syncLoad(){
+  const btn = document.getElementById("btnSyncLoad");
+  btn.disabled = true;
+  elSyncStatus.textContent = "Sync: lade…";
+
+  try{
+    const res = await fetch(REMOTE_DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+
+    const data = await res.json();
+
+    // Unterstütze zwei Formate:
+    // 1) Array von NPCs (heute)
+    // 2) Objekt mit { npcs: [...] } (später möglich)
+    let incoming = null;
+    if(Array.isArray(data)){
+      incoming = data;
+    } else if(data && typeof data === "object" && Array.isArray(data.npcs)){
+      incoming = data.npcs;
+    } else {
+      throw new Error("Unerwartetes JSON-Format (erwarte Array oder {npcs:[...]})");
+    }
+
+    // Minimal filtern + IDs notfalls erzeugen
+    const cleaned = incoming
+      .filter(isValidNpc)
+      .map(n => ({
+        id: (n.id && String(n.id).trim()) ? String(n.id) : slugifyNameToId(n.name),
+        name: String(n.name),
+        categories: Array.isArray(n.categories) ? n.categories : (n.categories ? [String(n.categories)] : ["Unkategorisiert"]),
+        tags: Array.isArray(n.tags) ? n.tags : (n.tags ? [String(n.tags)] : []),
+        fields: (n.fields && typeof n.fields === "object") ? n.fields : {}
+      }));
+
+    NPCS = cleaned;
+    saveNpcs();
+
+    // UI reset
+    state.selectedCategory = null;
+    state.selectedNpcId = null;
+    state.search = "";
+    elSearch.value = "";
+
+    renderCategories();
+    renderNpcList();
+    renderDetail(null);
+
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,"0");
+    const mm = String(now.getMinutes()).padStart(2,"0");
+    elSyncStatus.textContent = `Sync: geladen (${cleaned.length} NPCs) · ${hh}:${mm}`;
+  }catch(err){
+    elSyncStatus.textContent = "Sync: Fehler – " + (err?.message || String(err));
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+/* =========================
    EVENTS
 ========================= */
 elSearch.addEventListener("input", (e) => {
@@ -488,6 +544,7 @@ elSearch.addEventListener("input", (e) => {
   renderNpcList();
 });
 
+// Import modal
 const importBg = document.getElementById("importBg");
 const importText = document.getElementById("importText");
 const importInfo = document.getElementById("importInfo");
@@ -571,6 +628,8 @@ document.getElementById("btnReset").onclick = () => {
   renderNpcList();
   renderDetail(null);
 };
+
+document.getElementById("btnSyncLoad").onclick = syncLoad;
 
 /* INIT */
 renderCategories();
