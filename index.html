@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NPC Übersicht</title>
+
+<style>
+  body { margin:0; background:#0b0c10; color:#e8e8e8; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+  .app { display:grid; grid-template-columns:280px 340px 1fr; gap:12px; padding:12px; height:100vh; box-sizing:border-box; }
+  .panel { background:#14161c; border:1px solid #242838; border-radius:12px; padding:12px; overflow:auto; }
+  h1 { font-size:16px; margin:0 0 10px; }
+  h2 { font-size:14px; margin:0 0 10px; opacity:.9; }
+  .muted { font-size:12px; opacity:.75; }
+  .grid { display:grid; gap:8px; }
+  .hr { height:1px; background:#2a3042; margin:10px 0; }
+  button { width:100%; background:#1b1f2b; color:#e8e8e8; border:1px solid #2a3042; border-radius:10px; padding:10px; cursor:pointer; text-align:left; }
+  button:hover { background:#23283a; }
+  button.active { outline:2px solid #6aa6ff; border-color:transparent; }
+  button.center { text-align:center; }
+  button.danger { border-color:#5a2a2a; }
+  input { width:100%; padding:10px; background:#0f1117; color:#e8e8e8; border:1px solid #2a3042; border-radius:10px; box-sizing:border-box; }
+  .npc-btn { display:grid; gap:2px; }
+  .npc-btn .sub { font-size:12px; opacity:.75; }
+  .pillwrap { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .pill { font-size:12px; background:#0f1117; border:1px solid #2a3042; padding:4px 8px; border-radius:999px; opacity:.9; }
+  .kv { display:grid; grid-template-columns:220px 1fr; gap:8px; }
+  .k { font-size:12px; opacity:.7; }
+  .v { white-space:pre-wrap; }
+
+  .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; padding:14px; z-index:50; }
+  .modal { background:#14161c; border:1px solid #2a3042; border-radius:12px; width:min(980px,100%); max-height:90vh; display:grid; grid-template-rows:auto 1fr auto; overflow:hidden; }
+  .modal header, .modal footer { padding:10px; background:#10131a; }
+  .modal footer { border-top:1px solid #2a3042; }
+  textarea { width:100%; height:100%; background:#0f1117; color:#e8e8e8; border:none; padding:10px; box-sizing:border-box;
+            font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+            font-size:13px; line-height:1.35; resize:none; outline:none; }
+  .row { display:flex; gap:8px; }
+  .row > * { flex:1; }
+
+  @media (max-width:1000px){
+    .app { grid-template-columns:1fr; height:auto; }
+    .kv { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+
+<body>
+<div class="app">
+  <div class="panel">
+    <h1>📚 Kategorien</h1>
+    <div class="muted">Klick → NPC-Liste</div>
+    <div class="hr"></div>
+    <div class="grid" id="catButtons"></div>
+    <div class="hr"></div>
+    <div class="grid">
+      <button id="btnImport" class="center">⬇️ Import</button>
+      <button id="btnExport" class="center">⬆️ Export (JSON)</button>
+      <button id="btnReset" class="center danger">🧨 Reset</button>
+    </div>
+    <div class="hr"></div>
+    <div class="muted">Alles wird lokal im Browser gespeichert (localStorage).</div>
+  </div>
+
+  <div class="panel">
+    <input id="search" placeholder="🔎 Suche nach Name/Tags/Feldern…" />
+    <div class="hr"></div>
+    <h2 id="listTitle">Kategorie wählen</h2>
+    <div class="grid" id="npcList"></div>
+  </div>
+
+  <div class="panel">
+    <h2 id="detailTitle">NPC auswählen</h2>
+    <div class="muted" id="detailSub">—</div>
+    <div class="hr"></div>
+    <div id="detailBody">—</div>
+  </div>
+</div>
+
+<div class="modal-bg" id="importBg">
+  <div class="modal">
+    <header>
+      <div style="font-weight:600;">⬇️ Import: NPC-Textblöcke</div>
+      <div class="muted" style="margin-top:4px;">
+        Wichtig: NPC-Start wird nur über Überschriften erkannt (<code>### 🟢 Name</code>) – Bullets erzeugen keine NPCs mehr.
+      </div>
+    </header>
+    <textarea id="importText" placeholder="Hier reinpasten …"></textarea>
+    <footer>
+      <div class="row">
+        <button id="btnDoImport" class="center">✅ Importieren</button>
+        <button id="btnCloseImport" class="center">✖ Schließen</button>
+      </div>
+      <div class="muted" id="importInfo" style="margin-top:8px;"></div>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* =========================
+   STORAGE
+========================= */
+const STORAGE_KEY = "npc_app_fuzzy_v3";
+let NPCS = loadNpcs();
+
+function loadNpcs(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  }catch{
+    return [];
+  }
+}
+function saveNpcs(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(NPCS));
+}
+
+/* =========================
+   HELPERS
+========================= */
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function normalizeLine(line){
+  return String(line || "").replace(/\u00A0/g, " ").trim();
+}
+function stripMarkdownBold(s){
+  const t = String(s || "").trim();
+  return t.replace(/^\*\*(.+?)\*\*$/s, "$1").trim();
+}
+function extractNameFromLine(line){
+  const t = normalizeLine(line);
+  const h = t.match(/^#{1,6}\s+(.+)$/);
+  return h ? h[1].trim() : t;
+}
+function isSeparatorLine(line){
+  const t = normalizeLine(line);
+  return t === "----" || t === "---" || t === "—" || /^-{3,}$/.test(t);
+}
+
+/**
+ * ✅ NEU: NPC-Start ist VIEL strenger, damit Bullets niemals als "Name" zählen.
+ * Erlaubt:
+ *  - "### 🟢 Name" (bevorzugt)
+ *  - "🟢 Name" (optional), aber nur wenn:
+ *      - NICHT bullet (*,-,•)
+ *      - KEIN ":" (damit "**Key:** Value" nicht matcht)
+ */
+function isNpcStartLine(line){
+  const raw = String(line || "");
+  const t = normalizeLine(raw);
+  if(!t) return false;
+  if(isSeparatorLine(t)) return false;
+
+  // Bullet? Dann NIEMALS NPC-Start
+  if(/^\s*[*\-•]\s+/.test(raw)) return false;
+
+  // Überschrift? Dann JA
+  if(/^#{1,6}\s+/.test(t)) return true;
+
+  // Kein Header: optional "nackte" Namenszeile
+  // aber nicht wenn es eine Feldzeile ist (enthält ':')
+  if(t.includes(":")) return false;
+
+  // Und es sollte "emoji-ish" starten (nicht Buchstabe/Zahl)
+  const first = t[0];
+  const looksEmoji = first && !(/[A-Za-z0-9ÄÖÜäöüß]/.test(first));
+  return looksEmoji && t.length >= 3;
+}
+
+function slugifyNameToId(name){
+  let n = (name || "").trim();
+  n = n.replace(/^#{1,6}\s+/, "").trim();
+  n = n.replace(/^[^A-Za-z0-9ÄÖÜäöüß]+/, "").trim();
+  n = n.toLowerCase();
+  n = n.replaceAll("ä","ae").replaceAll("ö","oe").replaceAll("ü","ue").replaceAll("ß","ss");
+  n = n.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  n = n.replace(/["„“'’`´]/g, "");
+  n = n.replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  return n || ("npc-" + Math.random().toString(16).slice(2));
+}
+function parseCommaList(value){
+  return String(value || "")
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+function parseKeyValueLine(line){
+  const raw = normalizeLine(line);
+  const noBullet = raw.replace(/^[-*•]\s+/, "").trim();
+  const m = noBullet.match(/^(.+?):\s*(.*)$/);
+  if(!m) return null;
+
+  let key = stripMarkdownBold(m[1].trim()).replace(/\*\*/g, "").trim();
+  let value = String(m[2] ?? "").trim().replace(/\*\*/g, "").trim();
+  return { key, value };
+}
+
+/* =========================
+   FUZZY MATCH
+========================= */
+function normalizeForMatch(name){
+  let n = (name || "").trim();
+  n = n.replace(/^#{1,6}\s+/, "").trim();
+  n = n.replace(/^[^A-Za-z0-9ÄÖÜäöüß]+/, "").trim();
+  n = n.toLowerCase();
+  n = n.replaceAll("ä","ae").replaceAll("ö","oe").replaceAll("ü","ue").replaceAll("ß","ss");
+  n = n.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  n = n.replace(/["„“'’`´]/g, "");
+  n = n.replace(/[^a-z0-9]+/g, " ").trim();
+  n = n.replace(/\s+/g, " ");
+  return n;
+}
+function levenshtein(a, b){
+  a = a || ""; b = b || "";
+  const m = a.length, n = b.length;
+  if(m === 0) return n;
+  if(n === 0) return m;
+
+  const dp = new Array(n + 1);
+  for(let j=0; j<=n; j++) dp[j] = j;
+
+  for(let i=1; i<=m; i++){
+    let prev = dp[0];
+    dp[0] = i;
+    for(let j=1; j<=n; j++){
+      const tmp = dp[j];
+      const cost = (a[i-1] === b[j-1]) ? 0 : 1;
+      dp[j] = Math.min(dp[j] + 1, dp[j-1] + 1, prev + cost);
+      prev = tmp;
+    }
+  }
+  return dp[n];
+}
+function similarity(a, b){
+  const na = normalizeForMatch(a);
+  const nb = normalizeForMatch(b);
+  const maxLen = Math.max(na.length, nb.length);
+  if(maxLen === 0) return 1;
+  const dist = levenshtein(na, nb);
+  return 1 - (dist / maxLen);
+}
+function findBestFuzzyMatch(importedNpc, existingNpcs){
+  let best = null;
+  for(const ex of existingNpcs){
+    const score = similarity(importedNpc.name, ex.name);
+    if(!best || score > best.score) best = { npc: ex, score };
+  }
+  return best;
+}
+
+/* =========================
+   IMPORT PARSER (fix für Bullet-Explosion)
+========================= */
+function parseNpcBlocks(rawText){
+  const text = String(rawText || "").replace(/\r\n/g, "\n");
+  const lines = text.split("\n");
+
+  const blocks = [];
+  let current = [];
+
+  function pushCurrent(){
+    const cleaned = current.join("\n").trim();
+    if(cleaned) blocks.push(cleaned);
+    current = [];
+  }
+
+  for(const line of lines){
+    const t = normalizeLine(line);
+
+    if(isSeparatorLine(t)){
+      pushCurrent();
+      continue;
+    }
+
+    if(isNpcStartLine(line) && current.join("\n").trim().length > 0){
+      pushCurrent();
+    }
+
+    current.push(line);
+  }
+  pushCurrent();
+
+  const parsed = [];
+  const errors = [];
+
+  blocks.forEach((block, idx) => {
+    const raw = block.split("\n");
+    const nonEmpty = raw.map(normalizeLine).filter(Boolean);
+    if(nonEmpty.length === 0) return;
+
+    const nameLine = nonEmpty[0];
+    if(!isNpcStartLine(nameLine)){
+      errors.push(`Block ${idx+1}: Keine gültige NPC-Überschrift gefunden. Erste Zeile: "${nameLine}"`);
+      return;
+    }
+
+    const name = extractNameFromLine(nameLine);
+    const npc = {
+      id: slugifyNameToId(name),
+      name,
+      categories: [],
+      tags: [],
+      fields: {}
+    };
+
+    let currentSection = null;
+    let lastKey = null;
+
+    for(let i=1; i<raw.length; i++){
+      const line = normalizeLine(raw[i]);
+      if(!line) continue;
+      if(isSeparatorLine(line)) continue;
+
+      const kv = parseKeyValueLine(line);
+
+      if(kv){
+        const keyLower = kv.key.toLowerCase();
+
+        if(keyLower === "kategorie" || keyLower === "kategorien"){
+          npc.categories = parseCommaList(kv.value);
+          currentSection = null; lastKey = null;
+          continue;
+        }
+        if(keyLower === "tag" || keyLower === "tags"){
+          npc.tags = parseCommaList(kv.value);
+          currentSection = null; lastKey = null;
+          continue;
+        }
+
+        // Sektion: "**Familie (SL-Notiz):**" (value leer)
+        if(kv.value === ""){
+          currentSection = kv.key;
+          if(!(kv.key in npc.fields)) npc.fields[kv.key] = "";
+          lastKey = kv.key;
+          continue;
+        }
+
+        const rawLine = raw[i].trim();
+        const isBullet = rawLine.startsWith("*") || rawLine.startsWith("-");
+        let finalKey = kv.key;
+
+        if(currentSection && isBullet){
+          finalKey = `${currentSection} – ${kv.key}`;
+        } else {
+          currentSection = null;
+        }
+
+        npc.fields[finalKey] = kv.value;
+        lastKey = finalKey;
+        continue;
+      }
+
+      // Fortsetzungszeile
+      if(lastKey){
+        npc.fields[lastKey] = (npc.fields[lastKey] ? npc.fields[lastKey] + "\n" : "") + line;
+      }
+    }
+
+    if(!npc.categories || npc.categories.length === 0){
+      npc.categories = ["Unkategorisiert"];
+    }
+
+    parsed.push(npc);
+  });
+
+  return { parsed, errors };
+}
+
+/* =========================
+   UI STATE + RENDER
+========================= */
+const state = { selectedCategory: null, selectedNpcId: null, search: "" };
+
+const elCatButtons = document.getElementById("catButtons");
+const elNpcList = document.getElementById("npcList");
+const elListTitle = document.getElementById("listTitle");
+const elSearch = document.getElementById("search");
+const elDetailTitle = document.getElementById("detailTitle");
+const elDetailSub = document.getElementById("detailSub");
+const elDetailBody = document.getElementById("detailBody");
+
+function collectCategories(npcs){
+  const set = new Set();
+  npcs.forEach(n => (n.categories || []).forEach(c => set.add(c)));
+  if(set.size === 0) set.add("Unkategorisiert");
+  return Array.from(set).sort((a,b) => a.localeCompare(b, 'de'));
+}
+function matchesSearch(npc, q){
+  if(!q) return true;
+  const hay = [
+    npc.name,
+    ...(npc.categories || []),
+    ...(npc.tags || []),
+    ...(npc.fields ? Object.values(npc.fields) : [])
+  ].join(" ").toLowerCase();
+  return hay.includes(q.toLowerCase());
+}
+function getVisibleNpcs(){
+  let list = NPCS.slice();
+  if(state.selectedCategory) list = list.filter(n => (n.categories || []).includes(state.selectedCategory));
+  if(state.search) list = list.filter(n => matchesSearch(n, state.search));
+  list.sort((a,b) => (a.name || "").localeCompare(b.name || "", 'de'));
+  return list;
+}
+function renderCategories(){
+  const cats = collectCategories(NPCS);
+  elCatButtons.innerHTML = "";
+  cats.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.className = (state.selectedCategory === cat) ? "active" : "";
+    btn.onclick = () => {
+      state.selectedCategory = cat;
+      state.selectedNpcId = null;
+      renderCategories();
+      renderNpcList();
+      renderDetail(null);
+    };
+    elCatButtons.appendChild(btn);
+  });
+}
+function renderNpcList(){
+  elNpcList.innerHTML = "";
+  if(!state.selectedCategory){
+    elListTitle.textContent = "Kategorie wählen";
+    return;
+  }
+  const visible = getVisibleNpcs();
+  elListTitle.textContent = `${state.selectedCategory} (${visible.length})`;
+
+  visible.forEach(npc => {
+    const btn = document.createElement("button");
+    btn.className = "npc-btn" + (state.selectedNpcId === npc.id ? " active" : "");
+
+    const role = npc.fields?.["Rolle / Funktion"] || npc.fields?.["Rolle"] || "";
+    const tags = (npc.tags || []).slice(0,4).join(" · ");
+
+    btn.innerHTML = `
+      <div><b>${escapeHtml(npc.name)}</b></div>
+      <div class="sub">${escapeHtml(role)}${tags ? " · " + escapeHtml(tags) : ""}</div>
+    `;
+
+    btn.onclick = () => {
+      state.selectedNpcId = npc.id;
+      renderNpcList();
+      renderDetail(npc);
+    };
+    elNpcList.appendChild(btn);
+  });
+}
+function renderDetail(npc){
+  if(!npc){
+    elDetailTitle.textContent = "NPC auswählen";
+    elDetailSub.textContent = "—";
+    elDetailBody.textContent = "—";
+    return;
+  }
+  elDetailTitle.textContent = npc.name;
+  elDetailSub.textContent = `${(npc.categories||[]).join(", ")}${npc.tags?.length ? " · Tags: " + npc.tags.join(", ") : ""}`;
+
+  const entries = Object.entries(npc.fields || {});
+  elDetailBody.innerHTML = `
+    <div class="pillwrap">
+      ${(npc.categories||[]).map(c => `<span class="pill">${escapeHtml(c)}</span>`).join("")}
+      ${(npc.tags||[]).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
+    </div>
+    <div class="kv">
+      ${entries.map(([k,v]) => `
+        <div class="k">${escapeHtml(k)}</div>
+        <div class="v">${escapeHtml(v)}</div>
+      `).join("")}
+    </div>
+  `;
+}
+
+/* =========================
+   EVENTS
+========================= */
+elSearch.addEventListener("input", (e) => {
+  state.search = e.target.value.trim();
+  renderNpcList();
+});
+
+const importBg = document.getElementById("importBg");
+const importText = document.getElementById("importText");
+const importInfo = document.getElementById("importInfo");
+
+function openImport(){ importBg.style.display = "flex"; importInfo.textContent = ""; }
+function closeImport(){ importBg.style.display = "none"; }
+
+document.getElementById("btnImport").onclick = openImport;
+document.getElementById("btnCloseImport").onclick = closeImport;
+importBg.addEventListener("click", (e) => { if(e.target === importBg) closeImport(); });
+
+document.getElementById("btnDoImport").onclick = () => {
+  const { parsed, errors } = parseNpcBlocks(importText.value);
+
+  if(parsed.length === 0){
+    importInfo.textContent = errors.length
+      ? "Keine NPCs erkannt. Hinweis: " + errors[0]
+      : "Keine NPCs erkannt. Beginnt jeder NPC mit '### 🟢 Name' ?";
+    return;
+  }
+
+  const map = new Map(NPCS.map(n => [n.id, n]));
+
+  for(const n of parsed){
+    if(map.has(n.id)){
+      map.set(n.id, n);
+      continue;
+    }
+
+    const best = findBestFuzzyMatch(n, NPCS);
+    if(best && best.score >= 0.88){
+      const ok = confirm(
+        `Fuzzy-Match gefunden:\n\n` +
+        `Import:   ${n.name}\n` +
+        `Vorhanden:${best.npc.name}\n\n` +
+        `Ähnlichkeit: ${(best.score*100).toFixed(0)}%\n\n` +
+        `Vorhandenen NPC überschreiben?`
+      );
+      if(ok){
+        n.id = best.npc.id;
+        map.set(best.npc.id, n);
+        continue;
+      }
+    }
+
+    map.set(n.id, n);
+  }
+
+  NPCS = Array.from(map.values());
+  saveNpcs();
+
+  importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+  renderCategories();
+  renderNpcList();
+  renderDetail(null);
+};
+
+document.getElementById("btnExport").onclick = () => {
+  const data = JSON.stringify(NPCS, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "npcs-export.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById("btnReset").onclick = () => {
+  const ok = confirm("Wirklich alle NPCs löschen?");
+  if(!ok) return;
+  NPCS = [];
+  saveNpcs();
+  state.selectedCategory = null;
+  state.selectedNpcId = null;
+  state.search = "";
+  elSearch.value = "";
+  renderCategories();
+  renderNpcList();
+  renderDetail(null);
+};
+
+/* INIT */
+renderCategories();
+renderNpcList();
+renderDetail(null);
+</script>
+</body>
+</html>
