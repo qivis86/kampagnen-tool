@@ -8,7 +8,7 @@
 <style>
   body { margin:0; background:#0b0c10; color:#e8e8e8; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
 
-  /* Mobile Topbar (nur mobil sichtbar) */
+  /* Mobile Topbar */
   .topbar{
     position: sticky;
     top: 0;
@@ -42,6 +42,7 @@
   .muted { font-size:12px; opacity:.75; }
   .grid { display:grid; gap:8px; }
   .hr { height:1px; background:#2a3042; margin:10px 0; }
+
   button { width:100%; background:#1b1f2b; color:#e8e8e8; border:1px solid #2a3042; border-radius:10px; padding:10px; cursor:pointer; text-align:left; }
   button:hover { background:#23283a; }
   button.active { outline:2px solid #6aa6ff; border-color:transparent; }
@@ -59,6 +60,9 @@
   .k { font-size:12px; opacity:.7; }
   .v { white-space:pre-wrap; }
 
+  .actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .actions button{ width:auto; padding:8px 10px; }
+
   .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; padding:14px; z-index:200; }
   .modal { background:#14161c; border:1px solid #2a3042; border-radius:12px; width:min(980px,100%); max-height:90vh; display:grid; grid-template-rows:auto 1fr auto; overflow:hidden; }
   .modal header, .modal footer { padding:10px; background:#10131a; }
@@ -69,7 +73,6 @@
   .row { display:flex; gap:8px; }
   .row > * { flex:1; }
 
-  /* ===== MOBILE MODE ===== */
   @media (max-width: 900px){
     .topbar{ display:flex; }
     .app{
@@ -84,9 +87,8 @@
       border-top: 0;
       padding-top: 10px;
     }
-
-    /* Panels werden per JS ein/ausgeblendet */
     .panel[data-mobile-hidden="true"]{ display:none; }
+    .kv { grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -129,6 +131,11 @@
 
   <!-- Detail -->
   <div class="panel" id="panelDetail">
+    <div class="actions" id="detailActions" style="display:none;">
+      <button id="btnEditNpc">✏️ Edit</button>
+    </div>
+    <div class="hr" id="detailActionsHr" style="display:none;"></div>
+
     <h2 id="detailTitle">NPC auswählen</h2>
     <div class="muted" id="detailSub">—</div>
     <div class="hr"></div>
@@ -156,16 +163,36 @@
   </div>
 </div>
 
+<!-- Edit Modal -->
+<div class="modal-bg" id="editBg">
+  <div class="modal">
+    <header>
+      <div style="font-weight:600;">✏️ NPC bearbeiten</div>
+      <div class="muted" style="margin-top:4px;">
+        Du bearbeitest den NPC als Textblock. Beim Speichern wird genau dieser NPC überschrieben (ID bleibt gleich).
+      </div>
+    </header>
+    <textarea id="editText" placeholder="NPC-Text …"></textarea>
+    <footer>
+      <div class="row">
+        <button id="btnSaveEdit" class="center">💾 Speichern</button>
+        <button id="btnCancelEdit" class="center">✖ Abbrechen</button>
+      </div>
+      <div class="muted" id="editInfo" style="margin-top:8px;"></div>
+    </footer>
+  </div>
+</div>
+
 <script>
 /* =========================
-   CONFIG: Remote JSON
+   CONFIG
 ========================= */
 const REMOTE_DATA_URL = "data/data.json";
 
 /* =========================
    STORAGE
 ========================= */
-const STORAGE_KEY = "npc_app_mobile_v1";
+const STORAGE_KEY = "npc_app_mobile_edit_v1";
 let NPCS = loadNpcs();
 
 function loadNpcs(){
@@ -404,6 +431,74 @@ function parseNpcBlocks(rawText){
 }
 
 /* =========================
+   NPC -> Textblock (für Edit)
+========================= */
+function npcToTextBlock(npc){
+  const lines = [];
+  lines.push(`### ${npc.name}`);
+  if(npc.categories?.length) lines.push(`**Kategorien:** ${npc.categories.join(", ")}`);
+  if(npc.tags?.length) lines.push(`**Tags:** ${npc.tags.join(", ")}`);
+  lines.push("");
+
+  // Gruppiere "Section – Subkey" wieder als Sektion + Bullets
+  const sectionMap = new Map(); // section -> array {subkey, value}
+  const normalFields = [];
+
+  for(const [k, v] of Object.entries(npc.fields || {})){
+    const m = k.match(/^(.*?)\s+–\s+(.*)$/);
+    if(m){
+      const section = m[1].trim();
+      const subkey = m[2].trim();
+      if(!sectionMap.has(section)) sectionMap.set(section, []);
+      sectionMap.get(section).push({ subkey, value: v });
+    }else{
+      normalFields.push([k, v]);
+    }
+  }
+
+  // Normale Felder (stabil sortiert nach Schlüssel)
+  normalFields.sort((a,b) => a[0].localeCompare(b[0], 'de'));
+  for(const [k, v] of normalFields){
+    addFieldLines(lines, k, v);
+    lines.push("");
+  }
+
+  // Sektionen (sortiert)
+  const sections = Array.from(sectionMap.keys()).sort((a,b)=>a.localeCompare(b,'de'));
+  for(const section of sections){
+    lines.push(`**${section}:**`);
+    const items = sectionMap.get(section);
+    items.sort((a,b)=>a.subkey.localeCompare(b.subkey,'de'));
+    for(const it of items){
+      addBulletFieldLines(lines, it.subkey, it.value);
+    }
+    lines.push("");
+  }
+
+  // Trim trailing empties
+  while(lines.length && lines[lines.length-1].trim()==="") lines.pop();
+  return lines.join("\n");
+}
+
+function addFieldLines(lines, key, value){
+  const val = String(value ?? "");
+  const parts = val.split("\n");
+  lines.push(`**${key}:** ${parts[0] ?? ""}`.trimEnd());
+  for(let i=1; i<parts.length; i++){
+    lines.push(parts[i]);
+  }
+}
+
+function addBulletFieldLines(lines, key, value){
+  const val = String(value ?? "");
+  const parts = val.split("\n");
+  lines.push(`* **${key}:** ${parts[0] ?? ""}`.trimEnd());
+  for(let i=1; i<parts.length; i++){
+    lines.push(parts[i]);
+  }
+}
+
+/* =========================
    MOBILE VIEW STATE
 ========================= */
 function isMobile(){
@@ -416,7 +511,6 @@ const panels = {
   detail: document.getElementById("panelDetail")
 };
 
-const topbar = document.getElementById("topbar");
 const topbarTitle = document.getElementById("topbarTitle");
 const btnBack = document.getElementById("btnBack");
 const btnTopSync = document.getElementById("btnTopSync");
@@ -425,7 +519,7 @@ const state = {
   selectedCategory: null,
   selectedNpcId: null,
   search: "",
-  view: "cats" // "cats" | "list" | "detail"
+  view: "cats" // cats | list | detail
 };
 
 function setView(v){
@@ -435,11 +529,9 @@ function setView(v){
 
 function applyMobileVisibility(){
   if(!isMobile()){
-    // Desktop: alle sichtbar
     panels.cats.dataset.mobileHidden = "false";
     panels.list.dataset.mobileHidden = "false";
     panels.detail.dataset.mobileHidden = "false";
-    // Topbar wird per CSS ausgeblendet, aber falls viewport wechselt:
     return;
   }
 
@@ -447,7 +539,6 @@ function applyMobileVisibility(){
   panels.list.dataset.mobileHidden = (state.view !== "list") ? "true" : "false";
   panels.detail.dataset.mobileHidden = (state.view !== "detail") ? "true" : "false";
 
-  // Topbar Titel + Back
   let title = "Kategorien";
   let backEnabled = false;
 
@@ -469,14 +560,10 @@ btnBack.onclick = () => {
   else if(state.view === "list") setView("cats");
   else setView("cats");
 };
+
 btnTopSync.onclick = () => syncLoad();
 
-/* Reagiere auf Resize / Rotation */
-window.addEventListener("resize", () => {
-  // Wenn wir auf Desktop wechseln, zeigen wir alles.
-  // Wenn wir auf Mobile wechseln, bleiben wir in state.view.
-  applyMobileVisibility();
-});
+window.addEventListener("resize", () => applyMobileVisibility());
 
 /* =========================
    UI RENDER
@@ -489,6 +576,10 @@ const elDetailTitle = document.getElementById("detailTitle");
 const elDetailSub = document.getElementById("detailSub");
 const elDetailBody = document.getElementById("detailBody");
 const elSyncStatus = document.getElementById("syncStatus");
+
+const elDetailActions = document.getElementById("detailActions");
+const elDetailActionsHr = document.getElementById("detailActionsHr");
+const btnEditNpc = document.getElementById("btnEditNpc");
 
 function collectCategories(npcs){
   const set = new Set();
@@ -528,7 +619,6 @@ function renderCategories(){
       renderNpcList();
       renderDetail(null);
 
-      // Mobile: nach Kategorie direkt in Liste
       if(isMobile()) setView("list");
       applyMobileVisibility();
     };
@@ -562,7 +652,6 @@ function renderNpcList(){
       renderNpcList();
       renderDetail(npc);
 
-      // Mobile: in Detail wechseln
       if(isMobile()) setView("detail");
       applyMobileVisibility();
     };
@@ -570,13 +659,23 @@ function renderNpcList(){
   });
 }
 
+let currentDetailNpc = null;
+
 function renderDetail(npc){
+  currentDetailNpc = npc || null;
+
   if(!npc){
+    elDetailActions.style.display = "none";
+    elDetailActionsHr.style.display = "none";
     elDetailTitle.textContent = "NPC auswählen";
     elDetailSub.textContent = "—";
     elDetailBody.textContent = "—";
     return;
   }
+
+  elDetailActions.style.display = "flex";
+  elDetailActionsHr.style.display = "block";
+
   elDetailTitle.textContent = npc.name;
   elDetailSub.textContent = `${(npc.categories||[]).join(", ")}${npc.tags?.length ? " · Tags: " + npc.tags.join(", ") : ""}`;
 
@@ -596,6 +695,76 @@ function renderDetail(npc){
 }
 
 /* =========================
+   EDIT MODAL
+========================= */
+const editBg = document.getElementById("editBg");
+const editText = document.getElementById("editText");
+const editInfo = document.getElementById("editInfo");
+const btnSaveEdit = document.getElementById("btnSaveEdit");
+const btnCancelEdit = document.getElementById("btnCancelEdit");
+
+let editingNpcId = null;
+
+function openEdit(npc){
+  if(!npc) return;
+  editingNpcId = npc.id;
+  editInfo.textContent = "";
+  editText.value = npcToTextBlock(npc);
+  editBg.style.display = "flex";
+}
+
+function closeEdit(){
+  editBg.style.display = "none";
+  editingNpcId = null;
+}
+
+btnEditNpc.onclick = () => openEdit(currentDetailNpc);
+btnCancelEdit.onclick = closeEdit;
+editBg.addEventListener("click", (e) => { if(e.target === editBg) closeEdit(); });
+
+btnSaveEdit.onclick = () => {
+  if(!editingNpcId){
+    editInfo.textContent = "Kein NPC zum Speichern ausgewählt.";
+    return;
+  }
+
+  const { parsed, errors } = parseNpcBlocks(editText.value);
+
+  if(parsed.length !== 1){
+    editInfo.textContent = parsed.length === 0
+      ? (errors[0] || "Kein NPC erkannt. Beginnt der Block mit '### 🟢 Name'?")
+      : "Bitte genau 1 NPC im Editor lassen (kein zweiter '### ...' Block).";
+    return;
+  }
+
+  const updated = parsed[0];
+  // ID stabil halten – auch wenn Name/Emoji geändert wurde
+  updated.id = editingNpcId;
+
+  const idx = NPCS.findIndex(n => n.id === editingNpcId);
+  if(idx === -1){
+    editInfo.textContent = "NPC wurde nicht gefunden (evtl. Sync/Reset dazwischen).";
+    return;
+  }
+
+  NPCS[idx] = updated;
+  saveNpcs();
+
+  // UI refresh
+  renderCategories();
+  renderNpcList();
+
+  // Detail neu anzeigen
+  state.selectedNpcId = updated.id;
+  renderDetail(updated);
+  applyMobileVisibility();
+
+  editInfo.textContent = "✅ Gespeichert.";
+  // Optional: Modal schließen
+  closeEdit();
+};
+
+/* =========================
    SYNC LOAD
 ========================= */
 function isValidNpc(obj){
@@ -607,6 +776,7 @@ async function syncLoad(){
   btn.disabled = true;
   btnTopSync.disabled = true;
   elSyncStatus.textContent = "Sync: lade…";
+
   try{
     const res = await fetch(REMOTE_DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
     if(!res.ok) throw new Error("HTTP " + res.status);
@@ -630,7 +800,6 @@ async function syncLoad(){
     NPCS = cleaned;
     saveNpcs();
 
-    // UI reset
     state.selectedCategory = null;
     state.selectedNpcId = null;
     state.search = "";
@@ -719,7 +888,6 @@ document.getElementById("btnDoImport").onclick = () => {
   renderNpcList();
   renderDetail(null);
 
-  // Mobil: nach Import zurück zu Kategorien (und topbar aktualisieren)
   if(isMobile()) setView("cats");
   applyMobileVisibility();
 };
