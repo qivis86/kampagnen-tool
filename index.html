@@ -145,13 +145,13 @@
   </div>
 </div>
 
-<!-- Import Modal (bleibt NPC-Textblöcke, Orte später separat – aber kompatibel) -->
+<!-- Import Modal (NPC blocks only) -->
 <div class="modal-bg" id="importBg">
   <div class="modal">
     <header>
-      <div style="font-weight:600;">⬇️ Import: Textblöcke</div>
+      <div style="font-weight:600;">⬇️ Import: NPC-Textblöcke</div>
       <div class="muted" style="margin-top:4px;">
-        Aktuell: Import ist auf NPC-Textblöcke optimiert. Orte kannst du erstmal über JSON pflegen (World Export → /data/data.json).
+        Orte pflegst du im Moment am besten via World JSON (Export → data/data.json).
       </div>
     </header>
     <textarea id="importText" placeholder="Hier reinpasten …"></textarea>
@@ -171,7 +171,8 @@
     <header>
       <div style="font-weight:600;">✏️ Bearbeiten</div>
       <div class="muted" style="margin-top:4px;">
-        Textblock bearbeiten. Beim Speichern wird genau dieses Element überschrieben (ID bleibt gleich).
+        Links strikt als IDs pflegen:
+        NPC: <code>**Orte:** id1, id2</code> · Ort: <code>**NPCs:** id1, id2</code>.
       </div>
     </header>
     <textarea id="editText" placeholder="Text …"></textarea>
@@ -194,7 +195,7 @@ const REMOTE_DATA_URL = "data/data.json";
 /* =========================
    STORAGE
 ========================= */
-const STORAGE_KEY = "npc_places_app_v1";
+const STORAGE_KEY = "npc_places_links_app_v1";
 let { NPCS, PLACES } = loadWorld();
 
 function loadWorld(){
@@ -204,7 +205,6 @@ function loadWorld(){
     if(parsed && typeof parsed === "object" && (Array.isArray(parsed.npcs) || Array.isArray(parsed.places))){
       return { NPCS: Array.isArray(parsed.npcs)? parsed.npcs : [], PLACES: Array.isArray(parsed.places)? parsed.places : [] };
     }
-    // Backward compat: old array = NPC list
     if(Array.isArray(parsed)) return { NPCS: parsed, PLACES: [] };
     return { NPCS: [], PLACES: [] };
   }catch{
@@ -277,6 +277,9 @@ function parseKeyValueLine(line){
   let value = String(m[2] ?? "").trim().replace(/\*\*/g, "").trim();
   return { key, value };
 }
+function uniq(arr){
+  return Array.from(new Set((arr || []).filter(Boolean)));
+}
 
 /* =========================
    FUZZY MATCH (NPC import)
@@ -330,7 +333,7 @@ function findBestFuzzyMatch(importedNpc, existingNpcs){
 }
 
 /* =========================
-   IMPORT PARSER (NPCs only for now)
+   IMPORT PARSER (NPCs only)
 ========================= */
 function parseNpcBlocks(rawText){
   const text = String(rawText || "").replace(/\r\n/g, "\n");
@@ -346,12 +349,8 @@ function parseNpcBlocks(rawText){
 
   for(const line of lines){
     const t = normalizeLine(line);
-    if(isSeparatorLine(t)){
-      pushCurrent(); continue;
-    }
-    if(isNpcStartLine(line) && current.join("\n").trim().length > 0){
-      pushCurrent();
-    }
+    if(isSeparatorLine(t)){ pushCurrent(); continue; }
+    if(isNpcStartLine(line) && current.join("\n").trim().length > 0){ pushCurrent(); }
     current.push(line);
   }
   pushCurrent();
@@ -371,7 +370,7 @@ function parseNpcBlocks(rawText){
     }
 
     const name = extractNameFromLine(nameLine);
-    const npc = { id: slugifyNameToId(name), name, categories: [], tags: [], fields: {} };
+    const npc = { id: slugifyNameToId(name), name, categories: [], tags: [], placeIds: [], fields: {} };
 
     let currentSection = null;
     let lastKey = null;
@@ -385,16 +384,20 @@ function parseNpcBlocks(rawText){
 
       if(kv){
         const keyLower = kv.key.toLowerCase();
+
         if(keyLower === "kategorie" || keyLower === "kategorien"){
           npc.categories = parseCommaList(kv.value);
-          currentSection = null; lastKey = null;
-          continue;
+          currentSection = null; lastKey = null; continue;
         }
         if(keyLower === "tag" || keyLower === "tags"){
           npc.tags = parseCommaList(kv.value);
-          currentSection = null; lastKey = null;
-          continue;
+          currentSection = null; lastKey = null; continue;
         }
+        if(keyLower === "orte" || keyLower === "ort" || keyLower === "place" || keyLower === "places"){
+          npc.placeIds = parseCommaList(kv.value);
+          currentSection = null; lastKey = null; continue;
+        }
+
         if(kv.value === ""){
           currentSection = kv.key;
           if(!(kv.key in npc.fields)) npc.fields[kv.key] = "";
@@ -422,9 +425,8 @@ function parseNpcBlocks(rawText){
       }
     }
 
-    if(!npc.categories || npc.categories.length === 0){
-      npc.categories = ["Unkategorisiert"];
-    }
+    if(!npc.categories || npc.categories.length === 0) npc.categories = ["Unkategorisiert"];
+    npc.placeIds = uniq(npc.placeIds);
 
     parsed.push(npc);
   });
@@ -433,15 +435,14 @@ function parseNpcBlocks(rawText){
 }
 
 /* =========================
-   Entity -> Textblock (Edit)
-   - NPCs: wie gehabt
-   - Places: eigener Block (Typ/Parent optional)
+   Textblocks (Edit)
 ========================= */
 function npcToTextBlock(npc){
   const lines = [];
   lines.push(`### ${npc.name}`);
   if(npc.categories?.length) lines.push(`**Kategorien:** ${npc.categories.join(", ")}`);
   if(npc.tags?.length) lines.push(`**Tags:** ${npc.tags.join(", ")}`);
+  if(npc.placeIds?.length) lines.push(`**Orte:** ${npc.placeIds.join(", ")}`);
   lines.push("");
 
   const sectionMap = new Map();
@@ -484,12 +485,10 @@ function placeToTextBlock(place){
   const lines = [];
   lines.push(`### ${place.name}`);
   if(place.type) lines.push(`**Typ:** ${place.type}`);
-  if(place.parentId){
-    const parent = PLACES.find(p => p.id === place.parentId);
-    lines.push(`**Parent:** ${parent ? parent.name : place.parentId}`);
-  }
+  if(place.parentId) lines.push(`**Parent:** ${place.parentId}`);
   if(place.categories?.length) lines.push(`**Kategorien:** ${place.categories.join(", ")}`);
   if(place.tags?.length) lines.push(`**Tags:** ${place.tags.join(", ")}`);
+  if(place.npcIds?.length) lines.push(`**NPCs:** ${place.npcIds.join(", ")}`);
   lines.push("");
 
   const normalFields = Object.entries(place.fields || {}).sort((a,b)=>a[0].localeCompare(b[0],'de'));
@@ -518,31 +517,24 @@ function addBulletFieldLines(lines, key, value){
 /* =========================
    MOBILE VIEW STATE
 ========================= */
-function isMobile(){
-  return window.matchMedia && window.matchMedia("(max-width: 900px)").matches;
-}
-const panels = {
-  cats: document.getElementById("panelCats"),
-  list: document.getElementById("panelList"),
-  detail: document.getElementById("panelDetail")
-};
+function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 900px)").matches; }
+const panels = { cats: document.getElementById("panelCats"), list: document.getElementById("panelList"), detail: document.getElementById("panelDetail") };
 const topbarTitle = document.getElementById("topbarTitle");
 const btnBack = document.getElementById("btnBack");
 const btnTopSync = document.getElementById("btnTopSync");
 const btnTopMode = document.getElementById("btnTopMode");
 
 const state = {
-  mode: "npcs", // "npcs" | "places"
+  mode: "npcs",
   selectedCategory: null,
   selectedEntityId: null,
   search: "",
-  view: "cats" // cats | list | detail
+  view: "cats"
 };
 
 function setView(v){ state.view = v; applyMobileVisibility(); }
 function setMode(mode){
   state.mode = mode;
-  // reset selection per mode
   state.selectedCategory = null;
   state.selectedEntityId = null;
   state.search = "";
@@ -560,33 +552,20 @@ function applyMobileVisibility(){
     panels.detail.dataset.mobileHidden = "false";
     return;
   }
-
   panels.cats.dataset.mobileHidden = (state.view !== "cats") ? "true" : "false";
   panels.list.dataset.mobileHidden = (state.view !== "list") ? "true" : "false";
   panels.detail.dataset.mobileHidden = (state.view !== "detail") ? "true" : "false";
 
   let title = "Kategorien";
   let backEnabled = false;
-
-  if(state.view === "list"){
-    title = state.selectedCategory || "Liste";
-    backEnabled = true;
-  } else if(state.view === "detail"){
-    const ent = getSelectedEntity();
-    title = ent ? ent.name : "Detail";
-    backEnabled = true;
-  }
+  if(state.view === "list"){ title = state.selectedCategory || "Liste"; backEnabled = true; }
+  else if(state.view === "detail"){ const ent = getSelectedEntity(); title = ent ? ent.name : "Detail"; backEnabled = true; }
 
   topbarTitle.textContent = title;
   btnBack.disabled = !backEnabled;
   btnTopMode.textContent = (state.mode === "npcs") ? "🧑" : "📍";
 }
-
-btnBack.onclick = () => {
-  if(state.view === "detail") setView("list");
-  else if(state.view === "list") setView("cats");
-  else setView("cats");
-};
+btnBack.onclick = () => { if(state.view === "detail") setView("list"); else if(state.view === "list") setView("cats"); else setView("cats"); };
 btnTopSync.onclick = () => syncLoad();
 btnTopMode.onclick = () => setMode(state.mode === "npcs" ? "places" : "npcs");
 window.addEventListener("resize", () => applyMobileVisibility());
@@ -626,13 +605,9 @@ function updateModeUi(){
 /* =========================
    DATA ACCESS
 ========================= */
-function getEntities(){
-  return (state.mode === "npcs") ? NPCS : PLACES;
-}
-function getSelectedEntity(){
-  const list = getEntities();
-  return list.find(e => e.id === state.selectedEntityId) || null;
-}
+function getEntities(){ return (state.mode === "npcs") ? NPCS : PLACES; }
+function getSelectedEntity(){ return getEntities().find(e => e.id === state.selectedEntityId) || null; }
+
 function collectCategories(list){
   const set = new Set();
   list.forEach(n => (n.categories || []).forEach(c => set.add(c)));
@@ -647,6 +622,8 @@ function matchesSearch(entity, q){
     ...(entity.tags || []),
     ...(entity.fields ? Object.values(entity.fields) : []),
     (entity.type || ""),
+    ...(entity.placeIds || []),
+    ...(entity.npcIds || []),
   ].join(" ").toLowerCase();
   return hay.includes(q.toLowerCase());
 }
@@ -657,6 +634,42 @@ function getVisibleEntities(){
   list.sort((a,b) => (a.name || "").localeCompare(b.name || "", 'de'));
   return list;
 }
+
+/* =========================
+   NAV HELPERS (strict IDs)
+========================= */
+function openNpcById(npcId){
+  setMode("npcs");
+  const npc = NPCS.find(n => n.id === npcId);
+  if(!npc){
+    alert(`NPC-ID nicht gefunden: ${npcId}`);
+    return;
+  }
+  state.selectedEntityId = npcId;
+
+  // Kategorie sinnvoll setzen: erste Kategorie des NPCs, falls vorhanden
+  state.selectedCategory = (npc.categories && npc.categories.length) ? npc.categories[0] : "Unkategorisiert";
+
+  renderAll();
+  if(isMobile()) setView("detail");
+  applyMobileVisibility();
+}
+function openPlaceById(placeId){
+  setMode("places");
+  const p = PLACES.find(x => x.id === placeId);
+  if(!p){
+    alert(`Ort-ID nicht gefunden: ${placeId}`);
+    return;
+  }
+  state.selectedEntityId = placeId;
+  state.selectedCategory = (p.categories && p.categories.length) ? p.categories[0] : "Unkategorisiert";
+  renderAll();
+  if(isMobile()) setView("detail");
+  applyMobileVisibility();
+}
+// expose for inline onclick
+window.__openNpc = openNpcById;
+window.__openPlace = openPlaceById;
 
 /* =========================
    RENDER
@@ -674,7 +687,6 @@ function renderCategories(){
       renderCategories();
       renderEntityList();
       renderDetail(null);
-
       if(isMobile()) setView("list");
       applyMobileVisibility();
     };
@@ -740,65 +752,89 @@ function renderDetail(ent){
   if(cats.length) subtitleParts.push(cats.join(", "));
   if(state.mode === "places"){
     if(ent.type) subtitleParts.push(`Typ: ${ent.type}`);
-    if(ent.parentId){
-      const parent = PLACES.find(p => p.id === ent.parentId);
-      subtitleParts.push(`Parent: ${parent ? parent.name : ent.parentId}`);
-    }
+    if(ent.parentId) subtitleParts.push(`Parent: ${ent.parentId}`);
   }
   if(tags.length) subtitleParts.push(`Tags: ${tags.join(", ")}`);
   elDetailSub.textContent = subtitleParts.join(" · ") || "—";
 
   const entries = Object.entries(ent.fields || {});
-  const pillsHtml = `
-    <div class="pillwrap">
-      ${cats.map(c => `<span class="pill">${escapeHtml(c)}</span>`).join("")}
-      ${tags.map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
-    </div>
-  `;
 
-  let extraHtml = "";
-  if(state.mode === "places"){
+  // Link sections
+  let linksHtml = "";
+  if(state.mode === "npcs"){
+    const placeIds = uniq(ent.placeIds || []);
+    if(placeIds.length){
+      linksHtml += `
+        <div class="hr"></div>
+        <h2>Orte</h2>
+        <div class="grid">
+          ${placeIds.map(pid => {
+            const p = PLACES.find(x => x.id === pid);
+            const label = p ? p.name : `(unbekannt) ${pid}`;
+            const sub = p ? (p.type || "Ort") : "ID fehlt in places";
+            return `
+              <button onclick="window.__openPlace('${pid}')">
+                <div><b>${escapeHtml(label)}</b></div>
+                <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(pid)}</span></div>
+              </button>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+  } else {
     const children = PLACES.filter(p => p.parentId === ent.id).sort((a,b)=>a.name.localeCompare(b.name,'de'));
     if(children.length){
-      extraHtml += `
+      linksHtml += `
         <div class="hr"></div>
         <h2>Unterorte</h2>
         <div class="grid">
           ${children.map(ch => `
             <button onclick="window.__openPlace('${ch.id}')">
               <div><b>${escapeHtml(ch.name)}</b></div>
-              <div class="sub">${escapeHtml(ch.type || "Unterort")}</div>
+              <div class="sub">${escapeHtml(ch.type || "Unterort")} · <span class="muted">${escapeHtml(ch.id)}</span></div>
             </button>
           `).join("")}
+        </div>
+      `;
+    }
+
+    const npcIds = uniq(ent.npcIds || []);
+    if(npcIds.length){
+      linksHtml += `
+        <div class="hr"></div>
+        <h2>NPCs hier</h2>
+        <div class="grid">
+          ${npcIds.map(nid => {
+            const n = NPCS.find(x => x.id === nid);
+            const label = n ? n.name : `(unbekannt) ${nid}`;
+            const sub = n ? (n.fields?.["Rolle / Funktion"] || n.fields?.["Rolle"] || "NPC") : "ID fehlt in npcs";
+            return `
+              <button onclick="window.__openNpc('${nid}')">
+                <div><b>${escapeHtml(label)}</b></div>
+                <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(nid)}</span></div>
+              </button>
+            `;
+          }).join("")}
         </div>
       `;
     }
   }
 
   elDetailBody.innerHTML = `
-    ${pillsHtml}
+    <div class="pillwrap">
+      ${cats.map(c => `<span class="pill">${escapeHtml(c)}</span>`).join("")}
+      ${tags.map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
+    </div>
     <div class="kv">
       ${entries.map(([k,v]) => `
         <div class="k">${escapeHtml(k)}</div>
         <div class="v">${escapeHtml(v)}</div>
       `).join("")}
     </div>
-    ${extraHtml}
+    ${linksHtml}
   `;
 }
-
-window.__openPlace = (placeId) => {
-  // Nur sinnvoll im Orte-Modus; falls nicht, switchen wir.
-  if(state.mode !== "places") setMode("places");
-  state.selectedEntityId = placeId;
-  // Kategorie bleibt wie sie ist, aber Liste/Detail wollen wir konsistent
-  renderCategories();
-  renderEntityList();
-  const p = PLACES.find(x => x.id === placeId);
-  renderDetail(p);
-  if(isMobile()) setView("detail");
-  applyMobileVisibility();
-};
 
 function renderAll(){
   updateModeUi();
@@ -808,7 +844,7 @@ function renderAll(){
 }
 
 /* =========================
-   EDIT (NPCs + Places)
+   EDIT SAVE
 ========================= */
 const editBg = document.getElementById("editBg");
 const editText = document.getElementById("editText");
@@ -824,26 +860,24 @@ function openEdit(ent){
   editText.value = (state.mode === "npcs") ? npcToTextBlock(ent) : placeToTextBlock(ent);
   editBg.style.display = "flex";
 }
-function closeEdit(){
-  editBg.style.display = "none";
-  editing = null;
-}
+function closeEdit(){ editBg.style.display = "none"; editing = null; }
+
 btnEditEntity.onclick = () => openEdit(getSelectedEntity());
 btnCancelEdit.onclick = closeEdit;
 editBg.addEventListener("click", (e) => { if(e.target === editBg) closeEdit(); });
 
+function validateIds(list, existingSet){
+  const unknown = (list || []).filter(id => id && !existingSet.has(id));
+  return uniq(unknown);
+}
+
 btnSaveEdit.onclick = () => {
-  if(!editing){
-    editInfo.textContent = "Nichts zum Speichern.";
-    return;
-  }
+  if(!editing){ editInfo.textContent = "Nichts zum Speichern."; return; }
 
   if(editing.mode === "npcs"){
     const { parsed, errors } = parseNpcBlocks(editText.value);
     if(parsed.length !== 1){
-      editInfo.textContent = parsed.length === 0
-        ? (errors[0] || "Kein NPC erkannt.")
-        : "Bitte genau 1 NPC im Editor lassen.";
+      editInfo.textContent = parsed.length === 0 ? (errors[0] || "Kein NPC erkannt.") : "Bitte genau 1 NPC im Editor lassen.";
       return;
     }
     const updated = parsed[0];
@@ -851,16 +885,19 @@ btnSaveEdit.onclick = () => {
 
     const idx = NPCS.findIndex(n => n.id === editing.id);
     if(idx === -1){ editInfo.textContent = "NPC nicht gefunden."; return; }
+
+    // Warnung bei unbekannten Orten
+    const placeSet = new Set(PLACES.map(p => p.id));
+    const unknownPlaces = validateIds(updated.placeIds, placeSet);
+    if(unknownPlaces.length){
+      const ok = confirm(`Warnung: Unbekannte Ort-IDs:\n- ${unknownPlaces.join("\n- ")}\n\nTrotzdem speichern?`);
+      if(!ok) return;
+    }
+
+    updated.placeIds = uniq(updated.placeIds || []);
     NPCS[idx] = updated;
   } else {
-    // Minimaler Place-Editor: wir parsen simpel (kein voller Place-Importer)
-    // Erwartet:
-    // ### Name
-    // **Typ:** ...
-    // **Parent:** <Name oder ID>
-    // **Kategorien:** ...
-    // **Tags:** ...
-    // **Beliebiges Feld:** ...
+    // Place parse
     const lines = editText.value.replace(/\r\n/g,"\n").split("\n");
     const nonEmpty = lines.map(normalizeLine).filter(Boolean);
     if(!nonEmpty.length || !nonEmpty[0].startsWith("###")){
@@ -868,16 +905,17 @@ btnSaveEdit.onclick = () => {
       return;
     }
     const name = extractNameFromLine(nonEmpty[0]);
-    const place = PLACES.find(p => p.id === editing.id);
-    if(!place){ editInfo.textContent = "Ort nicht gefunden."; return; }
+    const old = PLACES.find(p => p.id === editing.id);
+    if(!old){ editInfo.textContent = "Ort nicht gefunden."; return; }
 
     const updated = {
       id: editing.id,
       name,
-      type: place.type || "",
-      parentId: place.parentId || "",
-      categories: Array.isArray(place.categories)? place.categories : [],
-      tags: Array.isArray(place.tags)? place.tags : [],
+      type: old.type || "",
+      parentId: old.parentId || "",
+      categories: Array.isArray(old.categories)? old.categories : [],
+      tags: Array.isArray(old.tags)? old.tags : [],
+      npcIds: Array.isArray(old.npcIds)? old.npcIds : [],
       fields: {}
     };
 
@@ -888,35 +926,33 @@ btnSaveEdit.onclick = () => {
       const kv = parseKeyValueLine(line);
       if(kv){
         const kLower = kv.key.toLowerCase();
-        if(kLower === "typ"){
-          updated.type = kv.value;
-          lastKey = null; continue;
-        }
-        if(kLower === "parent"){
-          // Parent kann Name oder ID sein – wir matchen auf vorhandene Places
-          const val = kv.value.trim();
-          const parentById = PLACES.find(p => p.id === val);
-          const parentByName = PLACES.find(p => normalizeForMatch(p.name) === normalizeForMatch(val));
-          updated.parentId = parentById ? parentById.id : (parentByName ? parentByName.id : val);
-          lastKey = null; continue;
-        }
-        if(kLower === "kategorien" || kLower === "kategorie"){
-          updated.categories = parseCommaList(kv.value);
-          lastKey = null; continue;
-        }
-        if(kLower === "tags" || kLower === "tag"){
-          updated.tags = parseCommaList(kv.value);
-          lastKey = null; continue;
-        }
+        if(kLower === "typ"){ updated.type = kv.value; lastKey=null; continue; }
+        if(kLower === "parent"){ updated.parentId = kv.value.trim(); lastKey=null; continue; }
+        if(kLower === "kategorien" || kLower === "kategorie"){ updated.categories = parseCommaList(kv.value); lastKey=null; continue; }
+        if(kLower === "tags" || kLower === "tag"){ updated.tags = parseCommaList(kv.value); lastKey=null; continue; }
+        if(kLower === "npcs" || kLower === "npc"){ updated.npcIds = parseCommaList(kv.value); lastKey=null; continue; }
         updated.fields[kv.key] = kv.value;
         lastKey = kv.key;
         continue;
       }
-      if(lastKey){
-        updated.fields[lastKey] = (updated.fields[lastKey] ? updated.fields[lastKey] + "\n" : "") + line;
-      }
+      if(lastKey) updated.fields[lastKey] = (updated.fields[lastKey] ? updated.fields[lastKey] + "\n" : "") + line;
     }
 
+    // Warnung bei unbekannten NPC IDs / Parent IDs
+    const npcSet = new Set(NPCS.map(n => n.id));
+    const placeSet = new Set(PLACES.map(p => p.id));
+    const unknownNpcs = validateIds(updated.npcIds, npcSet);
+    const unknownParent = (updated.parentId && !placeSet.has(updated.parentId)) ? [updated.parentId] : [];
+
+    let warn = [];
+    if(unknownNpcs.length) warn.push("Unbekannte NPC-IDs:\n- " + unknownNpcs.join("\n- "));
+    if(unknownParent.length) warn.push("Unbekannte Parent-ID:\n- " + unknownParent.join("\n- "));
+    if(warn.length){
+      const ok = confirm("Warnung:\n\n" + warn.join("\n\n") + "\n\nTrotzdem speichern?");
+      if(!ok) return;
+    }
+
+    updated.npcIds = uniq(updated.npcIds || []);
     const idx = PLACES.findIndex(p => p.id === editing.id);
     if(idx === -1){ editInfo.textContent = "Ort nicht gefunden."; return; }
     PLACES[idx] = updated;
@@ -931,12 +967,8 @@ btnSaveEdit.onclick = () => {
 /* =========================
    SYNC LOAD
 ========================= */
-function isValidNpc(obj){
-  return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0;
-}
-function isValidPlace(obj){
-  return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0;
-}
+function isValidNpc(obj){ return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0; }
+function isValidPlace(obj){ return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0; }
 
 async function syncLoad(){
   const btn = document.getElementById("btnSyncLoad");
@@ -949,8 +981,6 @@ async function syncLoad(){
     if(!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
 
-    // 1) Array => NPCs only (backward compat)
-    // 2) {npcs:[...], places:[...]} => world
     let npcsIncoming = [];
     let placesIncoming = [];
 
@@ -973,6 +1003,7 @@ async function syncLoad(){
         name: String(n.name),
         categories: Array.isArray(n.categories) ? n.categories : (n.categories ? [String(n.categories)] : ["Unkategorisiert"]),
         tags: Array.isArray(n.tags) ? n.tags : (n.tags ? [String(n.tags)] : []),
+        placeIds: Array.isArray(n.placeIds) ? n.placeIds.map(String) : [],
         fields: (n.fields && typeof n.fields === "object") ? n.fields : {}
       }));
 
@@ -985,12 +1016,12 @@ async function syncLoad(){
         parentId: p.parentId ? String(p.parentId) : "",
         categories: Array.isArray(p.categories) ? p.categories : (p.categories ? [String(p.categories)] : ["Unkategorisiert"]),
         tags: Array.isArray(p.tags) ? p.tags : (p.tags ? [String(p.tags)] : []),
+        npcIds: Array.isArray(p.npcIds) ? p.npcIds.map(String) : [],
         fields: (p.fields && typeof p.fields === "object") ? p.fields : {}
       }));
 
     saveWorld();
 
-    // UI reset
     state.selectedCategory = null;
     state.selectedEntityId = null;
     state.search = "";
@@ -1015,70 +1046,46 @@ async function syncLoad(){
 /* =========================
    EVENTS
 ========================= */
-elSearch.addEventListener("input", (e) => {
-  state.search = e.target.value.trim();
-  renderEntityList();
-});
+elSearch.addEventListener("input", (e) => { state.search = e.target.value.trim(); renderEntityList(); });
 
-// Import modal (NPCs only)
+// Import modal (NPCs)
 const importBg = document.getElementById("importBg");
 const importText = document.getElementById("importText");
 const importInfo = document.getElementById("importInfo");
-
 function openImport(){ importBg.style.display = "flex"; importInfo.textContent = ""; }
 function closeImport(){ importBg.style.display = "none"; }
-
 document.getElementById("btnImport").onclick = openImport;
 document.getElementById("btnCloseImport").onclick = closeImport;
 importBg.addEventListener("click", (e) => { if(e.target === importBg) closeImport(); });
 
 document.getElementById("btnDoImport").onclick = () => {
   const { parsed, errors } = parseNpcBlocks(importText.value);
-
   if(parsed.length === 0){
-    importInfo.textContent = errors.length
-      ? "Keine NPCs erkannt. Hinweis: " + errors[0]
-      : "Keine NPCs erkannt. Beginnt jeder NPC mit '### 🟢 Name' ?";
+    importInfo.textContent = errors.length ? "Keine NPCs erkannt. Hinweis: " + errors[0] : "Keine NPCs erkannt.";
     return;
   }
 
   const map = new Map(NPCS.map(n => [n.id, n]));
-
   for(const n of parsed){
-    if(map.has(n.id)){
-      map.set(n.id, n);
-      continue;
-    }
+    if(map.has(n.id)){ map.set(n.id, n); continue; }
     const best = findBestFuzzyMatch(n, NPCS);
     if(best && best.score >= 0.88){
       const ok = confirm(
-        `Fuzzy-Match gefunden:\n\n` +
-        `Import:   ${n.name}\n` +
-        `Vorhanden:${best.npc.name}\n\n` +
-        `Ähnlichkeit: ${(best.score*100).toFixed(0)}%\n\n` +
-        `Vorhandenen NPC überschreiben?`
+        `Fuzzy-Match gefunden:\n\nImport:   ${n.name}\nVorhanden:${best.npc.name}\n\nÄhnlichkeit: ${(best.score*100).toFixed(0)}%\n\nÜberschreiben?`
       );
-      if(ok){
-        n.id = best.npc.id;
-        map.set(best.npc.id, n);
-        continue;
-      }
+      if(ok){ n.id = best.npc.id; map.set(best.npc.id, n); continue; }
     }
     map.set(n.id, n);
   }
-
   NPCS = Array.from(map.values());
   saveWorld();
-
-  importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+  importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).`;
   renderAll();
-
   if(isMobile()) setView("cats");
   applyMobileVisibility();
 };
 
 document.getElementById("btnExport").onclick = () => {
-  // Exportiere World JSON (npcs + places)
   const data = JSON.stringify({ npcs: NPCS, places: PLACES }, null, 2);
   const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
