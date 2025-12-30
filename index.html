@@ -7,6 +7,34 @@
 
 <style>
   body { margin:0; background:#0b0c10; color:#e8e8e8; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+
+  /* Mobile Topbar (nur mobil sichtbar) */
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: none;
+    background: #0b0c10;
+    border-bottom: 1px solid #242838;
+    padding: 10px 12px;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar button{
+    width: auto;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .topbar .title{
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
   .app { display:grid; grid-template-columns:280px 340px 1fr; gap:12px; padding:12px; height:100vh; box-sizing:border-box; }
   .panel { background:#14161c; border:1px solid #242838; border-radius:12px; padding:12px; overflow:auto; }
   h1 { font-size:16px; margin:0 0 10px; }
@@ -20,7 +48,9 @@
   button.center { text-align:center; }
   button.danger { border-color:#5a2a2a; }
   button:disabled { opacity:.55; cursor:not-allowed; }
+
   input { width:100%; padding:10px; background:#0f1117; color:#e8e8e8; border:1px solid #2a3042; border-radius:10px; box-sizing:border-box; }
+
   .npc-btn { display:grid; gap:2px; }
   .npc-btn .sub { font-size:12px; opacity:.75; }
   .pillwrap { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
@@ -29,7 +59,7 @@
   .k { font-size:12px; opacity:.7; }
   .v { white-space:pre-wrap; }
 
-  .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; padding:14px; z-index:50; }
+  .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; padding:14px; z-index:200; }
   .modal { background:#14161c; border:1px solid #2a3042; border-radius:12px; width:min(980px,100%); max-height:90vh; display:grid; grid-template-rows:auto 1fr auto; overflow:hidden; }
   .modal header, .modal footer { padding:10px; background:#10131a; }
   .modal footer { border-top:1px solid #2a3042; }
@@ -39,16 +69,40 @@
   .row { display:flex; gap:8px; }
   .row > * { flex:1; }
 
-  @media (max-width:1000px){
-    .app { grid-template-columns:1fr; height:auto; }
-    .kv { grid-template-columns:1fr; }
+  /* ===== MOBILE MODE ===== */
+  @media (max-width: 900px){
+    .topbar{ display:flex; }
+    .app{
+      grid-template-columns: 1fr;
+      height: auto;
+      padding-top: 0;
+    }
+    .panel{
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      border-top: 0;
+      padding-top: 10px;
+    }
+
+    /* Panels werden per JS ein/ausgeblendet */
+    .panel[data-mobile-hidden="true"]{ display:none; }
   }
 </style>
 </head>
 
 <body>
+
+<!-- Mobile Topbar -->
+<div class="topbar" id="topbar">
+  <button id="btnBack">← Zurück</button>
+  <div class="title" id="topbarTitle">Kategorien</div>
+  <button id="btnTopSync" title="Sync laden">🔄</button>
+</div>
+
 <div class="app">
-  <div class="panel">
+  <!-- Kategorien -->
+  <div class="panel" id="panelCats">
     <h1>📚 Kategorien</h1>
     <div class="muted">Klick → NPC-Liste</div>
     <div class="hr"></div>
@@ -65,14 +119,16 @@
     <div class="muted">Alles wird lokal im Browser gespeichert (localStorage).</div>
   </div>
 
-  <div class="panel">
+  <!-- Liste -->
+  <div class="panel" id="panelList">
     <input id="search" placeholder="🔎 Suche nach Name/Tags/Feldern…" />
     <div class="hr"></div>
     <h2 id="listTitle">Kategorie wählen</h2>
     <div class="grid" id="npcList"></div>
   </div>
 
-  <div class="panel">
+  <!-- Detail -->
+  <div class="panel" id="panelDetail">
     <h2 id="detailTitle">NPC auswählen</h2>
     <div class="muted" id="detailSub">—</div>
     <div class="hr"></div>
@@ -80,13 +136,13 @@
   </div>
 </div>
 
+<!-- Import Modal -->
 <div class="modal-bg" id="importBg">
   <div class="modal">
     <header>
       <div style="font-weight:600;">⬇️ Import: NPC-Textblöcke</div>
       <div class="muted" style="margin-top:4px;">
-        Wichtig: NPC-Start wird über Überschrift erkannt (<code>### 🟢 Name</code>) oder optional „nackte“ Emoji-Zeile.
-        Bullets erzeugen keine NPCs.
+        NPC-Start: <code>### 🟢 Name</code> oder optional „nackte“ Emoji-Zeile. Bullets erzeugen keine NPCs.
       </div>
     </header>
     <textarea id="importText" placeholder="Hier reinpasten …"></textarea>
@@ -103,15 +159,13 @@
 <script>
 /* =========================
    CONFIG: Remote JSON
-   Lädt relativ von GitHub Pages:
-   /data/data.json  →  "data/data.json"
 ========================= */
 const REMOTE_DATA_URL = "data/data.json";
 
 /* =========================
    STORAGE
 ========================= */
-const STORAGE_KEY = "npc_app_fuzzy_v3";
+const STORAGE_KEY = "npc_app_mobile_v1";
 let NPCS = loadNpcs();
 
 function loadNpcs(){
@@ -159,9 +213,9 @@ function isNpcStartLine(line){
   const t = normalizeLine(raw);
   if(!t) return false;
   if(isSeparatorLine(t)) return false;
-  if(/^\s*[*\-•]\s+/.test(raw)) return false; // Bullet -> niemals NPC
-  if(/^#{1,6}\s+/.test(t)) return true;       // Header -> NPC
-  if(t.includes(":")) return false;           // Feldzeile -> kein NPC
+  if(/^\s*[*\-•]\s+/.test(raw)) return false;
+  if(/^#{1,6}\s+/.test(t)) return true;
+  if(t.includes(":")) return false;
   const first = t[0];
   const looksEmoji = first && !(/[A-Za-z0-9ÄÖÜäöüß]/.test(first));
   return looksEmoji && t.length >= 3;
@@ -188,7 +242,6 @@ function parseKeyValueLine(line){
   const noBullet = raw.replace(/^[-*•]\s+/, "").trim();
   const m = noBullet.match(/^(.+?):\s*(.*)$/);
   if(!m) return null;
-
   let key = stripMarkdownBold(m[1].trim()).replace(/\*\*/g, "").trim();
   let value = String(m[2] ?? "").trim().replace(/\*\*/g, "").trim();
   return { key, value };
@@ -214,10 +267,8 @@ function levenshtein(a, b){
   const m = a.length, n = b.length;
   if(m === 0) return n;
   if(n === 0) return m;
-
   const dp = new Array(n + 1);
   for(let j=0; j<=n; j++) dp[j] = j;
-
   for(let i=1; i<=m; i++){
     let prev = dp[0];
     dp[0] = i;
@@ -253,7 +304,6 @@ function findBestFuzzyMatch(importedNpc, existingNpcs){
 function parseNpcBlocks(rawText){
   const text = String(rawText || "").replace(/\r\n/g, "\n");
   const lines = text.split("\n");
-
   const blocks = [];
   let current = [];
 
@@ -265,16 +315,13 @@ function parseNpcBlocks(rawText){
 
   for(const line of lines){
     const t = normalizeLine(line);
-
     if(isSeparatorLine(t)){
       pushCurrent();
       continue;
     }
-
     if(isNpcStartLine(line) && current.join("\n").trim().length > 0){
       pushCurrent();
     }
-
     current.push(line);
   }
   pushCurrent();
@@ -294,13 +341,7 @@ function parseNpcBlocks(rawText){
     }
 
     const name = extractNameFromLine(nameLine);
-    const npc = {
-      id: slugifyNameToId(name),
-      name,
-      categories: [],
-      tags: [],
-      fields: {}
-    };
+    const npc = { id: slugifyNameToId(name), name, categories: [], tags: [], fields: {} };
 
     let currentSection = null;
     let lastKey = null;
@@ -325,7 +366,6 @@ function parseNpcBlocks(rawText){
           currentSection = null; lastKey = null;
           continue;
         }
-
         if(kv.value === ""){
           currentSection = kv.key;
           if(!(kv.key in npc.fields)) npc.fields[kv.key] = "";
@@ -364,10 +404,83 @@ function parseNpcBlocks(rawText){
 }
 
 /* =========================
-   UI STATE + RENDER
+   MOBILE VIEW STATE
 ========================= */
-const state = { selectedCategory: null, selectedNpcId: null, search: "" };
+function isMobile(){
+  return window.matchMedia && window.matchMedia("(max-width: 900px)").matches;
+}
 
+const panels = {
+  cats: document.getElementById("panelCats"),
+  list: document.getElementById("panelList"),
+  detail: document.getElementById("panelDetail")
+};
+
+const topbar = document.getElementById("topbar");
+const topbarTitle = document.getElementById("topbarTitle");
+const btnBack = document.getElementById("btnBack");
+const btnTopSync = document.getElementById("btnTopSync");
+
+const state = {
+  selectedCategory: null,
+  selectedNpcId: null,
+  search: "",
+  view: "cats" // "cats" | "list" | "detail"
+};
+
+function setView(v){
+  state.view = v;
+  applyMobileVisibility();
+}
+
+function applyMobileVisibility(){
+  if(!isMobile()){
+    // Desktop: alle sichtbar
+    panels.cats.dataset.mobileHidden = "false";
+    panels.list.dataset.mobileHidden = "false";
+    panels.detail.dataset.mobileHidden = "false";
+    // Topbar wird per CSS ausgeblendet, aber falls viewport wechselt:
+    return;
+  }
+
+  panels.cats.dataset.mobileHidden = (state.view !== "cats") ? "true" : "false";
+  panels.list.dataset.mobileHidden = (state.view !== "list") ? "true" : "false";
+  panels.detail.dataset.mobileHidden = (state.view !== "detail") ? "true" : "false";
+
+  // Topbar Titel + Back
+  let title = "Kategorien";
+  let backEnabled = false;
+
+  if(state.view === "list"){
+    title = state.selectedCategory || "Liste";
+    backEnabled = true;
+  } else if(state.view === "detail"){
+    const npc = NPCS.find(n => n.id === state.selectedNpcId);
+    title = npc ? npc.name : "Detail";
+    backEnabled = true;
+  }
+
+  topbarTitle.textContent = title;
+  btnBack.disabled = !backEnabled;
+}
+
+btnBack.onclick = () => {
+  if(state.view === "detail") setView("list");
+  else if(state.view === "list") setView("cats");
+  else setView("cats");
+};
+btnTopSync.onclick = () => syncLoad();
+
+/* Reagiere auf Resize / Rotation */
+window.addEventListener("resize", () => {
+  // Wenn wir auf Desktop wechseln, zeigen wir alles.
+  // Wenn wir auf Mobile wechseln, bleiben wir in state.view.
+  applyMobileVisibility();
+});
+
+/* =========================
+   UI RENDER
+========================= */
 const elCatButtons = document.getElementById("catButtons");
 const elNpcList = document.getElementById("npcList");
 const elListTitle = document.getElementById("listTitle");
@@ -400,6 +513,7 @@ function getVisibleNpcs(){
   list.sort((a,b) => (a.name || "").localeCompare(b.name || "", 'de'));
   return list;
 }
+
 function renderCategories(){
   const cats = collectCategories(NPCS);
   elCatButtons.innerHTML = "";
@@ -413,10 +527,15 @@ function renderCategories(){
       renderCategories();
       renderNpcList();
       renderDetail(null);
+
+      // Mobile: nach Kategorie direkt in Liste
+      if(isMobile()) setView("list");
+      applyMobileVisibility();
     };
     elCatButtons.appendChild(btn);
   });
 }
+
 function renderNpcList(){
   elNpcList.innerHTML = "";
   if(!state.selectedCategory){
@@ -442,10 +561,15 @@ function renderNpcList(){
       state.selectedNpcId = npc.id;
       renderNpcList();
       renderDetail(npc);
+
+      // Mobile: in Detail wechseln
+      if(isMobile()) setView("detail");
+      applyMobileVisibility();
     };
     elNpcList.appendChild(btn);
   });
 }
+
 function renderDetail(npc){
   if(!npc){
     elDetailTitle.textContent = "NPC auswählen";
@@ -472,7 +596,7 @@ function renderDetail(npc){
 }
 
 /* =========================
-   SYNC LOAD (GitHub Pages /data/data.json)
+   SYNC LOAD
 ========================= */
 function isValidNpc(obj){
   return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0;
@@ -481,27 +605,18 @@ function isValidNpc(obj){
 async function syncLoad(){
   const btn = document.getElementById("btnSyncLoad");
   btn.disabled = true;
+  btnTopSync.disabled = true;
   elSyncStatus.textContent = "Sync: lade…";
-
   try{
     const res = await fetch(REMOTE_DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
     if(!res.ok) throw new Error("HTTP " + res.status);
-
     const data = await res.json();
 
-    // Unterstütze zwei Formate:
-    // 1) Array von NPCs (heute)
-    // 2) Objekt mit { npcs: [...] } (später möglich)
     let incoming = null;
-    if(Array.isArray(data)){
-      incoming = data;
-    } else if(data && typeof data === "object" && Array.isArray(data.npcs)){
-      incoming = data.npcs;
-    } else {
-      throw new Error("Unerwartetes JSON-Format (erwarte Array oder {npcs:[...]})");
-    }
+    if(Array.isArray(data)) incoming = data;
+    else if(data && typeof data === "object" && Array.isArray(data.npcs)) incoming = data.npcs;
+    else throw new Error("Unerwartetes JSON-Format (erwarte Array oder {npcs:[...]})");
 
-    // Minimal filtern + IDs notfalls erzeugen
     const cleaned = incoming
       .filter(isValidNpc)
       .map(n => ({
@@ -520,10 +635,12 @@ async function syncLoad(){
     state.selectedNpcId = null;
     state.search = "";
     elSearch.value = "";
+    state.view = "cats";
 
     renderCategories();
     renderNpcList();
     renderDetail(null);
+    applyMobileVisibility();
 
     const now = new Date();
     const hh = String(now.getHours()).padStart(2,"0");
@@ -533,6 +650,7 @@ async function syncLoad(){
     elSyncStatus.textContent = "Sync: Fehler – " + (err?.message || String(err));
   }finally{
     btn.disabled = false;
+    btnTopSync.disabled = false;
   }
 }
 
@@ -600,6 +718,10 @@ document.getElementById("btnDoImport").onclick = () => {
   renderCategories();
   renderNpcList();
   renderDetail(null);
+
+  // Mobil: nach Import zurück zu Kategorien (und topbar aktualisieren)
+  if(isMobile()) setView("cats");
+  applyMobileVisibility();
 };
 
 document.getElementById("btnExport").onclick = () => {
@@ -624,9 +746,11 @@ document.getElementById("btnReset").onclick = () => {
   state.selectedNpcId = null;
   state.search = "";
   elSearch.value = "";
+  state.view = "cats";
   renderCategories();
   renderNpcList();
   renderDetail(null);
+  applyMobileVisibility();
 };
 
 document.getElementById("btnSyncLoad").onclick = syncLoad;
@@ -635,6 +759,7 @@ document.getElementById("btnSyncLoad").onclick = syncLoad;
 renderCategories();
 renderNpcList();
 renderDetail(null);
+applyMobileVisibility();
 </script>
 </body>
 </html>
