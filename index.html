@@ -77,6 +77,11 @@
   .row { display:flex; gap:8px; }
   .row > * { flex:1; }
 
+  .smallseg { display:flex; gap:8px; margin-top:8px; }
+  .smallseg button{ flex:1; text-align:center; padding:8px; }
+
+  code { background:#0f1117; border:1px solid #2a3042; padding:0 6px; border-radius:8px; }
+
   @media (max-width: 900px){
     .topbar{ display:flex; }
     .app{ grid-template-columns: 1fr; height:auto; padding-top:0; }
@@ -145,19 +150,28 @@
   </div>
 </div>
 
-<!-- Import Modal (NPC blocks only) -->
+<!-- Import Modal -->
 <div class="modal-bg" id="importBg">
   <div class="modal">
     <header>
-      <div style="font-weight:600;">⬇️ Import: NPC-Textblöcke</div>
-      <div class="muted" style="margin-top:4px;">
-        Orte pflegst du im Moment am besten via World JSON (Export → data/data.json).
+      <div style="font-weight:600;" id="importHeaderTitle">⬇️ Import</div>
+      <div class="muted" style="margin-top:4px;" id="importHeaderHint">
+        NPCs: Textblöcke wie bisher. Orte: braucht <code>**ID:**</code> (strict).
       </div>
+
+      <div class="smallseg">
+        <button id="btnImportModeNpcs" class="active">🧑 NPCs</button>
+        <button id="btnImportModePlaces">📍 Orte</button>
+      </div>
+
+      <div class="muted" style="margin-top:8px;" id="importFormatHelp"></div>
     </header>
+
     <textarea id="importText" placeholder="Hier reinpasten …"></textarea>
+
     <footer>
       <div class="row">
-        <button id="btnDoImport" class="center">✅ Importieren (NPCs)</button>
+        <button id="btnDoImport" class="center">✅ Importieren</button>
         <button id="btnCloseImport" class="center">✖ Schließen</button>
       </div>
       <div class="muted" id="importInfo" style="margin-top:8px;"></div>
@@ -280,6 +294,10 @@ function parseKeyValueLine(line){
 function uniq(arr){
   return Array.from(new Set((arr || []).filter(Boolean)));
 }
+function validateIds(list, existingSet){
+  const unknown = (list || []).filter(id => id && !existingSet.has(id));
+  return uniq(unknown);
+}
 
 /* =========================
    FUZZY MATCH (NPC import)
@@ -333,9 +351,9 @@ function findBestFuzzyMatch(importedNpc, existingNpcs){
 }
 
 /* =========================
-   IMPORT PARSER (NPCs only)
+   IMPORT PARSER: NPCs
 ========================= */
-function parseNpcBlocks(rawText){
+function splitBlocks(rawText){
   const text = String(rawText || "").replace(/\r\n/g, "\n");
   const lines = text.split("\n");
   const blocks = [];
@@ -350,11 +368,18 @@ function parseNpcBlocks(rawText){
   for(const line of lines){
     const t = normalizeLine(line);
     if(isSeparatorLine(t)){ pushCurrent(); continue; }
-    if(isNpcStartLine(line) && current.join("\n").trim().length > 0){ pushCurrent(); }
+    // new block: header line (### …) and not empty
+    if(/^#{1,6}\s+/.test(t) && current.join("\n").trim().length > 0){
+      pushCurrent();
+    }
     current.push(line);
   }
   pushCurrent();
+  return blocks;
+}
 
+function parseNpcBlocks(rawText){
+  const blocks = splitBlocks(rawText);
   const parsed = [];
   const errors = [];
 
@@ -365,7 +390,7 @@ function parseNpcBlocks(rawText){
 
     const nameLine = nonEmpty[0];
     if(!isNpcStartLine(nameLine)){
-      errors.push(`Block ${idx+1}: Keine gültige Überschrift gefunden. Erste Zeile: "${nameLine}"`);
+      errors.push(`NPC Block ${idx+1}: Keine gültige Überschrift gefunden. Erste Zeile: "${nameLine}"`);
       return;
     }
 
@@ -385,18 +410,9 @@ function parseNpcBlocks(rawText){
       if(kv){
         const keyLower = kv.key.toLowerCase();
 
-        if(keyLower === "kategorie" || keyLower === "kategorien"){
-          npc.categories = parseCommaList(kv.value);
-          currentSection = null; lastKey = null; continue;
-        }
-        if(keyLower === "tag" || keyLower === "tags"){
-          npc.tags = parseCommaList(kv.value);
-          currentSection = null; lastKey = null; continue;
-        }
-        if(keyLower === "orte" || keyLower === "ort" || keyLower === "place" || keyLower === "places"){
-          npc.placeIds = parseCommaList(kv.value);
-          currentSection = null; lastKey = null; continue;
-        }
+        if(keyLower === "kategorie" || keyLower === "kategorien"){ npc.categories = parseCommaList(kv.value); currentSection=null; lastKey=null; continue; }
+        if(keyLower === "tag" || keyLower === "tags"){ npc.tags = parseCommaList(kv.value); currentSection=null; lastKey=null; continue; }
+        if(keyLower === "orte" || keyLower === "ort" || keyLower === "place" || keyLower === "places"){ npc.placeIds = parseCommaList(kv.value); currentSection=null; lastKey=null; continue; }
 
         if(kv.value === ""){
           currentSection = kv.key;
@@ -435,8 +451,123 @@ function parseNpcBlocks(rawText){
 }
 
 /* =========================
+   IMPORT PARSER: PLACES (NEU)
+   Erwartet pro Block:
+   ### Name
+   **ID:** place-id   (empfohlen/erwartet)
+   **Typ:** ...
+   **Parent:** parent-id
+   **Kategorien:** ...
+   **Tags:** ...
+   **NPCs:** npc-id1, npc-id2
+   **Feld:** Wert (mehrzeilig ok)
+========================= */
+function parsePlaceBlocks(rawText){
+  const blocks = splitBlocks(rawText);
+  const parsed = [];
+  const errors = [];
+  const warnings = [];
+
+  blocks.forEach((block, idx) => {
+    const raw = block.split("\n");
+    const nonEmpty = raw.map(normalizeLine).filter(Boolean);
+    if(nonEmpty.length === 0) return;
+
+    const header = nonEmpty[0];
+    if(!/^#{1,6}\s+/.test(header)){
+      errors.push(`Ort Block ${idx+1}: Keine Überschrift gefunden (erwarte "### Name"). Erste Zeile: "${header}"`);
+      return;
+    }
+
+    const name = extractNameFromLine(header);
+    const place = {
+      id: "",
+      name,
+      type: "",
+      parentId: "",
+      categories: [],
+      tags: [],
+      npcIds: [],
+      fields: {}
+    };
+
+    let lastKey = null;
+
+    for(let i=1; i<raw.length; i++){
+      const line = normalizeLine(raw[i]);
+      if(!line) continue;
+      if(isSeparatorLine(line)) continue;
+
+      const kv = parseKeyValueLine(line);
+      if(kv){
+        const kLower = kv.key.toLowerCase();
+
+        if(kLower === "id"){
+          place.id = kv.value.trim();
+          lastKey = null; continue;
+        }
+        if(kLower === "typ"){
+          place.type = kv.value.trim();
+          lastKey = null; continue;
+        }
+        if(kLower === "parent"){
+          place.parentId = kv.value.trim();
+          lastKey = null; continue;
+        }
+        if(kLower === "kategorien" || kLower === "kategorie"){
+          place.categories = parseCommaList(kv.value);
+          lastKey = null; continue;
+        }
+        if(kLower === "tags" || kLower === "tag"){
+          place.tags = parseCommaList(kv.value);
+          lastKey = null; continue;
+        }
+        if(kLower === "npcs" || kLower === "npc"){
+          place.npcIds = parseCommaList(kv.value);
+          lastKey = null; continue;
+        }
+
+        place.fields[kv.key] = kv.value;
+        lastKey = kv.key;
+        continue;
+      }
+
+      if(lastKey){
+        place.fields[lastKey] = (place.fields[lastKey] ? place.fields[lastKey] + "\n" : "") + line;
+      }
+    }
+
+    if(!place.id){
+      // strict IDs: wir erzeugen eine, aber warnen
+      place.id = slugifyNameToId(place.name);
+      warnings.push(`Ort Block ${idx+1}: Keine **ID:** gefunden → ID automatisch gesetzt: ${place.id}`);
+    }
+
+    if(!place.categories || place.categories.length === 0) place.categories = ["Unkategorisiert"];
+    place.npcIds = uniq(place.npcIds);
+
+    parsed.push(place);
+  });
+
+  return { parsed, errors, warnings };
+}
+
+/* =========================
    Textblocks (Edit)
 ========================= */
+function addFieldLines(lines, key, value){
+  const val = String(value ?? "");
+  const parts = val.split("\n");
+  lines.push(`**${key}:** ${parts[0] ?? ""}`.trimEnd());
+  for(let i=1; i<parts.length; i++) lines.push(parts[i]);
+}
+function addBulletFieldLines(lines, key, value){
+  const val = String(value ?? "");
+  const parts = val.split("\n");
+  lines.push(`* **${key}:** ${parts[0] ?? ""}`.trimEnd());
+  for(let i=1; i<parts.length; i++) lines.push(parts[i]);
+}
+
 function npcToTextBlock(npc){
   const lines = [];
   lines.push(`### ${npc.name}`);
@@ -484,6 +615,7 @@ function npcToTextBlock(npc){
 function placeToTextBlock(place){
   const lines = [];
   lines.push(`### ${place.name}`);
+  lines.push(`**ID:** ${place.id}`);
   if(place.type) lines.push(`**Typ:** ${place.type}`);
   if(place.parentId) lines.push(`**Parent:** ${place.parentId}`);
   if(place.categories?.length) lines.push(`**Kategorien:** ${place.categories.join(", ")}`);
@@ -499,19 +631,6 @@ function placeToTextBlock(place){
 
   while(lines.length && lines[lines.length-1].trim()==="") lines.pop();
   return lines.join("\n");
-}
-
-function addFieldLines(lines, key, value){
-  const val = String(value ?? "");
-  const parts = val.split("\n");
-  lines.push(`**${key}:** ${parts[0] ?? ""}`.trimEnd());
-  for(let i=1; i<parts.length; i++) lines.push(parts[i]);
-}
-function addBulletFieldLines(lines, key, value){
-  const val = String(value ?? "");
-  const parts = val.split("\n");
-  lines.push(`* **${key}:** ${parts[0] ?? ""}`.trimEnd());
-  for(let i=1; i<parts.length; i++) lines.push(parts[i]);
 }
 
 /* =========================
@@ -641,15 +760,9 @@ function getVisibleEntities(){
 function openNpcById(npcId){
   setMode("npcs");
   const npc = NPCS.find(n => n.id === npcId);
-  if(!npc){
-    alert(`NPC-ID nicht gefunden: ${npcId}`);
-    return;
-  }
+  if(!npc){ alert(`NPC-ID nicht gefunden: ${npcId}`); return; }
   state.selectedEntityId = npcId;
-
-  // Kategorie sinnvoll setzen: erste Kategorie des NPCs, falls vorhanden
   state.selectedCategory = (npc.categories && npc.categories.length) ? npc.categories[0] : "Unkategorisiert";
-
   renderAll();
   if(isMobile()) setView("detail");
   applyMobileVisibility();
@@ -657,17 +770,13 @@ function openNpcById(npcId){
 function openPlaceById(placeId){
   setMode("places");
   const p = PLACES.find(x => x.id === placeId);
-  if(!p){
-    alert(`Ort-ID nicht gefunden: ${placeId}`);
-    return;
-  }
+  if(!p){ alert(`Ort-ID nicht gefunden: ${placeId}`); return; }
   state.selectedEntityId = placeId;
   state.selectedCategory = (p.categories && p.categories.length) ? p.categories[0] : "Unkategorisiert";
   renderAll();
   if(isMobile()) setView("detail");
   applyMobileVisibility();
 }
-// expose for inline onclick
 window.__openNpc = openNpcById;
 window.__openPlace = openPlaceById;
 
@@ -759,7 +868,6 @@ function renderDetail(ent){
 
   const entries = Object.entries(ent.fields || {});
 
-  // Link sections
   let linksHtml = "";
   if(state.mode === "npcs"){
     const placeIds = uniq(ent.placeIds || []);
@@ -866,11 +974,6 @@ btnEditEntity.onclick = () => openEdit(getSelectedEntity());
 btnCancelEdit.onclick = closeEdit;
 editBg.addEventListener("click", (e) => { if(e.target === editBg) closeEdit(); });
 
-function validateIds(list, existingSet){
-  const unknown = (list || []).filter(id => id && !existingSet.has(id));
-  return uniq(unknown);
-}
-
 btnSaveEdit.onclick = () => {
   if(!editing){ editInfo.textContent = "Nichts zum Speichern."; return; }
 
@@ -886,7 +989,6 @@ btnSaveEdit.onclick = () => {
     const idx = NPCS.findIndex(n => n.id === editing.id);
     if(idx === -1){ editInfo.textContent = "NPC nicht gefunden."; return; }
 
-    // Warnung bei unbekannten Orten
     const placeSet = new Set(PLACES.map(p => p.id));
     const unknownPlaces = validateIds(updated.placeIds, placeSet);
     if(unknownPlaces.length){
@@ -897,54 +999,26 @@ btnSaveEdit.onclick = () => {
     updated.placeIds = uniq(updated.placeIds || []);
     NPCS[idx] = updated;
   } else {
-    // Place parse
-    const lines = editText.value.replace(/\r\n/g,"\n").split("\n");
-    const nonEmpty = lines.map(normalizeLine).filter(Boolean);
-    if(!nonEmpty.length || !nonEmpty[0].startsWith("###")){
-      editInfo.textContent = "Ort muss mit '### Name' beginnen.";
+    // Place: wir nutzen denselben Parser wie beim Import, aber verlangen genau 1 Block
+    const { parsed, errors, warnings } = parsePlaceBlocks(editText.value);
+    if(parsed.length !== 1){
+      editInfo.textContent = parsed.length === 0 ? (errors[0] || "Kein Ort erkannt.") : "Bitte genau 1 Ort im Editor lassen.";
       return;
     }
-    const name = extractNameFromLine(nonEmpty[0]);
-    const old = PLACES.find(p => p.id === editing.id);
-    if(!old){ editInfo.textContent = "Ort nicht gefunden."; return; }
 
-    const updated = {
-      id: editing.id,
-      name,
-      type: old.type || "",
-      parentId: old.parentId || "",
-      categories: Array.isArray(old.categories)? old.categories : [],
-      tags: Array.isArray(old.tags)? old.tags : [],
-      npcIds: Array.isArray(old.npcIds)? old.npcIds : [],
-      fields: {}
-    };
+    const updated = parsed[0];
+    updated.id = editing.id; // ID bleibt stabil beim Edit
 
-    let lastKey = null;
-    for(let i=1;i<lines.length;i++){
-      const line = normalizeLine(lines[i]);
-      if(!line) continue;
-      const kv = parseKeyValueLine(line);
-      if(kv){
-        const kLower = kv.key.toLowerCase();
-        if(kLower === "typ"){ updated.type = kv.value; lastKey=null; continue; }
-        if(kLower === "parent"){ updated.parentId = kv.value.trim(); lastKey=null; continue; }
-        if(kLower === "kategorien" || kLower === "kategorie"){ updated.categories = parseCommaList(kv.value); lastKey=null; continue; }
-        if(kLower === "tags" || kLower === "tag"){ updated.tags = parseCommaList(kv.value); lastKey=null; continue; }
-        if(kLower === "npcs" || kLower === "npc"){ updated.npcIds = parseCommaList(kv.value); lastKey=null; continue; }
-        updated.fields[kv.key] = kv.value;
-        lastKey = kv.key;
-        continue;
-      }
-      if(lastKey) updated.fields[lastKey] = (updated.fields[lastKey] ? updated.fields[lastKey] + "\n" : "") + line;
-    }
+    const idx = PLACES.findIndex(p => p.id === editing.id);
+    if(idx === -1){ editInfo.textContent = "Ort nicht gefunden."; return; }
 
-    // Warnung bei unbekannten NPC IDs / Parent IDs
     const npcSet = new Set(NPCS.map(n => n.id));
     const placeSet = new Set(PLACES.map(p => p.id));
     const unknownNpcs = validateIds(updated.npcIds, npcSet);
     const unknownParent = (updated.parentId && !placeSet.has(updated.parentId)) ? [updated.parentId] : [];
 
     let warn = [];
+    if(warnings.length) warn.push(warnings.join("\n"));
     if(unknownNpcs.length) warn.push("Unbekannte NPC-IDs:\n- " + unknownNpcs.join("\n- "));
     if(unknownParent.length) warn.push("Unbekannte Parent-ID:\n- " + unknownParent.join("\n- "));
     if(warn.length){
@@ -953,8 +1027,6 @@ btnSaveEdit.onclick = () => {
     }
 
     updated.npcIds = uniq(updated.npcIds || []);
-    const idx = PLACES.findIndex(p => p.id === editing.id);
-    if(idx === -1){ editInfo.textContent = "Ort nicht gefunden."; return; }
     PLACES[idx] = updated;
   }
 
@@ -1048,43 +1120,130 @@ async function syncLoad(){
 ========================= */
 elSearch.addEventListener("input", (e) => { state.search = e.target.value.trim(); renderEntityList(); });
 
-// Import modal (NPCs)
+/* ---------- Import Modal Logic ---------- */
 const importBg = document.getElementById("importBg");
 const importText = document.getElementById("importText");
 const importInfo = document.getElementById("importInfo");
-function openImport(){ importBg.style.display = "flex"; importInfo.textContent = ""; }
+const btnDoImport = document.getElementById("btnDoImport");
+const btnImportModeNpcs = document.getElementById("btnImportModeNpcs");
+const btnImportModePlaces = document.getElementById("btnImportModePlaces");
+const importHeaderTitle = document.getElementById("importHeaderTitle");
+const importFormatHelp = document.getElementById("importFormatHelp");
+
+let importMode = "npcs"; // "npcs" | "places"
+
+function setImportMode(mode){
+  importMode = mode;
+  btnImportModeNpcs.classList.toggle("active", mode === "npcs");
+  btnImportModePlaces.classList.toggle("active", mode === "places");
+
+  if(mode === "npcs"){
+    importHeaderTitle.textContent = "⬇️ Import: NPC-Textblöcke";
+    importFormatHelp.innerHTML =
+      `Start je NPC mit <code>### 🟢 Name</code> (oder ähnlichem), dann <code>**Feld:** Wert</code>.<br>` +
+      `Optional: <code>**Kategorien:** ...</code> · <code>**Tags:** ...</code> · <code>**Orte:** id1, id2</code><br>` +
+      `Trennen mit <code>---</code>.`;
+    btnDoImport.textContent = "✅ Importieren (NPCs)";
+  } else {
+    importHeaderTitle.textContent = "⬇️ Import: Orte (strict IDs)";
+    importFormatHelp.innerHTML =
+      `Start je Ort mit <code>### Name</code> und zwingend <code>**ID:** place-id</code>.<br>` +
+      `Optional: <code>**Typ:**</code> · <code>**Parent:** parent-id</code> · <code>**Kategorien:**</code> · <code>**Tags:**</code> · <code>**NPCs:** npc-id1, npc-id2</code><br>` +
+      `Dann weitere Felder als <code>**Feld:** Wert</code>. Trennen mit <code>---</code>.`;
+    btnDoImport.textContent = "✅ Importieren (Orte)";
+  }
+}
+
+function openImport(){
+  importInfo.textContent = "";
+  importText.value = "";
+  importBg.style.display = "flex";
+  // Default: am praktischsten nach aktuellem Modus
+  setImportMode(state.mode === "places" ? "places" : "npcs");
+}
 function closeImport(){ importBg.style.display = "none"; }
+
 document.getElementById("btnImport").onclick = openImport;
 document.getElementById("btnCloseImport").onclick = closeImport;
 importBg.addEventListener("click", (e) => { if(e.target === importBg) closeImport(); });
 
-document.getElementById("btnDoImport").onclick = () => {
-  const { parsed, errors } = parseNpcBlocks(importText.value);
-  if(parsed.length === 0){
-    importInfo.textContent = errors.length ? "Keine NPCs erkannt. Hinweis: " + errors[0] : "Keine NPCs erkannt.";
-    return;
+btnImportModeNpcs.onclick = () => setImportMode("npcs");
+btnImportModePlaces.onclick = () => setImportMode("places");
+
+btnDoImport.onclick = () => {
+  if(importMode === "npcs"){
+    const { parsed, errors } = parseNpcBlocks(importText.value);
+    if(parsed.length === 0){
+      importInfo.textContent = errors.length ? "Keine NPCs erkannt. Hinweis: " + errors[0] : "Keine NPCs erkannt.";
+      return;
+    }
+
+    const map = new Map(NPCS.map(n => [n.id, n]));
+    for(const n of parsed){
+      if(map.has(n.id)){ map.set(n.id, n); continue; }
+      const best = findBestFuzzyMatch(n, NPCS);
+      if(best && best.score >= 0.88){
+        const ok = confirm(
+          `Fuzzy-Match gefunden:\n\nImport:   ${n.name}\nVorhanden:${best.npc.name}\n\nÄhnlichkeit: ${(best.score*100).toFixed(0)}%\n\nÜberschreiben?`
+        );
+        if(ok){ n.id = best.npc.id; map.set(best.npc.id, n); continue; }
+      }
+      map.set(n.id, n);
+    }
+
+    // Warnung: unbekannte Orte in placeIds
+    const placeSet = new Set(PLACES.map(p => p.id));
+    const unknownAll = uniq(parsed.flatMap(n => validateIds(n.placeIds || [], placeSet)));
+    if(unknownAll.length){
+      const ok = confirm(`Warnung: Im Import sind unbekannte Ort-IDs referenziert:\n- ${unknownAll.join("\n- ")}\n\nTrotzdem importieren?`);
+      if(!ok) return;
+    }
+
+    NPCS = Array.from(map.values());
+    saveWorld();
+    importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+  } else {
+    const { parsed, errors, warnings } = parsePlaceBlocks(importText.value);
+    if(parsed.length === 0){
+      importInfo.textContent = errors.length ? "Keine Orte erkannt. Hinweis: " + errors[0] : "Keine Orte erkannt.";
+      return;
+    }
+
+    // Validate strict IDs references
+    const npcSet = new Set(NPCS.map(n => n.id));
+    const placeSetExisting = new Set(PLACES.map(p => p.id));
+    const unknownNpcs = uniq(parsed.flatMap(p => validateIds(p.npcIds || [], npcSet)));
+    const unknownParents = uniq(parsed
+      .map(p => p.parentId)
+      .filter(pid => pid && !placeSetExisting.has(pid) && !parsed.some(pp => pp.id === pid)));
+
+    // unknownParents: Parent nicht in bestehenden Places und nicht innerhalb des Imports
+
+    let warnParts = [];
+    if(warnings.length) warnParts.push(warnings.join("\n"));
+    if(unknownNpcs.length) warnParts.push("Unbekannte NPC-IDs:\n- " + unknownNpcs.join("\n- "));
+    if(unknownParents.length) warnParts.push("Unbekannte Parent-IDs:\n- " + unknownParents.join("\n- "));
+
+    if(warnParts.length){
+      const ok = confirm("Warnung:\n\n" + warnParts.join("\n\n") + "\n\nTrotzdem importieren?");
+      if(!ok) return;
+    }
+
+    const map = new Map(PLACES.map(p => [p.id, p]));
+    for(const p of parsed){
+      map.set(p.id, p); // strict overwrite by id
+    }
+    PLACES = Array.from(map.values());
+    saveWorld();
+    importInfo.textContent = `✅ Importiert: ${parsed.length} Ort(e).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
   }
 
-  const map = new Map(NPCS.map(n => [n.id, n]));
-  for(const n of parsed){
-    if(map.has(n.id)){ map.set(n.id, n); continue; }
-    const best = findBestFuzzyMatch(n, NPCS);
-    if(best && best.score >= 0.88){
-      const ok = confirm(
-        `Fuzzy-Match gefunden:\n\nImport:   ${n.name}\nVorhanden:${best.npc.name}\n\nÄhnlichkeit: ${(best.score*100).toFixed(0)}%\n\nÜberschreiben?`
-      );
-      if(ok){ n.id = best.npc.id; map.set(best.npc.id, n); continue; }
-    }
-    map.set(n.id, n);
-  }
-  NPCS = Array.from(map.values());
-  saveWorld();
-  importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).`;
   renderAll();
   if(isMobile()) setView("cats");
   applyMobileVisibility();
 };
 
+/* ---------- Export / Reset / Sync ---------- */
 document.getElementById("btnExport").onclick = () => {
   const data = JSON.stringify({ npcs: NPCS, places: PLACES }, null, 2);
   const blob = new Blob([data], { type: "application/json" });
