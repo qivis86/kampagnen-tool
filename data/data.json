@@ -1,4 +1,5 @@
-[
+{
+  "npcs": [
   {
     "id": "toblen-stonehill",
     "name": "🟢 Toblen Stonehill",
@@ -173,4 +174,61 @@
       "Notizen für den SL": "Bewusster Gegenpol zu Halia Thornton: transparent, gemeinschaftsorientiert, sicherheitsfokussiert statt nutzenorientiert"
     }
   }
-]
+],
+"places": [
+    {
+      "id": "phandalin",
+      "name": "Phandalin",
+      "type": "Siedlung",
+      "parentId": "",
+      "categories": ["Phandalin"],
+      "tags": ["Startort", "Frontier"],
+      "fields": {
+        "Kurzbeschreibung": "Ein raues, aber hoffnungsvolles Minendorf an der Triboar Trail. Die Leute sind vorsichtig, aber nicht herzlos.",
+        "Stimmung": "Pragmatisch, angespannt, trotzdem ein Funken Aufbruch.",
+        "Wichtige Themen": "Drache in der Region, Gerüchte über Kultisten, Schutz der Handelsroute.",
+        "SL-Notizen": "Guter Ort für Gerüchte. Zeig die Auswirkungen von Angst (Drache) vs. Gemeinschaft."
+      }
+    },
+    {
+      "id": "stonehill-inn",
+      "name": "Stonehill Inn",
+      "type": "Gasthof",
+      "parentId": "phandalin",
+      "categories": ["Phandalin", "Gasthof"],
+      "tags": ["Gerüchte", "Sicherer Hafen"],
+      "fields": {
+        "Kurzbeschreibung": "Der zentrale Treffpunkt in Phandalin. Warmes Essen, laute Stimmen, müde Reisende.",
+        "Typische Szenen": "Gerüchte am Kamin, Stammgäste mit Meinungen, ein kleines Drama am Nebentisch.",
+        "Angebot": "Essen, Zimmer, Stallplatz (je nach Laune/Verfügbarkeit).",
+        "SL-Notizen": "Perfekt für Quest-Aufhänger und NSC-Begegnungen; ein Ort für 'Alltag'."
+      }
+    },
+    {
+      "id": "barthens-provisions",
+      "name": "Barthen’s Provisions",
+      "type": "Laden",
+      "parentId": "phandalin",
+      "categories": ["Phandalin", "Shop"],
+      "tags": ["Ausrüstung", "Versorgung"],
+      "fields": {
+        "Kurzbeschreibung": "Ein gut sortierter Gemischtwarenladen. Nicht billig, aber verlässlich.",
+        "Typische Ware": "Reisebedarf, Seile, Fackeln, Rationen, einfache Werkzeuge.",
+        "SL-Notizen": "Wenn du Knappheit zeigen willst: Lieferprobleme, ausverkaufte Basics, Preisanstieg."
+      }
+    },
+    {
+      "id": "lionshield-coster",
+      "name": "Lionshield Coster",
+      "type": "Handelsposten",
+      "parentId": "phandalin",
+      "categories": ["Phandalin", "Shop", "Lionshield"],
+      "tags": ["Ausrüstung", "Sicherheit"],
+      "fields": {
+        "Kurzbeschreibung": "Ein robuster Handelsposten für Waffen und Rüstungen. Alles wirkt 'geschäftlich' und auf Sicherheit bedacht.",
+        "Typische Ware": "Rüstungen, Schilde, Waffen, Pfeile/Armbrustbolzen (je nach Kampagne).",
+        "SL-Notizen": "Guter Anker für Sicherheitslage: 'Was fehlt? Was kommt nicht mehr an? Wer bedroht die Route?'"
+      }
+    }
+  ]
+}
