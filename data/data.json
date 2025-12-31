@@ -3,9 +3,14 @@
     {
       "id": "toblen-stonehill",
       "name": "🟢 Toblen Stonehill",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["stonehill-inn", "phandalin"],
+      "placeIds": [
+        "stonehill-inn",
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Mensch, männlich, eher klein",
         "Rolle / Funktion": "Wirt des Stonehill Inn",
@@ -31,9 +36,13 @@
     {
       "id": "harbin-wester",
       "name": "🟡 Harbin Wester",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["phandalin"],
+      "placeIds": [
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Mensch, männlich, beleibt",
         "Rolle / Funktion": "Ortsvorsteher (Townmaster)",
@@ -54,9 +63,13 @@
     {
       "id": "sister-garaele",
       "name": "❓ Sister Garaele",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["phandalin"],
+      "placeIds": [
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Elf, weiblich, schlank",
         "Rolle / Funktion": "Schreinwächterin von Tymora (Harper-Mitgliedschaft nicht öffentlich)",
@@ -77,9 +90,13 @@
     {
       "id": "halia-thornton",
       "name": "🟡 Halia Thornton",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["phandalin"],
+      "placeIds": [
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Halbling, weiblich, gepflegt, selbstsicher",
         "Rolle / Funktion": "Leiterin der Phandaliner Miner’s Exchange",
@@ -100,9 +117,14 @@
     {
       "id": "elmar-barthen",
       "name": "🟢 Elmar Barthen",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["barthens-provisions", "phandalin"],
+      "placeIds": [
+        "barthens-provisions",
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Ork, männlich, kräftig, charmantes Lächeln",
         "Rolle / Funktion": "Händler (Barthen’s Provisions)",
@@ -124,9 +146,14 @@
     {
       "id": "aven-elmwood-ave",
       "name": "🟢♟️ Aven Elmwood („Ave“)",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["barthens-provisions", "phandalin"],
+      "placeIds": [
+        "barthens-provisions",
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Mensch, männlich, groß, breites Kreuz, struppiges Haar",
         "Rolle / Funktion": "Handwerker (Reparaturen, Bau)",
@@ -147,9 +174,14 @@
     {
       "id": "linene-graywind",
       "name": "🟢 Linene Graywind",
-      "categories": ["Phandalin"],
+      "categories": [
+        "Phandalin"
+      ],
       "tags": [],
-      "placeIds": ["lionshield-coster", "phandalin"],
+      "placeIds": [
+        "lionshield-coster",
+        "phandalin"
+      ],
       "fields": {
         "Volk / Geschlecht / Statur": "Mensch, weiblich, kräftig gebaut, praktische Kleidung",
         "Rolle / Funktion": "Leiterin des Lionshield-Handelspostens in Phandalin",
@@ -174,8 +206,13 @@
       "name": "Phandalin",
       "type": "Siedlung",
       "parentId": "",
-      "categories": ["Phandalin"],
-      "tags": ["Startort", "Frontier"],
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Startort",
+        "Frontier"
+      ],
       "npcIds": [
         "toblen-stonehill",
         "harbin-wester",
@@ -197,9 +234,17 @@
       "name": "Stonehill Inn",
       "type": "Gasthof",
       "parentId": "phandalin",
-      "categories": ["Phandalin", "Gasthof"],
-      "tags": ["Gerüchte", "Sicherer Hafen"],
-      "npcIds": ["toblen-stonehill"],
+      "categories": [
+        "Phandalin",
+        "Gasthof"
+      ],
+      "tags": [
+        "Gerüchte",
+        "Sicherer Hafen"
+      ],
+      "npcIds": [
+        "toblen-stonehill"
+      ],
       "fields": {
         "Kurzbeschreibung": "Der zentrale Treffpunkt in Phandalin. Warmes Essen, laute Stimmen, müde Reisende.",
         "Typische Szenen": "Gerüchte am Kamin, Stammgäste mit Meinungen, ein kleines Drama am Nebentisch.",
@@ -212,9 +257,18 @@
       "name": "Barthen’s Provisions",
       "type": "Laden",
       "parentId": "phandalin",
-      "categories": ["Phandalin", "Shop"],
-      "tags": ["Ausrüstung", "Versorgung"],
-      "npcIds": ["elmar-barthen", "aven-elmwood-ave"],
+      "categories": [
+        "Phandalin",
+        "Shop"
+      ],
+      "tags": [
+        "Ausrüstung",
+        "Versorgung"
+      ],
+      "npcIds": [
+        "elmar-barthen",
+        "aven-elmwood-ave"
+      ],
       "fields": {
         "Kurzbeschreibung": "Ein gut sortierter Gemischtwarenladen. Nicht billig, aber verlässlich.",
         "Typische Ware": "Reisebedarf, Seile, Fackeln, Rationen, einfache Werkzeuge.",
@@ -226,14 +280,101 @@
       "name": "Lionshield Coster",
       "type": "Handelsposten",
       "parentId": "phandalin",
-      "categories": ["Phandalin", "Shop", "Lionshield"],
-      "tags": ["Ausrüstung", "Sicherheit"],
-      "npcIds": ["linene-graywind"],
+      "categories": [
+        "Phandalin",
+        "Shop",
+        "Lionshield"
+      ],
+      "tags": [
+        "Ausrüstung",
+        "Sicherheit"
+      ],
+      "npcIds": [
+        "linene-graywind"
+      ],
       "fields": {
         "Kurzbeschreibung": "Ein robuster Handelsposten für Waffen und Rüstungen. Alles wirkt 'geschäftlich' und auf Sicherheit bedacht.",
         "Typische Ware": "Rüstungen, Schilde, Waffen, Pfeile/Armbrustbolzen (je nach Kampagne).",
         "SL-Notizen": "Guter Anker für Sicherheitslage: 'Was fehlt? Was kommt nicht mehr an? Wer bedroht die Route?'"
       }
     }
-  ]
+  ],
+  "toolbox": {
+    "settings": {
+      "onlyUnused": true,
+      "defaultCategory": "Toolbox/Spontan",
+      "defaultPlaceId": ""
+    },
+    "pools": {
+      "names": {
+        "human": [
+          "Mara",
+          "Elly",
+          "Finn",
+          "Bram",
+          "Toblen",
+          "Halia",
+          "Linene",
+          "Harbin"
+        ],
+        "dwarf": [
+          "Gundren",
+          "Nundro",
+          "Tharden"
+        ],
+        "elf": [
+          "Syla",
+          "Aelar",
+          "Naivara"
+        ]
+      },
+      "roles": [
+        "Wirt",
+        "Händlerin",
+        "Wache",
+        "Bote",
+        "Minenarbeiter",
+        "Heilerin",
+        "Schmied",
+        "Jäger"
+      ],
+      "traits": [
+        "überhöflich",
+        "misstrauisch",
+        "redet zu viel",
+        "immer nervös",
+        "sehr direkt",
+        "lächelt nie"
+      ],
+      "hooks": [
+        "hat Schulden bei jemandem",
+        "hat etwas Unheimliches gesehen",
+        "sucht eine Person",
+        "will nur in Ruhe gelassen werden"
+      ],
+      "voices": [
+        "spricht sehr leise",
+        "rollt das R",
+        "lacht an falschen Stellen",
+        "spricht in kurzen Befehlen"
+      ]
+    },
+    "used": {
+      "names.human": [],
+      "names.dwarf": [],
+      "names.elf": [],
+      "roles": [],
+      "traits": [],
+      "hooks": [],
+      "voices": []
+    },
+    "current": {
+      "name": "Halia",
+      "role": "Händlerin",
+      "trait1": "misstrauisch",
+      "trait2": "sehr direkt",
+      "hook": "hat etwas Unheimliches gesehen",
+      "voice": "spricht in kurzen Befehlen"
+    }
+  }
 }
