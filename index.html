@@ -180,6 +180,7 @@
     <div class="grid">
       <button id="btnSyncLoad" class="center">🔄 Sync laden</button>
       <button id="btnImport" class="center">⬇️ Import</button>
+      <button id="btnExportClipboard" class="center">📋 Export JSON (Clipboard)</button>
       <button id="btnExport" class="center">⬆️ Export (World JSON)</button>
       <button id="btnReset" class="center danger">🧨 Reset</button>
     </div>
@@ -423,18 +424,54 @@ function randPick(list){
   if(!list || list.length === 0) return null;
   return list[Math.floor(Math.random() * list.length)];
 }
+function deepClone(obj){
+  try { return structuredClone(obj); } catch { return JSON.parse(JSON.stringify(obj)); }
+}
+
+/* =========================
+   TOOLBOX MERGE (mergeUsed default)
+========================= */
+function mergeToolbox(localTb, remoteTb, { mode } = { mode: "mergeUsed" }){
+  const out = deepClone(localTb || makeDefaultToolbox());
+  const r = remoteTb && typeof remoteTb === "object" ? remoteTb : {};
+
+  // Pools & Settings: Remote als Source-of-Truth
+  if(r.settings && typeof r.settings === "object") out.settings = r.settings;
+  if(r.pools && typeof r.pools === "object") out.pools = r.pools;
+
+  const rUsed = (r.used && typeof r.used === "object") ? r.used : {};
+  const lUsed = (out.used && typeof out.used === "object") ? out.used : {};
+
+  if(mode === "remoteWins"){
+    out.used = rUsed;
+  } else {
+    // mergeUsed (Union)
+    const keys = new Set([...Object.keys(lUsed), ...Object.keys(rUsed)]);
+    out.used = {};
+    for(const k of keys){
+      const a = Array.isArray(lUsed[k]) ? lUsed[k] : [];
+      const b = Array.isArray(rUsed[k]) ? rUsed[k] : [];
+      out.used[k] = Array.from(new Set([...a, ...b]));
+    }
+  }
+
+  // current bleibt lokal (Workbench)
+  if(localTb && localTb.current) out.current = localTb.current;
+
+  return out;
+}
 
 /* =========================
    TOOLBOX CORE
 ========================= */
-function tbPoolKeyFor(slot){
-  if(slot === "name") return "names.human"; // Default-Name-Pool: Human
-  if(slot === "role") return "roles";
-  if(slot === "trait1" || slot === "trait2") return "traits";
-  if(slot === "hook") return "hooks";
-  if(slot === "voice") return "voices";
-  return "";
+function makeDefaultToolboxIfMissing(){
+  if(!TOOLBOX || typeof TOOLBOX !== "object") TOOLBOX = makeDefaultToolbox();
+  if(!TOOLBOX.settings) TOOLBOX.settings = makeDefaultToolbox().settings;
+  if(!TOOLBOX.pools) TOOLBOX.pools = makeDefaultToolbox().pools;
+  if(!TOOLBOX.used) TOOLBOX.used = makeDefaultToolbox().used;
+  if(!TOOLBOX.current) TOOLBOX.current = makeDefaultToolbox().current;
 }
+
 function tbGetPoolItems(poolKey){
   if(poolKey.startsWith("names.")){
     const race = poolKey.split(".")[1];
@@ -447,7 +484,6 @@ function tbGetUsedSet(poolKey){
   return new Set(used.map(String));
 }
 function tbItemId(poolKey, text){
-  // stabile ID aus Text (case-insensitive)
   return poolKey + "::" + slugifyNameToId(String(text || ""));
 }
 function tbIsUsed(poolKey, text){
@@ -471,7 +507,6 @@ function tbDraw(poolKey){
     const used = tbGetUsedSet(poolKey);
     const filtered = items.filter(t => !used.has(tbItemId(poolKey, t)));
     if(filtered.length > 0) return randPick(filtered);
-    // falls alles benutzt: fallback auf alles
   }
   return randPick(items);
 }
@@ -480,16 +515,23 @@ function tbSetCurrent(slot, text){
   saveWorld();
 }
 function tbEnsureUsedKeys(){
-  // Sicherstellen, dass Keys existieren (wenn man später Pools ändert)
   const keys = ["names.human","names.dwarf","names.elf","roles","traits","hooks","voices"];
   TOOLBOX.used = TOOLBOX.used || {};
   for(const k of keys){
     if(!Array.isArray(TOOLBOX.used[k])) TOOLBOX.used[k] = [];
   }
 }
+function tbPoolKeyFor(slot){
+  if(slot === "name") return "names.human";
+  if(slot === "role") return "roles";
+  if(slot === "trait1" || slot === "trait2") return "traits";
+  if(slot === "hook") return "hooks";
+  if(slot === "voice") return "voices";
+  return "";
+}
 
 /* =========================
-   FUZZY MATCH (NPC import) – unverändert
+   FUZZY MATCH (NPC import)
 ========================= */
 function normalizeForMatch(name){
   let n = (name || "").trim();
@@ -716,7 +758,7 @@ function parsePlaceBlocks(rawText){
 }
 
 /* =========================
-   Textblocks (Edit) – wie vorher
+   Textblocks (Edit)
 ========================= */
 function addFieldLines(lines, key, value){
   const val = String(value ?? "");
@@ -854,11 +896,7 @@ function applyMobileVisibility(){
 }
 btnBack.onclick = () => { if(state.view === "detail") setView("list"); else if(state.view === "list") setView("cats"); else setView("cats"); };
 btnTopSync.onclick = () => syncLoad();
-btnTopMode.onclick = () => {
-  // Schnellwechsel: NPCs <-> Orte (Toolbox bleibt über Button links)
-  if(state.mode === "places") setMode("npcs");
-  else setMode("places");
-};
+btnTopMode.onclick = () => { if(state.mode === "places") setMode("npcs"); else setMode("places"); };
 window.addEventListener("resize", () => applyMobileVisibility());
 
 /* =========================
@@ -920,7 +958,6 @@ function updateModeUi(){
     catsHint.textContent = isNpc ? "Klick → NPC-Liste" : "Klick → Orte-Liste";
   }
 
-  // Suche: in Toolbox ausblenden/disable
   elSearch.disabled = isTb;
   elSearch.placeholder = isTb ? "Toolbox nutzt keine Suche (Schritt 1)" : "🔎 Suche nach Name/Tags/Feldern…";
 }
@@ -1112,10 +1149,7 @@ function renderToolboxList(){
 
     btnDraw.onclick = () => {
       const value = tbDraw(c.poolKey);
-      if(!value){
-        showToast("Pool ist leer: " + c.poolKey);
-        return;
-      }
+      if(!value){ showToast("Pool ist leer: " + c.poolKey); return; }
       tbSetCurrent(c.slot, value);
       renderAll();
       if(isMobile()) setView("detail");
@@ -1150,10 +1184,7 @@ function renderToolboxList(){
 
     btnReroll.onclick = () => {
       const value = tbDraw(c.poolKey);
-      if(!value){
-        showToast("Pool ist leer: " + c.poolKey);
-        return;
-      }
+      if(!value){ showToast("Pool ist leer: " + c.poolKey); return; }
       tbSetCurrent(c.slot, value);
       renderAll();
     };
@@ -1161,7 +1192,6 @@ function renderToolboxList(){
     elEntityList.appendChild(wrap);
   }
 
-  // In Toolbox: direkt Detail-Panel auf Workbench
   renderToolboxDetail();
   if(isMobile()) setView("list");
 }
@@ -1171,10 +1201,7 @@ function renderToolboxList(){
 ========================= */
 function getAllNpcCategories(){
   const set = new Set();
-  for(const n of NPCS){
-    (n.categories || []).forEach(c => set.add(c));
-  }
-  // sinnvolle Defaults
+  for(const n of NPCS){ (n.categories || []).forEach(c => set.add(c)); }
   set.add("Toolbox/Spontan");
   set.add("Unkategorisiert");
   return Array.from(set).sort((a,b)=>a.localeCompare(b,'de'));
@@ -1265,34 +1292,21 @@ function renderToolboxDetail(){
 
   elDetailBody.innerHTML = body.join("\n");
 
-  // hooks
   const selCat = document.getElementById("tbDefaultCat");
   const selPlace = document.getElementById("tbDefaultPlace");
 
-  selCat.onchange = () => {
-    TOOLBOX.settings.defaultCategory = selCat.value;
-    saveWorld();
-  };
-  selPlace.onchange = () => {
-    TOOLBOX.settings.defaultPlaceId = selPlace.value;
-    saveWorld();
-  };
+  selCat.onchange = () => { TOOLBOX.settings.defaultCategory = selCat.value; saveWorld(); };
+  selPlace.onchange = () => { TOOLBOX.settings.defaultPlaceId = selPlace.value; saveWorld(); };
 
   elDetailBody.querySelectorAll("[data-tbcopy]").forEach(btn => {
     btn.onclick = async () => {
       const slot = btn.getAttribute("data-tbcopy");
       const text = TOOLBOX.current[slot];
       if(!text) return;
-      try{
-        await navigator.clipboard.writeText(text);
-        showToast("Kopiert: " + text);
-      }catch{
+      try{ await navigator.clipboard.writeText(text); showToast("Kopiert: " + text); }
+      catch{
         const tmp = document.createElement("textarea");
-        tmp.value = text;
-        document.body.appendChild(tmp);
-        tmp.select();
-        document.execCommand("copy");
-        tmp.remove();
+        tmp.value = text; document.body.appendChild(tmp); tmp.select(); document.execCommand("copy"); tmp.remove();
         showToast("Kopiert: " + text);
       }
     };
@@ -1305,8 +1319,7 @@ function renderToolboxDetail(){
       const text = TOOLBOX.current[slot];
       if(!text) return;
       const used = tbIsUsed(poolKey, text);
-      if(used) tbUnmarkUsed(poolKey, text);
-      else tbMarkUsed(poolKey, text);
+      if(used) tbUnmarkUsed(poolKey, text); else tbMarkUsed(poolKey, text);
       saveWorld();
       renderAll();
     };
@@ -1317,10 +1330,7 @@ function renderToolboxDetail(){
       const slot = btn.getAttribute("data-tbreroll");
       const poolKey = tbPoolKeyFor(slot);
       const value = tbDraw(poolKey);
-      if(!value){
-        showToast("Pool leer: " + poolKey);
-        return;
-      }
+      if(!value){ showToast("Pool leer: " + poolKey); return; }
       tbSetCurrent(slot, value);
       renderAll();
     };
@@ -1328,12 +1338,8 @@ function renderToolboxDetail(){
 
   document.getElementById("tbSaveNpc").onclick = () => {
     const name = TOOLBOX.current.name ? TOOLBOX.current.name.trim() : "";
-    if(!name){
-      alert("Bitte zuerst einen Namen ziehen (oder setz ihn in den Name-Slot).");
-      return;
-    }
+    if(!name){ alert("Bitte zuerst einen Namen ziehen."); return; }
 
-    // Name hübsch machen: Wenn kein Emoji am Anfang, default 🟢
     const looksEmoji = name[0] && !(/[A-Za-z0-9ÄÖÜäöüß]/.test(name[0]));
     const npcName = looksEmoji ? name : ("🟢 " + name);
 
@@ -1343,21 +1349,13 @@ function renderToolboxDetail(){
     const hook = TOOLBOX.current.hook || "";
     const voice = TOOLBOX.current.voice || "";
 
-    const cats = uniq([
-      "Toolbox/Spontan",
-      (TOOLBOX.settings.defaultCategory || "Toolbox/Spontan")
-    ]);
-
+    const cats = uniq(["Toolbox/Spontan", (TOOLBOX.settings.defaultCategory || "Toolbox/Spontan")]);
     const placeIds = TOOLBOX.settings.defaultPlaceId ? [TOOLBOX.settings.defaultPlaceId] : [];
 
-    // id: aus Name ohne Emoji + suffix falls nötig
     let baseId = slugifyNameToId(name);
     let id = baseId;
     let i = 2;
-    while(NPCS.some(n => n.id === id)){
-      id = baseId + "-" + i;
-      i++;
-    }
+    while(NPCS.some(n => n.id === id)){ id = baseId + "-" + i; i++; }
 
     const fields = {
       "Rolle / Funktion": role || "—",
@@ -1366,20 +1364,10 @@ function renderToolboxDetail(){
       "Notizen für den SL": voice || "—"
     };
 
-    const npc = {
-      id,
-      name: npcName,
-      categories: cats,
-      tags: [],
-      placeIds,
-      fields
-    };
-
+    const npc = { id, name: npcName, categories: cats, tags: [], placeIds, fields };
     NPCS.push(npc);
     saveWorld();
     showToast("NPC gespeichert: " + npcName);
-
-    // optional direkt öffnen
     openNpcById(id);
   };
 }
@@ -1388,10 +1376,7 @@ function renderToolboxDetail(){
    RENDER: Detail (NPC/Orte)
 ========================= */
 function renderDetail(ent){
-  if(state.mode === "toolbox"){
-    renderToolboxDetail();
-    return;
-  }
+  if(state.mode === "toolbox"){ renderToolboxDetail(); return; }
 
   if(!ent){
     elDetailActions.style.display = "none";
@@ -1719,86 +1704,6 @@ btnDoImport.onclick = () => {
 };
 
 /* =========================
-   SYNC LOAD
-========================= */
-function isValidNpc(obj){ return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0; }
-function isValidPlace(obj){ return obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0; }
-
-async function syncLoad(){
-  const btn = document.getElementById("btnSyncLoad");
-  btn.disabled = true;
-  btnTopSync.disabled = true;
-  elSyncStatus.textContent = "Sync: lade…";
-
-  try{
-    const res = await fetch(REMOTE_DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-
-    let npcsIncoming = [];
-    let placesIncoming = [];
-
-    if(Array.isArray(data)){
-      npcsIncoming = data;
-    } else if(data && typeof data === "object"){
-      if(Array.isArray(data.npcs)) npcsIncoming = data.npcs;
-      if(Array.isArray(data.places)) placesIncoming = data.places;
-      // toolbox optional in remote – wir behalten lokal
-      if(!Array.isArray(data.npcs) && !Array.isArray(data.places)){
-        throw new Error("Unerwartetes JSON-Format (erwarte Array oder {npcs:[...], places:[...]})");
-      }
-    } else {
-      throw new Error("Unerwartetes JSON-Format");
-    }
-
-    NPCS = npcsIncoming
-      .filter(isValidNpc)
-      .map(n => ({
-        id: (n.id && String(n.id).trim()) ? String(n.id) : slugifyNameToId(n.name),
-        name: String(n.name),
-        categories: Array.isArray(n.categories) ? n.categories : (n.categories ? [String(n.categories)] : ["Unkategorisiert"]),
-        tags: Array.isArray(n.tags) ? n.tags : (n.tags ? [String(n.tags)] : []),
-        placeIds: Array.isArray(n.placeIds) ? n.placeIds.map(String) : [],
-        fields: (n.fields && typeof n.fields === "object") ? n.fields : {}
-      }));
-
-    PLACES = placesIncoming
-      .filter(isValidPlace)
-      .map(p => ({
-        id: (p.id && String(p.id).trim()) ? String(p.id) : slugifyNameToId(p.name),
-        name: String(p.name),
-        type: p.type ? String(p.type) : "",
-        parentId: p.parentId ? String(p.parentId) : "",
-        categories: Array.isArray(p.categories) ? p.categories : (p.categories ? [String(p.categories)] : ["Unkategorisiert"]),
-        tags: Array.isArray(p.tags) ? p.tags : (p.tags ? [String(p.tags)] : []),
-        npcIds: Array.isArray(p.npcIds) ? p.npcIds.map(String) : [],
-        fields: (p.fields && typeof p.fields === "object") ? p.fields : {}
-      }));
-
-    saveWorld();
-
-    state.selectedCategory = null;
-    state.selectedEntityId = null;
-    state.search = "";
-    elSearch.value = "";
-    state.view = "cats";
-
-    renderAll();
-    applyMobileVisibility();
-
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2,"0");
-    const mm = String(now.getMinutes()).padStart(2,"0");
-    elSyncStatus.textContent = `Sync: geladen (NPCs: ${NPCS.length}, Orte: ${PLACES.length}) · ${hh}:${mm}`;
-  }catch(err){
-    elSyncStatus.textContent = "Sync: Fehler – " + (err?.message || String(err));
-  }finally{
-    btn.disabled = false;
-    btnTopSync.disabled = false;
-  }
-}
-
-/* =========================
    SEARCH
 ========================= */
 elSearch.addEventListener("input", (e) => {
@@ -1810,8 +1715,12 @@ elSearch.addEventListener("input", (e) => {
 /* =========================
    EXPORT / RESET
 ========================= */
+function getWorldObject(){
+  return { npcs: NPCS, places: PLACES, toolbox: TOOLBOX };
+}
+
 document.getElementById("btnExport").onclick = () => {
-  const data = JSON.stringify({ npcs: NPCS, places: PLACES, toolbox: TOOLBOX }, null, 2);
+  const data = JSON.stringify(getWorldObject(), null, 2);
   const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -1821,6 +1730,19 @@ document.getElementById("btnExport").onclick = () => {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+};
+
+document.getElementById("btnExportClipboard").onclick = async () => {
+  const data = JSON.stringify(getWorldObject(), null, 2);
+  try{
+    await navigator.clipboard.writeText(data);
+    showToast("Export JSON in Zwischenablage ✅");
+  }catch{
+    // Fallback: Modal-like prompt
+    const ok = confirm("Clipboard nicht erlaubt. Soll der JSON-Text in einem Prompt-Feld angezeigt werden?");
+    if(!ok) return;
+    window.prompt("Kopiere den JSON-Text:", data);
+  }
 };
 
 document.getElementById("btnReset").onclick = () => {
@@ -1838,7 +1760,102 @@ document.getElementById("btnReset").onclick = () => {
   applyMobileVisibility();
 };
 
+/* =========================
+   SYNC LOAD (inkl. Toolbox mergeUsed)
+========================= */
+async function syncLoad(){
+  const btn = document.getElementById("btnSyncLoad");
+  btn.disabled = true;
+  btnTopSync.disabled = true;
+  elSyncStatus.textContent = "Sync: lade…";
+
+  try{
+    const res = await fetch(REMOTE_DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+
+    let npcsIncoming = [];
+    let placesIncoming = [];
+    let toolboxIncoming = null;
+
+    if(Array.isArray(data)){
+      npcsIncoming = data;
+    } else if(data && typeof data === "object"){
+      if(Array.isArray(data.npcs)) npcsIncoming = data.npcs;
+      if(Array.isArray(data.places)) placesIncoming = data.places;
+      if(data.toolbox && typeof data.toolbox === "object") toolboxIncoming = data.toolbox;
+
+      if(!Array.isArray(data.npcs) && !Array.isArray(data.places)){
+        throw new Error("Unerwartetes JSON-Format (erwarte Array oder {npcs:[...], places:[...]})");
+      }
+    } else {
+      throw new Error("Unerwartetes JSON-Format");
+    }
+
+    // NPCs
+    NPCS = (npcsIncoming || [])
+      .filter(obj => obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0)
+      .map(n => ({
+        id: (n.id && String(n.id).trim()) ? String(n.id) : slugifyNameToId(n.name),
+        name: String(n.name),
+        categories: Array.isArray(n.categories) ? n.categories : (n.categories ? [String(n.categories)] : ["Unkategorisiert"]),
+        tags: Array.isArray(n.tags) ? n.tags : (n.tags ? [String(n.tags)] : []),
+        placeIds: Array.isArray(n.placeIds) ? n.placeIds.map(String) : [],
+        fields: (n.fields && typeof n.fields === "object") ? n.fields : {}
+      }));
+
+    // Places
+    PLACES = (placesIncoming || [])
+      .filter(obj => obj && typeof obj === "object" && typeof obj.name === "string" && obj.name.trim().length > 0)
+      .map(p => ({
+        id: (p.id && String(p.id).trim()) ? String(p.id) : slugifyNameToId(p.name),
+        name: String(p.name),
+        type: p.type ? String(p.type) : "",
+        parentId: p.parentId ? String(p.parentId) : "",
+        categories: Array.isArray(p.categories) ? p.categories : (p.categories ? [String(p.categories)] : ["Unkategorisiert"]),
+        tags: Array.isArray(p.tags) ? p.tags : (p.tags ? [String(p.tags)] : []),
+        npcIds: Array.isArray(p.npcIds) ? p.npcIds.map(String) : [],
+        fields: (p.fields && typeof p.fields === "object") ? p.fields : {}
+      }));
+
+    // Toolbox: mergeUsed (pools/settings aus Remote, used union)
+    if(toolboxIncoming){
+      makeDefaultToolboxIfMissing();
+      TOOLBOX = mergeToolbox(TOOLBOX, toolboxIncoming, { mode: "mergeUsed" });
+      tbEnsureUsedKeys();
+    }
+
+    saveWorld();
+
+    state.selectedCategory = null;
+    state.selectedEntityId = null;
+    state.search = "";
+    elSearch.value = "";
+    state.view = "cats";
+
+    renderAll();
+    applyMobileVisibility();
+
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,"0");
+    const mm = String(now.getMinutes()).padStart(2,"0");
+
+    const tbInfo = toolboxIncoming ? " · Toolbox: merged" : " · Toolbox: lokal";
+    elSyncStatus.textContent = `Sync: geladen (NPCs: ${NPCS.length}, Orte: ${PLACES.length})${tbInfo} · ${hh}:${mm}`;
+    showToast("Sync geladen ✅");
+  }catch(err){
+    elSyncStatus.textContent = "Sync: Fehler – " + (err?.message || String(err));
+  }finally{
+    btn.disabled = false;
+    btnTopSync.disabled = false;
+  }
+}
+
 document.getElementById("btnSyncLoad").onclick = syncLoad;
+
+/* =========================
+   COPY ID / EDIT BUTTONS etc: already wired above
+========================= */
 
 /* =========================
    MAIN RENDER
@@ -1847,10 +1864,9 @@ function renderAll(){
   updateModeUi();
 
   if(state.mode === "toolbox"){
-    // left: toolbox area already handled by updateModeUi
     elCatButtons.innerHTML = "";
     renderEntityList();
-    renderDetail(null); // will render toolbox detail
+    renderDetail(null);
     return;
   }
 
@@ -1860,6 +1876,7 @@ function renderAll(){
 }
 
 /* INIT */
+makeDefaultToolboxIfMissing();
 tbEnsureUsedKeys();
 updateModeUi();
 renderAll();
