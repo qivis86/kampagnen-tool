@@ -75,11 +75,11 @@
   textarea { width:100%; height:100%; min-height:60vh; background:#0f1117; color:#e8e8e8; border:none; padding:10px; box-sizing:border-box;
             font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
             font-size:13px; line-height:1.35; resize:none; outline:none; }
-  .row { display:flex; gap:8px; }
-  .row > * { flex:1; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; }
+  .row > * { flex:1; min-width: 180px; }
 
-  .smallseg { display:flex; gap:8px; margin-top:8px; }
-  .smallseg button{ flex:1; text-align:center; padding:8px; }
+  .smallseg { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+  .smallseg button{ flex:1; text-align:center; padding:8px; min-width: 140px; }
 
   code { background:#0f1117; border:1px solid #2a3042; padding:0 6px; border-radius:8px; }
 
@@ -115,6 +115,13 @@
   .tb-mini{ font-size:12px; opacity:.75; }
   .tb-btns{ display:flex; gap:8px; flex-wrap:wrap; }
   .tb-btns button{ width:auto; text-align:center; }
+
+  .seed-btn{
+    display:grid; gap:4px;
+  }
+  .seed-btn .title{ font-weight:600; }
+  .seed-btn .meta{ font-size:12px; opacity:.75; }
+  .seed-btn .mini{ font-size:12px; opacity:.7; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   @media (max-width: 900px){
     .topbar{ display:flex; }
@@ -160,8 +167,7 @@
     <div id="toolboxArea" style="display:none;">
       <div class="grid">
         <button id="btnTbTabBlocks" class="active">🧩 Bausteine</button>
-        <button id="btnTbTabSeeds" disabled>📦 Seeds (später)</button>
-        <button id="btnTbTabEditor" disabled>🧰 Editor (später)</button>
+        <button id="btnTbTabSeeds">📦 Seeds</button>
       </div>
       <div class="hr"></div>
 
@@ -219,12 +225,38 @@
     <header>
       <div style="font-weight:600;" id="importHeaderTitle">⬇️ Import</div>
       <div class="muted" style="margin-top:4px;" id="importHeaderHint">
-        NPCs: Textblöcke wie bisher. Orte: braucht <code>**ID:**</code> (strict).
+        NPCs: Textblöcke wie bisher. Orte: braucht <code>**ID:**</code> (strict). Toolbox: Pools/Seeds.
       </div>
 
       <div class="smallseg">
         <button id="btnImportModeNpcs" class="active">🧑 NPCs</button>
         <button id="btnImportModePlaces">📍 Orte</button>
+        <button id="btnImportModeToolbox">🎲 Toolbox</button>
+      </div>
+
+      <div id="toolboxImportControls" style="display:none; margin-top:10px;">
+        <div class="row">
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Ziel</div>
+            <select id="tbImportTarget">
+              <option value="names.human">names.human</option>
+              <option value="names.dwarf">names.dwarf</option>
+              <option value="names.elf">names.elf</option>
+              <option value="roles">roles</option>
+              <option value="traits">traits</option>
+              <option value="hooks">hooks</option>
+              <option value="voices">voices</option>
+              <option value="seeds">seeds</option>
+            </select>
+          </div>
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Import-Modus</div>
+            <select id="tbImportMode">
+              <option value="append">Anhängen (empfohlen)</option>
+              <option value="replace">Ersetzen</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div class="muted" style="margin-top:8px;" id="importFormatHelp"></div>
@@ -272,7 +304,7 @@ const REMOTE_DATA_URL = "data/data.json";
 /* =========================
    STORAGE (inkl. Toolbox)
 ========================= */
-const STORAGE_KEY = "npc_places_links_app_v2_toolbox";
+const STORAGE_KEY = "npc_places_links_app_v3_toolbox_seeds";
 let { NPCS, PLACES, TOOLBOX } = loadWorld();
 
 function makeDefaultToolbox(){
@@ -293,6 +325,26 @@ function makeDefaultToolbox(){
       hooks: ["hat Schulden bei jemandem", "hat etwas Unheimliches gesehen", "sucht eine Person", "will nur in Ruhe gelassen werden"],
       voices: ["spricht sehr leise", "rollt das R", "lacht an falschen Stellen", "spricht in kurzen Befehlen"]
     },
+    seeds: [
+      {
+        id: "seed-stonehill-regular",
+        label: "Stammgast im Stonehill",
+        tags: ["Phandalin","Stonehill Inn"],
+        note: "Kennt jedes Gerücht – aber nie die ganze Wahrheit.",
+        role: "Stammgast",
+        hook: "hat etwas gehört, will aber erst sicher sein, dass du vertrauenswürdig bist",
+        voice: "spricht in Andeutungen"
+      },
+      {
+        id: "seed-tired-guard",
+        label: "Müde Wache",
+        tags: ["Phandalin","Guard"],
+        note: "Will eigentlich nur nach Hause.",
+        role: "Wache",
+        trait: "müde, aber pflichtbewusst",
+        hook: "hat letzte Nacht eine Gestalt am Ortsrand gesehen"
+      }
+    ],
     used: {
       "names.human": [],
       "names.dwarf": [],
@@ -300,7 +352,8 @@ function makeDefaultToolbox(){
       "roles": [],
       "traits": [],
       "hooks": [],
-      "voices": []
+      "voices": [],
+      "seeds": []
     },
     current: {
       name: null,
@@ -308,7 +361,8 @@ function makeDefaultToolbox(){
       trait1: null,
       trait2: null,
       hook: null,
-      voice: null
+      voice: null,
+      seedId: null
     }
   };
 }
@@ -318,7 +372,6 @@ function loadWorld(){
     const raw = localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : null;
 
-    // New format: {npcs, places, toolbox}
     if(parsed && typeof parsed === "object" && (Array.isArray(parsed.npcs) || Array.isArray(parsed.places) || parsed.toolbox)){
       return {
         NPCS: Array.isArray(parsed.npcs)? parsed.npcs : [],
@@ -327,7 +380,6 @@ function loadWorld(){
       };
     }
 
-    // Legacy: array of NPCs
     if(Array.isArray(parsed)) return { NPCS: parsed, PLACES: [], TOOLBOX: makeDefaultToolbox() };
 
     return { NPCS: [], PLACES: [], TOOLBOX: makeDefaultToolbox() };
@@ -348,7 +400,7 @@ function showToast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add("show");
   if(toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toastEl.classList.remove("show"), 1300);
+  toastTimer = setTimeout(()=>toastEl.classList.remove("show"), 1400);
 }
 
 /* =========================
@@ -359,7 +411,7 @@ function escapeHtml(s){
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
+    .replaceAll('"',"quot;")
     .replaceAll("'","&#039;");
 }
 function normalizeLine(line){
@@ -413,126 +465,10 @@ function parseKeyValueLine(line){
   let value = String(m[2] ?? "").trim().replace(/\*\*/g, "").trim();
   return { key, value };
 }
-function uniq(arr){
-  return Array.from(new Set((arr || []).filter(Boolean)));
-}
-function validateIds(list, existingSet){
-  const unknown = (list || []).filter(id => id && !existingSet.has(id));
-  return uniq(unknown);
-}
-function randPick(list){
-  if(!list || list.length === 0) return null;
-  return list[Math.floor(Math.random() * list.length)];
-}
-function deepClone(obj){
-  try { return structuredClone(obj); } catch { return JSON.parse(JSON.stringify(obj)); }
-}
+function uniq(arr){ return Array.from(new Set((arr || []).filter(Boolean))); }
+function randPick(list){ if(!list || list.length===0) return null; return list[Math.floor(Math.random()*list.length)]; }
+function deepClone(obj){ try { return structuredClone(obj); } catch { return JSON.parse(JSON.stringify(obj)); } }
 
-/* =========================
-   TOOLBOX MERGE (mergeUsed default)
-========================= */
-function mergeToolbox(localTb, remoteTb, { mode } = { mode: "mergeUsed" }){
-  const out = deepClone(localTb || makeDefaultToolbox());
-  const r = remoteTb && typeof remoteTb === "object" ? remoteTb : {};
-
-  // Pools & Settings: Remote als Source-of-Truth
-  if(r.settings && typeof r.settings === "object") out.settings = r.settings;
-  if(r.pools && typeof r.pools === "object") out.pools = r.pools;
-
-  const rUsed = (r.used && typeof r.used === "object") ? r.used : {};
-  const lUsed = (out.used && typeof out.used === "object") ? out.used : {};
-
-  if(mode === "remoteWins"){
-    out.used = rUsed;
-  } else {
-    // mergeUsed (Union)
-    const keys = new Set([...Object.keys(lUsed), ...Object.keys(rUsed)]);
-    out.used = {};
-    for(const k of keys){
-      const a = Array.isArray(lUsed[k]) ? lUsed[k] : [];
-      const b = Array.isArray(rUsed[k]) ? rUsed[k] : [];
-      out.used[k] = Array.from(new Set([...a, ...b]));
-    }
-  }
-
-  // current bleibt lokal (Workbench)
-  if(localTb && localTb.current) out.current = localTb.current;
-
-  return out;
-}
-
-/* =========================
-   TOOLBOX CORE
-========================= */
-function makeDefaultToolboxIfMissing(){
-  if(!TOOLBOX || typeof TOOLBOX !== "object") TOOLBOX = makeDefaultToolbox();
-  if(!TOOLBOX.settings) TOOLBOX.settings = makeDefaultToolbox().settings;
-  if(!TOOLBOX.pools) TOOLBOX.pools = makeDefaultToolbox().pools;
-  if(!TOOLBOX.used) TOOLBOX.used = makeDefaultToolbox().used;
-  if(!TOOLBOX.current) TOOLBOX.current = makeDefaultToolbox().current;
-}
-
-function tbGetPoolItems(poolKey){
-  if(poolKey.startsWith("names.")){
-    const race = poolKey.split(".")[1];
-    return (TOOLBOX.pools.names && TOOLBOX.pools.names[race]) ? TOOLBOX.pools.names[race] : [];
-  }
-  return (TOOLBOX.pools && TOOLBOX.pools[poolKey]) ? TOOLBOX.pools[poolKey] : [];
-}
-function tbGetUsedSet(poolKey){
-  const used = TOOLBOX.used && TOOLBOX.used[poolKey] ? TOOLBOX.used[poolKey] : [];
-  return new Set(used.map(String));
-}
-function tbItemId(poolKey, text){
-  return poolKey + "::" + slugifyNameToId(String(text || ""));
-}
-function tbIsUsed(poolKey, text){
-  const id = tbItemId(poolKey, text);
-  return tbGetUsedSet(poolKey).has(id);
-}
-function tbMarkUsed(poolKey, text){
-  const id = tbItemId(poolKey, text);
-  if(!TOOLBOX.used[poolKey]) TOOLBOX.used[poolKey] = [];
-  if(!TOOLBOX.used[poolKey].includes(id)) TOOLBOX.used[poolKey].push(id);
-}
-function tbUnmarkUsed(poolKey, text){
-  const id = tbItemId(poolKey, text);
-  TOOLBOX.used[poolKey] = (TOOLBOX.used[poolKey] || []).filter(x => x !== id);
-}
-function tbDraw(poolKey){
-  const items = tbGetPoolItems(poolKey).slice();
-  if(items.length === 0) return null;
-
-  if(TOOLBOX.settings.onlyUnused){
-    const used = tbGetUsedSet(poolKey);
-    const filtered = items.filter(t => !used.has(tbItemId(poolKey, t)));
-    if(filtered.length > 0) return randPick(filtered);
-  }
-  return randPick(items);
-}
-function tbSetCurrent(slot, text){
-  TOOLBOX.current[slot] = text ? String(text) : null;
-  saveWorld();
-}
-function tbEnsureUsedKeys(){
-  const keys = ["names.human","names.dwarf","names.elf","roles","traits","hooks","voices"];
-  TOOLBOX.used = TOOLBOX.used || {};
-  for(const k of keys){
-    if(!Array.isArray(TOOLBOX.used[k])) TOOLBOX.used[k] = [];
-  }
-}
-function tbPoolKeyFor(slot){
-  if(slot === "name") return "names.human";
-  if(slot === "role") return "roles";
-  if(slot === "trait1" || slot === "trait2") return "traits";
-  if(slot === "hook") return "hooks";
-  if(slot === "voice") return "voices";
-  return "";
-}
-
-/* =========================
-   FUZZY MATCH (NPC import)
-========================= */
 function normalizeForMatch(name){
   let n = (name || "").trim();
   n = n.replace(/^#{1,6}\s+/, "").trim();
@@ -580,6 +516,127 @@ function findBestFuzzyMatch(importedNpc, existingNpcs){
   }
   return best;
 }
+function validateIds(list, existingSet){
+  const unknown = (list || []).filter(id => id && !existingSet.has(id));
+  return uniq(unknown);
+}
+
+/* =========================
+   TOOLBOX MERGE (mergeUsed)
+========================= */
+function mergeToolbox(localTb, remoteTb, { mode } = { mode: "mergeUsed" }){
+  const out = deepClone(localTb || makeDefaultToolbox());
+  const r = remoteTb && typeof remoteTb === "object" ? remoteTb : {};
+
+  if(r.settings && typeof r.settings === "object") out.settings = r.settings;
+  if(r.pools && typeof r.pools === "object") out.pools = r.pools;
+  if(Array.isArray(r.seeds)) out.seeds = r.seeds;
+
+  const rUsed = (r.used && typeof r.used === "object") ? r.used : {};
+  const lUsed = (out.used && typeof out.used === "object") ? out.used : {};
+
+  if(mode === "remoteWins"){
+    out.used = rUsed;
+  } else {
+    const keys = new Set([...Object.keys(lUsed), ...Object.keys(rUsed)]);
+    out.used = {};
+    for(const k of keys){
+      const a = Array.isArray(lUsed[k]) ? lUsed[k] : [];
+      const b = Array.isArray(rUsed[k]) ? rUsed[k] : [];
+      out.used[k] = Array.from(new Set([...a, ...b]));
+    }
+  }
+
+  if(localTb && localTb.current) out.current = localTb.current;
+
+  return out;
+}
+
+/* =========================
+   TOOLBOX CORE
+========================= */
+function makeDefaultToolboxIfMissing(){
+  if(!TOOLBOX || typeof TOOLBOX !== "object") TOOLBOX = makeDefaultToolbox();
+  if(!TOOLBOX.settings) TOOLBOX.settings = makeDefaultToolbox().settings;
+  if(!TOOLBOX.pools) TOOLBOX.pools = makeDefaultToolbox().pools;
+  if(!Array.isArray(TOOLBOX.seeds)) TOOLBOX.seeds = makeDefaultToolbox().seeds;
+  if(!TOOLBOX.used) TOOLBOX.used = makeDefaultToolbox().used;
+  if(!TOOLBOX.current) TOOLBOX.current = makeDefaultToolbox().current;
+}
+function tbEnsureUsedKeys(){
+  const keys = ["names.human","names.dwarf","names.elf","roles","traits","hooks","voices","seeds"];
+  TOOLBOX.used = TOOLBOX.used || {};
+  for(const k of keys){
+    if(!Array.isArray(TOOLBOX.used[k])) TOOLBOX.used[k] = [];
+  }
+}
+function tbGetPoolItems(poolKey){
+  if(poolKey.startsWith("names.")){
+    const race = poolKey.split(".")[1];
+    return (TOOLBOX.pools.names && TOOLBOX.pools.names[race]) ? TOOLBOX.pools.names[race] : [];
+  }
+  return (TOOLBOX.pools && TOOLBOX.pools[poolKey]) ? TOOLBOX.pools[poolKey] : [];
+}
+function tbGetUsedSet(poolKey){
+  const used = TOOLBOX.used && TOOLBOX.used[poolKey] ? TOOLBOX.used[poolKey] : [];
+  return new Set(used.map(String));
+}
+function tbItemId(poolKey, text){
+  // stable enough for cross-device
+  return poolKey + "::" + slugifyNameToId(String(text || ""));
+}
+function tbIsUsed(poolKey, text){
+  const id = tbItemId(poolKey, text);
+  return tbGetUsedSet(poolKey).has(id);
+}
+function tbMarkUsed(poolKey, text){
+  const id = tbItemId(poolKey, text);
+  if(!TOOLBOX.used[poolKey]) TOOLBOX.used[poolKey] = [];
+  if(!TOOLBOX.used[poolKey].includes(id)) TOOLBOX.used[poolKey].push(id);
+}
+function tbUnmarkUsed(poolKey, text){
+  const id = tbItemId(poolKey, text);
+  TOOLBOX.used[poolKey] = (TOOLBOX.used[poolKey] || []).filter(x => x !== id);
+}
+function tbSeedKey(seed){
+  return "seed::" + (seed.id || slugifyNameToId(seed.label || "seed"));
+}
+function tbSeedIsUsed(seed){
+  const id = tbSeedKey(seed);
+  return (TOOLBOX.used.seeds || []).includes(id);
+}
+function tbSeedMarkUsed(seed){
+  const id = tbSeedKey(seed);
+  if(!TOOLBOX.used.seeds) TOOLBOX.used.seeds = [];
+  if(!TOOLBOX.used.seeds.includes(id)) TOOLBOX.used.seeds.push(id);
+}
+function tbSeedUnmarkUsed(seed){
+  const id = tbSeedKey(seed);
+  TOOLBOX.used.seeds = (TOOLBOX.used.seeds || []).filter(x => x !== id);
+}
+function tbDraw(poolKey){
+  const items = tbGetPoolItems(poolKey).slice();
+  if(items.length === 0) return null;
+
+  if(TOOLBOX.settings.onlyUnused){
+    const used = tbGetUsedSet(poolKey);
+    const filtered = items.filter(t => !used.has(tbItemId(poolKey, t)));
+    if(filtered.length > 0) return randPick(filtered);
+  }
+  return randPick(items);
+}
+function tbSetCurrent(slot, text){
+  TOOLBOX.current[slot] = (text === null || text === undefined || text === "") ? null : String(text);
+  saveWorld();
+}
+function tbPoolKeyFor(slot){
+  if(slot === "name") return "names.human";
+  if(slot === "role") return "roles";
+  if(slot === "trait1" || slot === "trait2") return "traits";
+  if(slot === "hook") return "hooks";
+  if(slot === "voice") return "voices";
+  return "";
+}
 
 /* =========================
    IMPORT PARSER UTILS
@@ -609,7 +666,7 @@ function splitBlocks(rawText){
 }
 
 /* =========================
-   IMPORT PARSER: NPCs
+   IMPORT: NPCs
 ========================= */
 function parseNpcBlocks(rawText){
   const blocks = splitBlocks(rawText);
@@ -684,7 +741,7 @@ function parseNpcBlocks(rawText){
 }
 
 /* =========================
-   IMPORT PARSER: PLACES
+   IMPORT: PLACES
 ========================= */
 function parsePlaceBlocks(rawText){
   const blocks = splitBlocks(rawText);
@@ -755,6 +812,149 @@ function parsePlaceBlocks(rawText){
   });
 
   return { parsed, errors, warnings };
+}
+
+/* =========================
+   IMPORT: TOOLBOX (Pools/Seeds)
+========================= */
+function getTbPoolRef(target){
+  // returns { kind: "names", race } or { kind: "list", key }
+  if(target.startsWith("names.")){
+    return { kind:"names", race: target.split(".")[1] };
+  }
+  if(["roles","traits","hooks","voices"].includes(target)){
+    return { kind:"list", key: target };
+  }
+  if(target === "seeds"){
+    return { kind:"seeds" };
+  }
+  return null;
+}
+
+// Seeds line format (flexibel):
+// Label | tag1, tag2 | note ... (note may include "name=..., role=..., hook=..., trait=..., voice=...")
+function parseSeedLine(line){
+  const parts = line.split("|").map(p => p.trim());
+  const label = parts[0] || "";
+  if(!label) return null;
+
+  const tags = parts[1] ? parts[1].split(",").map(t=>t.trim()).filter(Boolean) : [];
+  const noteRaw = parts.slice(2).join(" | ").trim();
+
+  const seed = {
+    id: "seed-" + slugifyNameToId(label),
+    label,
+    tags,
+    note: noteRaw || ""
+  };
+
+  // Pull key=value pairs out of note
+  // supports separators ; or , or line breaks
+  const kvRegex = /\b(name|rolle|role|hook|trait|voice)\s*=\s*([^;,\n]+)\s*/ig;
+  let m;
+  while((m = kvRegex.exec(noteRaw)) !== null){
+    const k = m[1].toLowerCase();
+    const v = (m[2] || "").trim();
+    if(!v) continue;
+    if(k === "rolle") seed.role = v;
+    else seed[k] = v;
+  }
+
+  return seed;
+}
+
+function parseToolboxImport(text, target){
+  const raw = String(text || "").trim();
+  if(!raw) return { items: [], seeds: [], errors: ["Leerer Import."] };
+
+  // If user pastes JSON: accept arrays for pools, or {seeds:[...]} / world objects
+  try{
+    const maybe = JSON.parse(raw);
+    if(Array.isArray(maybe)){
+      if(target === "seeds"){
+        const seeds = maybe
+          .filter(x => x && typeof x === "object")
+          .map(x => ({
+            id: String(x.id || ("seed-" + slugifyNameToId(x.label || x.name || "seed"))),
+            label: String(x.label || x.name || "Seed"),
+            tags: Array.isArray(x.tags) ? x.tags.map(String) : [],
+            note: x.note ? String(x.note) : "",
+            name: x.name ? String(x.name) : undefined,
+            role: x.role ? String(x.role) : undefined,
+            hook: x.hook ? String(x.hook) : undefined,
+            trait: x.trait ? String(x.trait) : undefined,
+            voice: x.voice ? String(x.voice) : undefined,
+          }));
+        return { items: [], seeds, errors: [] };
+      } else {
+        const items = maybe.map(x => String(x)).map(s => s.trim()).filter(Boolean);
+        return { items, seeds: [], errors: [] };
+      }
+    } else if(maybe && typeof maybe === "object"){
+      // world json or toolbox json
+      const tb = maybe.toolbox && typeof maybe.toolbox === "object" ? maybe.toolbox : maybe;
+      if(target === "seeds"){
+        const seedsArr = Array.isArray(tb.seeds) ? tb.seeds : (Array.isArray(tb) ? tb : []);
+        const seeds = (seedsArr || [])
+          .filter(x => x && typeof x === "object")
+          .map(x => ({
+            id: String(x.id || ("seed-" + slugifyNameToId(x.label || x.name || "seed"))),
+            label: String(x.label || x.name || "Seed"),
+            tags: Array.isArray(x.tags) ? x.tags.map(String) : [],
+            note: x.note ? String(x.note) : "",
+            name: x.name ? String(x.name) : undefined,
+            role: x.role ? String(x.role) : undefined,
+            hook: x.hook ? String(x.hook) : undefined,
+            trait: x.trait ? String(x.trait) : undefined,
+            voice: x.voice ? String(x.voice) : undefined,
+          }));
+        return { items: [], seeds, errors: [] };
+      } else {
+        // try to resolve a pool array in the object by target key
+        if(target.startsWith("names.")){
+          const race = target.split(".")[1];
+          const arr = tb?.pools?.names?.[race];
+          if(Array.isArray(arr)){
+            const items = arr.map(x=>String(x)).map(s=>s.trim()).filter(Boolean);
+            return { items, seeds: [], errors: [] };
+          }
+        } else {
+          const arr = tb?.pools?.[target];
+          if(Array.isArray(arr)){
+            const items = arr.map(x=>String(x)).map(s=>s.trim()).filter(Boolean);
+            return { items, seeds: [], errors: [] };
+          }
+        }
+        // fallback: if object itself has property
+        const direct = maybe[target];
+        if(Array.isArray(direct)){
+          const items = direct.map(x=>String(x)).map(s=>s.trim()).filter(Boolean);
+          return { items, seeds: [], errors: [] };
+        }
+      }
+    }
+  }catch{
+    // not json => continue as text
+  }
+
+  // Text format
+  const lines = raw.replace(/\r\n/g,"\n").split("\n")
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith("#") && !l.startsWith("//"));
+
+  if(target === "seeds"){
+    const seeds = [];
+    const errors = [];
+    for(const line of lines){
+      const seed = parseSeedLine(line);
+      if(!seed) errors.push("Konnte Seed nicht lesen: " + line);
+      else seeds.push(seed);
+    }
+    return { items: [], seeds, errors };
+  } else {
+    const items = lines.map(l => l.replace(/^-+\s*/,"").trim()).filter(Boolean);
+    return { items, seeds: [], errors: [] };
+  }
 }
 
 /* =========================
@@ -854,7 +1054,8 @@ const state = {
   selectedEntityId: null,
   search: "",
   view: "cats",
-  tbTab: "blocks"
+  tbTab: "blocks", // "blocks" | "seeds"
+  selectedSeedId: null
 };
 
 function setView(v){ state.view = v; applyMobileVisibility(); }
@@ -863,6 +1064,7 @@ function setMode(mode){
   state.selectedCategory = null;
   state.selectedEntityId = null;
   state.search = "";
+  state.selectedSeedId = null;
   elSearch.value = "";
   state.view = "cats";
   updateModeUi();
@@ -883,8 +1085,10 @@ function applyMobileVisibility(){
 
   let title = "Kategorien";
   let backEnabled = false;
-  if(state.view === "list"){ title = state.mode === "toolbox" ? "Toolbox" : (state.selectedCategory || "Liste"); backEnabled = true; }
-  else if(state.view === "detail"){
+  if(state.view === "list"){
+    title = state.mode === "toolbox" ? "Toolbox" : (state.selectedCategory || "Liste");
+    backEnabled = true;
+  } else if(state.view === "detail"){
     if(state.mode === "toolbox") title = "Toolbox";
     else { const ent = getSelectedEntity(); title = ent ? ent.name : "Detail"; }
     backEnabled = true;
@@ -927,9 +1131,15 @@ const catsArea = document.getElementById("catsArea");
 const toolboxArea = document.getElementById("toolboxArea");
 const btnTbToggleUnused = document.getElementById("btnTbToggleUnused");
 
+const btnTbTabBlocks = document.getElementById("btnTbTabBlocks");
+const btnTbTabSeeds = document.getElementById("btnTbTabSeeds");
+
 btnModeNpcs.onclick = () => setMode("npcs");
 btnModePlaces.onclick = () => setMode("places");
 btnModeToolbox.onclick = () => setMode("toolbox");
+
+btnTbTabBlocks.onclick = () => { state.tbTab = "blocks"; renderAll(); if(isMobile()) setView("list"); };
+btnTbTabSeeds.onclick = () => { state.tbTab = "seeds"; renderAll(); if(isMobile()) setView("list"); };
 
 btnTbToggleUnused.onclick = () => {
   TOOLBOX.settings.onlyUnused = !TOOLBOX.settings.onlyUnused;
@@ -949,9 +1159,12 @@ function updateModeUi(){
   catsArea.style.display = isTb ? "none" : "block";
   toolboxArea.style.display = isTb ? "block" : "none";
 
+  btnTbTabBlocks.classList.toggle("active", state.tbTab === "blocks");
+  btnTbTabSeeds.classList.toggle("active", state.tbTab === "seeds");
+
   if(isTb){
     catsHeader.textContent = "🎲 NPC-Toolbox";
-    catsHint.textContent = "Bausteine ziehen & einzeln als benutzt markieren";
+    catsHint.textContent = state.tbTab === "seeds" ? "Seeds auswählen/ziehen" : "Bausteine ziehen & einzeln als benutzt markieren";
     btnTbToggleUnused.textContent = TOOLBOX.settings.onlyUnused ? "✅ Nur unbenutzt" : "♻️ Auch benutzte";
   } else {
     catsHeader.textContent = isNpc ? "📚 Kategorien (NPCs)" : "📚 Kategorien (Orte)";
@@ -959,7 +1172,7 @@ function updateModeUi(){
   }
 
   elSearch.disabled = isTb;
-  elSearch.placeholder = isTb ? "Toolbox nutzt keine Suche (Schritt 1)" : "🔎 Suche nach Name/Tags/Feldern…";
+  elSearch.placeholder = isTb ? "Toolbox nutzt keine Suche (in der Liste)" : "🔎 Suche nach Name/Tags/Feldern…";
 }
 
 /* =========================
@@ -1045,6 +1258,35 @@ function renderCategories(){
 }
 
 /* =========================
+   TOOLBOX: Seeds helpers
+========================= */
+function getSeedById(id){
+  return (TOOLBOX.seeds || []).find(s => (s.id || ("seed-"+slugifyNameToId(s.label))) === id) || null;
+}
+function seedSummary(seed){
+  const bits = [];
+  if(seed.name) bits.push("Name");
+  if(seed.role) bits.push("Rolle");
+  if(seed.hook) bits.push("Hook");
+  if(seed.trait) bits.push("Trait");
+  if(seed.voice) bits.push("Voice");
+  return bits.length ? ("Enthält: " + bits.join(", ")) : "Nur Text";
+}
+function seedMeta(seed){
+  const tags = (seed.tags || []).slice(0,4).join(" · ");
+  return tags || "—";
+}
+function seedParts(seed){
+  return [
+    { key:"name", label:"Name", poolKey:"names.human", value: seed.name },
+    { key:"role", label:"Rolle", poolKey:"roles", value: seed.role },
+    { key:"hook", label:"Hook", poolKey:"hooks", value: seed.hook },
+    { key:"trait", label:"Trait", poolKey:"traits", value: seed.trait },
+    { key:"voice", label:"Voice", poolKey:"voices", value: seed.voice },
+  ].filter(p => p.value);
+}
+
+/* =========================
    RENDER: Liste
 ========================= */
 function renderEntityList(){
@@ -1092,11 +1334,17 @@ function renderEntityList(){
 }
 
 /* =========================
-   TOOLBOX UI (Schritt 1)
+   TOOLBOX UI
 ========================= */
 function renderToolboxList(){
   tbEnsureUsedKeys();
 
+  if(state.tbTab === "seeds"){
+    renderSeedsList();
+    return;
+  }
+
+  // Blocks tab
   elListTitle.textContent = "🎲 Toolbox – Bausteine";
   elEntityList.innerHTML = "";
 
@@ -1196,6 +1444,70 @@ function renderToolboxList(){
   if(isMobile()) setView("list");
 }
 
+function renderSeedsList(){
+  elListTitle.textContent = `📦 Seeds (${(TOOLBOX.seeds || []).length})`;
+  elEntityList.innerHTML = "";
+
+  const seeds = (TOOLBOX.seeds || []).slice()
+    .sort((a,b)=>String(a.label||"").localeCompare(String(b.label||""),'de'));
+
+  // Header buttons
+  const header = document.createElement("div");
+  header.className = "tb-card";
+  header.innerHTML = `
+    <div class="tb-row">
+      <div class="grow">
+        <div class="tb-value">📦 Seeds</div>
+        <div class="tb-mini">Seeds können Name/Rolle/Hook etc. enthalten. Du kannst einzelne Teile als benutzt markieren.</div>
+      </div>
+      <button id="btnSeedRandom" class="center">🎲 Random Seed</button>
+    </div>
+  `;
+  elEntityList.appendChild(header);
+
+  header.querySelector("#btnSeedRandom").onclick = () => {
+    if(seeds.length === 0){ showToast("Keine Seeds vorhanden."); return; }
+    let pick = null;
+
+    if(TOOLBOX.settings.onlyUnused){
+      const unused = seeds.filter(s => !tbSeedIsUsed(s));
+      pick = unused.length ? randPick(unused) : randPick(seeds);
+    } else {
+      pick = randPick(seeds);
+    }
+
+    state.selectedSeedId = (pick.id || ("seed-"+slugifyNameToId(pick.label)));
+    TOOLBOX.current.seedId = state.selectedSeedId;
+    saveWorld();
+
+    renderAll();
+    if(isMobile()) setView("detail");
+  };
+
+  for(const s of seeds){
+    const sid = (s.id || ("seed-"+slugifyNameToId(s.label)));
+    const used = tbSeedIsUsed(s);
+    const btn = document.createElement("button");
+    btn.className = "seed-btn" + (state.selectedSeedId === sid ? " active" : "");
+    btn.innerHTML = `
+      <div class="title">${escapeHtml(s.label || "Seed")}${used ? " · ✅" : ""}</div>
+      <div class="meta">${escapeHtml(seedMeta(s))}</div>
+      <div class="mini">${escapeHtml(seedSummary(s))}</div>
+    `;
+    btn.onclick = () => {
+      state.selectedSeedId = sid;
+      TOOLBOX.current.seedId = sid;
+      saveWorld();
+      renderAll();
+      if(isMobile()) setView("detail");
+    };
+    elEntityList.appendChild(btn);
+  }
+
+  renderSeedsDetail();
+  if(isMobile()) setView("list");
+}
+
 /* =========================
    TOOLBOX DETAIL / WORKBENCH
 ========================= */
@@ -1205,6 +1517,21 @@ function getAllNpcCategories(){
   set.add("Toolbox/Spontan");
   set.add("Unkategorisiert");
   return Array.from(set).sort((a,b)=>a.localeCompare(b,'de'));
+}
+
+async function copyToClipboard(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast("Kopiert ✅");
+  }catch{
+    const tmp = document.createElement("textarea");
+    tmp.value = text;
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand("copy");
+    tmp.remove();
+    showToast("Kopiert ✅");
+  }
 }
 
 function renderToolboxDetail(){
@@ -1235,18 +1562,14 @@ function renderToolboxDetail(){
   const body = [];
   body.push(`<div class="tb-card">
     <div class="tb-row">
-      <div class="grow">
-        <div class="tb-label">Default-Kategorie fürs Speichern</div>
-      </div>
+      <div class="grow"><div class="tb-label">Default-Kategorie fürs Speichern</div></div>
       <select id="tbDefaultCat" class="grow" style="min-width:220px;">
         ${categoryOptions.map(x => `<option value="${escapeHtml(x)}" ${x===defaultCat?"selected":""}>${escapeHtml(x)}</option>`).join("")}
       </select>
     </div>
 
     <div class="tb-row">
-      <div class="grow">
-        <div class="tb-label">Default-Ort (optional, verlinkt als placeId)</div>
-      </div>
+      <div class="grow"><div class="tb-label">Default-Ort (optional, verlinkt als placeId)</div></div>
       <select id="tbDefaultPlace" class="grow" style="min-width:220px;">
         <option value="" ${defaultPlace===""?"selected":""}>(kein Ort)</option>
         ${placeOptions.map(p => `<option value="${escapeHtml(p.id)}" ${p.id===defaultPlace?"selected":""}>${escapeHtml(p.name)} · ${escapeHtml(p.id)}</option>`).join("")}
@@ -1303,12 +1626,7 @@ function renderToolboxDetail(){
       const slot = btn.getAttribute("data-tbcopy");
       const text = TOOLBOX.current[slot];
       if(!text) return;
-      try{ await navigator.clipboard.writeText(text); showToast("Kopiert: " + text); }
-      catch{
-        const tmp = document.createElement("textarea");
-        tmp.value = text; document.body.appendChild(tmp); tmp.select(); document.execCommand("copy"); tmp.remove();
-        showToast("Kopiert: " + text);
-      }
+      await copyToClipboard(text);
     };
   });
 
@@ -1367,16 +1685,136 @@ function renderToolboxDetail(){
     const npc = { id, name: npcName, categories: cats, tags: [], placeIds, fields };
     NPCS.push(npc);
     saveWorld();
-    showToast("NPC gespeichert: " + npcName);
+    showToast("NPC gespeichert ✅");
     openNpcById(id);
   };
 }
 
+function renderSeedsDetail(){
+  elDetailActions.style.display = "none";
+  elDetailActionsHr.style.display = "none";
+  detailIdHint.textContent = "";
+
+  const seed = state.selectedSeedId ? getSeedById(state.selectedSeedId) : null;
+
+  elDetailTitle.textContent = "📦 Seed";
+  elDetailSub.textContent = seed ? (seed.tags && seed.tags.length ? seed.tags.join(", ") : "—") : "Seed auswählen oder Random ziehen.";
+
+  if(!seed){
+    elDetailBody.innerHTML = `<div class="muted">—</div>`;
+    return;
+  }
+
+  const usedSeed = tbSeedIsUsed(seed);
+  const parts = seedParts(seed);
+
+  const partsHtml = parts.map(p => {
+    const used = tbIsUsed(p.poolKey, p.value);
+    return `
+      <div class="tb-card">
+        <div class="tb-row">
+          <div class="grow">
+            <div class="tb-label">${escapeHtml(p.label)}</div>
+            <div class="tb-value">${escapeHtml(p.value)}</div>
+            <div class="tb-mini">${used ? "✅ benutzt markiert" : "🆕 unbenutzt"} · Pool: <span class="muted">${escapeHtml(p.poolKey)}</span></div>
+          </div>
+          <div class="tb-btns">
+            <button data-seedcopy="${escapeHtml(p.key)}">📋</button>
+            <button data-seeduse="${escapeHtml(p.key)}">${used ? "↩︎" : "✅"}</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("\n");
+
+  elDetailBody.innerHTML = `
+    <div class="tb-card">
+      <div class="tb-row">
+        <div class="grow">
+          <div class="tb-value">${escapeHtml(seed.label || "Seed")}${usedSeed ? " · ✅ benutzt" : ""}</div>
+          <div class="tb-mini">${escapeHtml(seedSummary(seed))}</div>
+          ${seed.note ? `<div class="tb-mini" style="margin-top:6px; white-space:pre-wrap;">${escapeHtml(seed.note)}</div>` : ""}
+        </div>
+      </div>
+
+      <div class="tb-btns">
+        <button id="btnSeedWorkbench">➡️ In Workbench</button>
+        <button id="btnSeedMark">${usedSeed ? "↩︎ Seed unbenutzt" : "✅ Seed benutzt"}</button>
+      </div>
+
+      <div class="tb-mini muted">„In Workbench“ kopiert die Seed-Felder in deine Bausteine (ohne automatisch used zu setzen).</div>
+    </div>
+
+    ${partsHtml || `<div class="muted">Dieser Seed hat keine Teile (Name/Rolle/Hook/etc). Nur Text.</div>`}
+  `;
+
+  document.getElementById("btnSeedWorkbench").onclick = () => {
+    // only set if present
+    if(seed.name) tbSetCurrent("name", seed.name);
+    if(seed.role) tbSetCurrent("role", seed.role);
+    if(seed.hook) tbSetCurrent("hook", seed.hook);
+    if(seed.voice) tbSetCurrent("voice", seed.voice);
+
+    // Trait: put into trait1 if empty else trait2
+    if(seed.trait){
+      if(!TOOLBOX.current.trait1) tbSetCurrent("trait1", seed.trait);
+      else if(!TOOLBOX.current.trait2) tbSetCurrent("trait2", seed.trait);
+      else tbSetCurrent("trait2", seed.trait);
+    }
+
+    showToast("In Workbench übernommen ✅");
+    // optionally switch tab
+    state.tbTab = "blocks";
+    renderAll();
+    if(isMobile()) setView("detail");
+  };
+
+  document.getElementById("btnSeedMark").onclick = () => {
+    if(tbSeedIsUsed(seed)) tbSeedUnmarkUsed(seed);
+    else tbSeedMarkUsed(seed);
+    saveWorld();
+    renderAll();
+  };
+
+  elDetailBody.querySelectorAll("[data-seedcopy]").forEach(btn => {
+    btn.onclick = async () => {
+      const key = btn.getAttribute("data-seedcopy");
+      const map = { name: seed.name, role: seed.role, hook: seed.hook, trait: seed.trait, voice: seed.voice };
+      const text = map[key];
+      if(text) await copyToClipboard(text);
+    };
+  });
+
+  elDetailBody.querySelectorAll("[data-seeduse]").forEach(btn => {
+    btn.onclick = () => {
+      const key = btn.getAttribute("data-seeduse");
+      const map = {
+        name: { poolKey:"names.human", value: seed.name },
+        role: { poolKey:"roles", value: seed.role },
+        hook: { poolKey:"hooks", value: seed.hook },
+        trait:{ poolKey:"traits", value: seed.trait },
+        voice:{ poolKey:"voices", value: seed.voice },
+      };
+      const p = map[key];
+      if(!p || !p.value) return;
+      const used = tbIsUsed(p.poolKey, p.value);
+      if(used) tbUnmarkUsed(p.poolKey, p.value);
+      else tbMarkUsed(p.poolKey, p.value);
+      saveWorld();
+      renderAll();
+    };
+  });
+}
+
 /* =========================
-   RENDER: Detail (NPC/Orte)
+   RENDER: Detail (NPC/Orte/Toolbox)
 ========================= */
 function renderDetail(ent){
-  if(state.mode === "toolbox"){ renderToolboxDetail(); return; }
+  if(state.mode === "toolbox"){
+    if(state.tbTab === "seeds") renderSeedsDetail();
+    else renderToolboxDetail();
+    return;
+  }
 
   if(!ent){
     elDetailActions.style.display = "none";
@@ -1489,18 +1927,7 @@ function renderDetail(ent){
 btnCopyId.onclick = async () => {
   const ent = getSelectedEntity();
   if(!ent) return;
-  try{
-    await navigator.clipboard.writeText(ent.id);
-    showToast(`ID kopiert: ${ent.id}`);
-  }catch{
-    const tmp = document.createElement("textarea");
-    tmp.value = ent.id;
-    document.body.appendChild(tmp);
-    tmp.select();
-    document.execCommand("copy");
-    tmp.remove();
-    showToast(`ID kopiert: ${ent.id}`);
-  }
+  await copyToClipboard(ent.id);
 };
 
 /* =========================
@@ -1588,7 +2015,7 @@ btnSaveEdit.onclick = () => {
 };
 
 /* =========================
-   IMPORT MODAL (NPC/Ort)
+   IMPORT MODAL (NPC/Ort/Toolbox)
 ========================= */
 const importBg = document.getElementById("importBg");
 const importText = document.getElementById("importText");
@@ -1596,14 +2023,20 @@ const importInfo = document.getElementById("importInfo");
 const btnDoImport = document.getElementById("btnDoImport");
 const btnImportModeNpcs = document.getElementById("btnImportModeNpcs");
 const btnImportModePlaces = document.getElementById("btnImportModePlaces");
+const btnImportModeToolbox = document.getElementById("btnImportModeToolbox");
 const importHeaderTitle = document.getElementById("importHeaderTitle");
 const importFormatHelp = document.getElementById("importFormatHelp");
+const toolboxImportControls = document.getElementById("toolboxImportControls");
+const tbImportTarget = document.getElementById("tbImportTarget");
+const tbImportModeSel = document.getElementById("tbImportMode");
 let importMode = "npcs";
 
 function setImportMode(mode){
   importMode = mode;
   btnImportModeNpcs.classList.toggle("active", mode === "npcs");
   btnImportModePlaces.classList.toggle("active", mode === "places");
+  btnImportModeToolbox.classList.toggle("active", mode === "toolbox");
+  toolboxImportControls.style.display = (mode === "toolbox") ? "block" : "none";
 
   if(mode === "npcs"){
     importHeaderTitle.textContent = "⬇️ Import: NPC-Textblöcke";
@@ -1612,13 +2045,20 @@ function setImportMode(mode){
       `Optional: <code>**Kategorien:** ...</code> · <code>**Tags:** ...</code> · <code>**Orte:** id1, id2</code><br>` +
       `Trennen mit <code>---</code>.`;
     btnDoImport.textContent = "✅ Importieren (NPCs)";
-  } else {
+  } else if(mode === "places") {
     importHeaderTitle.textContent = "⬇️ Import: Orte (strict IDs)";
     importFormatHelp.innerHTML =
       `Start je Ort mit <code>### Name</code> und <code>**ID:** place-id</code>.<br>` +
       `Optional: <code>**Typ:**</code> · <code>**Parent:** parent-id</code> · <code>**Kategorien:**</code> · <code>**Tags:**</code> · <code>**NPCs:** npc-id1, npc-id2</code><br>` +
       `Weitere Felder als <code>**Feld:** Wert</code>. Trennen mit <code>---</code>.`;
     btnDoImport.textContent = "✅ Importieren (Orte)";
+  } else {
+    importHeaderTitle.textContent = "⬇️ Import: Toolbox (Pools/Seeds)";
+    importFormatHelp.innerHTML =
+      `Pools: 1 Eintrag pro Zeile (oder JSON-Array).<br>` +
+      `Seeds: <code>Label | tags, tags | note ...</code> (note kann <code>name=</code>, <code>role=</code>, <code>hook=</code> enthalten) oder JSON-Array.<br>` +
+      `Beispiel Seed: <code>Müde Wache | Phandalin, Guard | name=Rurik; role=Wache; hook=Hat was gesehen</code>`;
+    btnDoImport.textContent = "✅ Importieren (Toolbox)";
   }
 }
 
@@ -1626,7 +2066,10 @@ function openImport(){
   importInfo.textContent = "";
   importText.value = "";
   importBg.style.display = "flex";
-  setImportMode(state.mode === "places" ? "places" : "npcs");
+  // default to current view
+  if(state.mode === "places") setImportMode("places");
+  else if(state.mode === "toolbox") setImportMode("toolbox");
+  else setImportMode("npcs");
 }
 function closeImport(){ importBg.style.display = "none"; }
 
@@ -1636,6 +2079,7 @@ importBg.addEventListener("click", (e) => { if(e.target === importBg) closeImpor
 
 btnImportModeNpcs.onclick = () => setImportMode("npcs");
 btnImportModePlaces.onclick = () => setImportMode("places");
+btnImportModeToolbox.onclick = () => setImportMode("toolbox");
 
 btnDoImport.onclick = () => {
   if(importMode === "npcs"){
@@ -1668,7 +2112,8 @@ btnDoImport.onclick = () => {
     NPCS = Array.from(map.values());
     saveWorld();
     importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
-  } else {
+  }
+  else if(importMode === "places"){
     const { parsed, errors, warnings } = parsePlaceBlocks(importText.value);
     if(parsed.length === 0){
       importInfo.textContent = errors.length ? "Keine Orte erkannt. Hinweis: " + errors[0] : "Keine Orte erkannt.";
@@ -1697,6 +2142,61 @@ btnDoImport.onclick = () => {
     saveWorld();
     importInfo.textContent = `✅ Importiert: ${parsed.length} Ort(e).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
   }
+  else {
+    // toolbox
+    makeDefaultToolboxIfMissing();
+    tbEnsureUsedKeys();
+
+    const target = tbImportTarget.value;
+    const mode = tbImportModeSel.value; // append/replace
+    const ref = getTbPoolRef(target);
+    if(!ref){ importInfo.textContent = "Unbekanntes Ziel: " + target; return; }
+
+    const { items, seeds, errors } = parseToolboxImport(importText.value, target);
+    if(target === "seeds"){
+      if(seeds.length === 0){
+        importInfo.textContent = errors.length ? ("Keine Seeds erkannt. " + errors[0]) : "Keine Seeds erkannt.";
+        return;
+      }
+
+      const existing = Array.isArray(TOOLBOX.seeds) ? TOOLBOX.seeds : [];
+      if(mode === "replace"){
+        TOOLBOX.seeds = seeds;
+      } else {
+        // append with id de-dupe
+        const map = new Map();
+        for(const s of existing){
+          const sid = String(s.id || ("seed-"+slugifyNameToId(s.label||"seed")));
+          map.set(sid, { ...s, id: sid });
+        }
+        for(const s of seeds){
+          const sid = String(s.id || ("seed-"+slugifyNameToId(s.label||"seed")));
+          map.set(sid, { ...s, id: sid });
+        }
+        TOOLBOX.seeds = Array.from(map.values());
+      }
+      saveWorld();
+      importInfo.textContent = `✅ Toolbox: Seeds importiert (${seeds.length}).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+    } else {
+      if(items.length === 0){
+        importInfo.textContent = errors.length ? ("Keine Einträge erkannt. " + errors[0]) : "Keine Einträge erkannt.";
+        return;
+      }
+
+      // write pool
+      if(ref.kind === "names"){
+        TOOLBOX.pools.names = TOOLBOX.pools.names || {};
+        const cur = Array.isArray(TOOLBOX.pools.names[ref.race]) ? TOOLBOX.pools.names[ref.race] : [];
+        TOOLBOX.pools.names[ref.race] = (mode === "replace") ? uniq(items) : uniq(cur.concat(items));
+      } else if(ref.kind === "list"){
+        const cur = Array.isArray(TOOLBOX.pools[ref.key]) ? TOOLBOX.pools[ref.key] : [];
+        TOOLBOX.pools[ref.key] = (mode === "replace") ? uniq(items) : uniq(cur.concat(items));
+      }
+
+      saveWorld();
+      importInfo.textContent = `✅ Toolbox: ${target} importiert (${items.length}).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+    }
+  }
 
   renderAll();
   if(isMobile()) setView("cats");
@@ -1718,7 +2218,6 @@ elSearch.addEventListener("input", (e) => {
 function getWorldObject(){
   return { npcs: NPCS, places: PLACES, toolbox: TOOLBOX };
 }
-
 document.getElementById("btnExport").onclick = () => {
   const data = JSON.stringify(getWorldObject(), null, 2);
   const blob = new Blob([data], { type: "application/json" });
@@ -1731,20 +2230,17 @@ document.getElementById("btnExport").onclick = () => {
   a.remove();
   URL.revokeObjectURL(url);
 };
-
 document.getElementById("btnExportClipboard").onclick = async () => {
   const data = JSON.stringify(getWorldObject(), null, 2);
   try{
     await navigator.clipboard.writeText(data);
     showToast("Export JSON in Zwischenablage ✅");
   }catch{
-    // Fallback: Modal-like prompt
     const ok = confirm("Clipboard nicht erlaubt. Soll der JSON-Text in einem Prompt-Feld angezeigt werden?");
     if(!ok) return;
     window.prompt("Kopiere den JSON-Text:", data);
   }
 };
-
 document.getElementById("btnReset").onclick = () => {
   const ok = confirm("Wirklich alle NPCs UND Orte löschen? (Toolbox bleibt)");
   if(!ok) return;
@@ -1818,7 +2314,7 @@ async function syncLoad(){
         fields: (p.fields && typeof p.fields === "object") ? p.fields : {}
       }));
 
-    // Toolbox: mergeUsed (pools/settings aus Remote, used union)
+    // Toolbox: mergeUsed (pools/settings from remote, used union, seeds from remote)
     if(toolboxIncoming){
       makeDefaultToolboxIfMissing();
       TOOLBOX = mergeToolbox(TOOLBOX, toolboxIncoming, { mode: "mergeUsed" });
@@ -1830,6 +2326,7 @@ async function syncLoad(){
     state.selectedCategory = null;
     state.selectedEntityId = null;
     state.search = "";
+    state.selectedSeedId = null;
     elSearch.value = "";
     state.view = "cats";
 
@@ -1850,12 +2347,25 @@ async function syncLoad(){
     btnTopSync.disabled = false;
   }
 }
-
 document.getElementById("btnSyncLoad").onclick = syncLoad;
 
 /* =========================
-   COPY ID / EDIT BUTTONS etc: already wired above
+   TOOLBOX TOGGLE / Tabs UI wiring
 ========================= */
+function setToolboxTab(tab){
+  state.tbTab = tab;
+  renderAll();
+  if(isMobile()) setView("list");
+}
+
+/* =========================
+   MODE SWITCH
+========================= */
+function collectEntitiesCategoriesForMode(){
+  if(state.mode === "npcs") return collectCategories(NPCS);
+  if(state.mode === "places") return collectCategories(PLACES);
+  return ["—"];
+}
 
 /* =========================
    MAIN RENDER
@@ -1875,7 +2385,9 @@ function renderAll(){
   renderDetail(getSelectedEntity());
 }
 
-/* INIT */
+/* =========================
+   INIT
+========================= */
 makeDefaultToolboxIfMissing();
 tbEnsureUsedKeys();
 updateModeUi();
