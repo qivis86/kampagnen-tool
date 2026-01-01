@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NPC & Orte</title>
+<title>Kampagnen-Tool – NPCs & Orte</title>
 
 <style>
   body { margin:0; background:#0b0c10; color:#e8e8e8; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
@@ -110,34 +110,6 @@
   }
   .toast.show{ opacity:1; }
 
-  /* Toolbox */
-  .tb-card{
-    background:#10131a;
-    border:1px solid #2a3042;
-    border-radius:12px;
-    padding:10px;
-    display:grid;
-    gap:8px;
-  }
-  .tb-row{
-    display:flex;
-    gap:8px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  .tb-row > *{ flex: 0 0 auto; }
-  .tb-row .grow{ flex: 1 1 auto; min-width: 180px; }
-  .tb-label{ font-size:12px; opacity:.8; }
-  .tb-value{ font-size:14px; font-weight:600; }
-  .tb-mini{ font-size:12px; opacity:.75; }
-  .tb-btns{ display:flex; gap:8px; flex-wrap:wrap; }
-  .tb-btns button{ width:auto; text-align:center; }
-
-  .seed-btn{ display:grid; gap:4px; }
-  .seed-btn .title{ font-weight:600; }
-  .seed-btn .meta{ font-size:12px; opacity:.75; }
-  .seed-btn .mini{ font-size:12px; opacity:.7; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
   /* Import Form */
   .formwrap{
     display:grid;
@@ -210,8 +182,6 @@
       <button id="btnModePlaces">📍 Orte</button>
     </div>
 
-    <button id="btnModeToolbox" class="center" style="margin-bottom:10px;">🎲 NPC-Toolbox</button>
-
     <div class="muted" id="catsHint">Klick → Liste</div>
     <div class="hr"></div>
 
@@ -219,32 +189,15 @@
       <div class="grid" id="catButtons"></div>
     </div>
 
-    <div id="toolboxArea" style="display:none;">
-      <div class="grid">
-        <button id="btnTbTabBlocks" class="active">🧩 Bausteine</button>
-        <button id="btnTbTabSeeds">📦 Seeds</button>
-      </div>
-      <div class="hr"></div>
-
-      <div class="tb-card">
-        <div class="tb-row">
-          <div class="grow">
-            <div class="tb-label">Ziehen-Modus</div>
-            <div class="tb-mini">Steuert, ob „Ziehen“ nur Unbenutzte nimmt.</div>
-          </div>
-          <button id="btnTbToggleUnused" class="center">✅ Nur unbenutzt</button>
-        </div>
-      </div>
-    </div>
-
     <div class="hr"></div>
     <div class="grid">
       <button id="btnSyncLoad" class="center">🔄 Sync laden</button>
       <button id="btnImport" class="center">⬇️ Import</button>
       <button id="btnExportClipboard" class="center">📋 Export JSON (Clipboard)</button>
-      <button id="btnExport" class="center">⬆️ Export (World JSON)</button>
+      <button id="btnExport" class="center">⬆️ Export (Download)</button>
       <button id="btnReset" class="center danger">🧨 Reset</button>
     </div>
+
     <div class="hr"></div>
     <div class="muted" id="syncStatus">Sync: —</div>
     <div class="muted">Alles wird lokal im Browser gespeichert (localStorage).</div>
@@ -280,44 +233,17 @@
     <header>
       <div style="font-weight:600;" id="importHeaderTitle">⬇️ Import</div>
       <div class="muted" style="margin-top:4px;" id="importHeaderHint">
-        NPCs/Orte: Text oder Formular. Toolbox: Pools/Seeds.
+        NPCs/Orte: Text oder Formular.
       </div>
 
       <div class="smallseg">
         <button id="btnImportModeNpcs" class="active">🧑 NPCs</button>
         <button id="btnImportModePlaces">📍 Orte</button>
-        <button id="btnImportModeToolbox">🎲 Toolbox</button>
       </div>
 
-      <!-- Sub tabs for NPC/Place -->
       <div class="smallseg" id="importSubTabs" style="display:flex;">
         <button id="btnImportSubText" class="active">📝 Text</button>
         <button id="btnImportSubForm">🧾 Formular</button>
-      </div>
-
-      <div id="toolboxImportControls" style="display:none; margin-top:10px;">
-        <div class="row">
-          <div>
-            <div class="muted" style="margin-bottom:6px;">Ziel</div>
-            <select id="tbImportTarget">
-              <option value="names.human">names.human</option>
-              <option value="names.dwarf">names.dwarf</option>
-              <option value="names.elf">names.elf</option>
-              <option value="roles">roles</option>
-              <option value="traits">traits</option>
-              <option value="hooks">hooks</option>
-              <option value="voices">voices</option>
-              <option value="seeds">seeds</option>
-            </select>
-          </div>
-          <div>
-            <div class="muted" style="margin-bottom:6px;">Import-Modus</div>
-            <select id="tbImportMode">
-              <option value="append">Anhängen (empfohlen)</option>
-              <option value="replace">Ersetzen</option>
-            </select>
-          </div>
-        </div>
       </div>
 
       <div class="muted" style="margin-top:8px;" id="importFormatHelp"></div>
@@ -342,27 +268,6 @@
   </div>
 </div>
 
-<!-- Edit Modal -->
-<div class="modal-bg" id="editBg">
-  <div class="modal">
-    <header>
-      <div style="font-weight:600;">✏️ Bearbeiten</div>
-      <div class="muted" style="margin-top:4px;">
-        Links strikt als IDs pflegen:
-        NPC: <code>**Orte:** id1, id2</code> · Ort: <code>**NPCs:** id1, id2</code>.
-      </div>
-    </header>
-    <textarea class="big" id="editText" placeholder="Text …"></textarea>
-    <footer>
-      <div class="row">
-        <button id="btnSaveEdit" class="center">💾 Speichern</button>
-        <button id="btnCancelEdit" class="center">✖ Abbrechen</button>
-      </div>
-      <div class="muted" id="editInfo" style="margin-top:8px;"></div>
-    </footer>
-  </div>
-</div>
-
 <script>
 /* =========================
    CONFIG
@@ -372,47 +277,26 @@ const REMOTE_DATA_URL = "data/data.json";
 /* =========================
    STORAGE
 ========================= */
-const STORAGE_KEY = "npc_places_links_app_v4_form_import";
-let { NPCS, PLACES, TOOLBOX } = loadWorld();
-
-function makeDefaultToolbox(){
-  return {
-    settings: { onlyUnused: true, defaultCategory: "Toolbox/Spontan", defaultPlaceId: "" },
-    pools: {
-      names: { human: ["Mara","Elly","Finn","Bram","Toblen","Halia","Linene","Harbin"], dwarf: ["Gundren","Nundro","Tharden"], elf: ["Syla","Aelar","Naivara"] },
-      roles: ["Wirt", "Händlerin", "Wache", "Bote", "Minenarbeiter", "Heilerin", "Schmied", "Jäger"],
-      traits: ["überhöflich", "misstrauisch", "redet zu viel", "immer nervös", "sehr direkt", "lächelt nie"],
-      hooks: ["hat Schulden bei jemandem", "hat etwas Unheimliches gesehen", "sucht eine Person", "will nur in Ruhe gelassen werden"],
-      voices: ["spricht sehr leise", "rollt das R", "lacht an falschen Stellen", "spricht in kurzen Befehlen"]
-    },
-    seeds: [
-      { id: "seed-stonehill-regular", label: "Stammgast im Stonehill", tags: ["Phandalin","Stonehill Inn"], note: "Kennt jedes Gerücht – aber nie die ganze Wahrheit.", role: "Stammgast", hook: "hat etwas gehört, will aber erst sicher sein, dass du vertrauenswürdig bist", voice: "spricht in Andeutungen" },
-      { id: "seed-tired-guard", label: "Müde Wache", tags: ["Phandalin","Guard"], note: "Will eigentlich nur nach Hause.", role: "Wache", trait: "müde, aber pflichtbewusst", hook: "hat letzte Nacht eine Gestalt am Ortsrand gesehen" }
-    ],
-    used: { "names.human": [], "names.dwarf": [], "names.elf": [], "roles": [], "traits": [], "hooks": [], "voices": [], "seeds": [] },
-    current: { name: null, role: null, trait1: null, trait2: null, hook: null, voice: null, seedId: null }
-  };
-}
+const STORAGE_KEY = "kampagnen_tool_world_v1";
+let { NPCS, PLACES } = loadWorld();
 
 function loadWorld(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : null;
-    if(parsed && typeof parsed === "object" && (Array.isArray(parsed.npcs) || Array.isArray(parsed.places) || parsed.toolbox)){
+    if(parsed && typeof parsed === "object"){
       return {
-        NPCS: Array.isArray(parsed.npcs)? parsed.npcs : [],
-        PLACES: Array.isArray(parsed.places)? parsed.places : [],
-        TOOLBOX: (parsed.toolbox && typeof parsed.toolbox === "object") ? parsed.toolbox : makeDefaultToolbox()
+        NPCS: Array.isArray(parsed.npcs) ? parsed.npcs : [],
+        PLACES: Array.isArray(parsed.places) ? parsed.places : []
       };
     }
-    if(Array.isArray(parsed)) return { NPCS: parsed, PLACES: [], TOOLBOX: makeDefaultToolbox() };
-    return { NPCS: [], PLACES: [], TOOLBOX: makeDefaultToolbox() };
+    return { NPCS: [], PLACES: [] };
   }catch{
-    return { NPCS: [], PLACES: [], TOOLBOX: makeDefaultToolbox() };
+    return { NPCS: [], PLACES: [] };
   }
 }
 function saveWorld(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ npcs: NPCS, places: PLACES, toolbox: TOOLBOX }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ npcs: NPCS, places: PLACES }));
 }
 
 /* =========================
@@ -481,7 +365,6 @@ function parseCommaList(value){
   return String(value || "").split(",").map(s => s.trim()).filter(Boolean);
 }
 function uniq(arr){ return Array.from(new Set((arr || []).filter(Boolean))); }
-function deepClone(obj){ try { return structuredClone(obj); } catch { return JSON.parse(JSON.stringify(obj)); } }
 function parseKeyValueLine(line){
   const raw = normalizeLine(line);
   const noBullet = raw.replace(/^[-*•]\s+/, "").trim();
@@ -510,27 +393,32 @@ function splitBlocks(rawText){
   pushCurrent();
   return blocks;
 }
+function ensureUniqueId(baseId, list){
+  let id = baseId;
+  let i = 2;
+  while(list.some(x => x.id === id)){
+    id = baseId + "-" + i;
+    i++;
+  }
+  return id;
+}
+async function copyToClipboard(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast("Kopiert ✅");
+  }catch{
+    const tmp = document.createElement("textarea");
+    tmp.value = text;
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand("copy");
+    tmp.remove();
+    showToast("Kopiert ✅");
+  }
+}
 
 /* =========================
-   TOOLBOX minimal bootstrap (unchanged logic)
-========================= */
-function makeDefaultToolboxIfMissing(){
-  if(!TOOLBOX || typeof TOOLBOX !== "object") TOOLBOX = makeDefaultToolbox();
-  if(!TOOLBOX.settings) TOOLBOX.settings = makeDefaultToolbox().settings;
-  if(!TOOLBOX.pools) TOOLBOX.pools = makeDefaultToolbox().pools;
-  if(!Array.isArray(TOOLBOX.seeds)) TOOLBOX.seeds = makeDefaultToolbox().seeds;
-  if(!TOOLBOX.used) TOOLBOX.used = makeDefaultToolbox().used;
-  if(!TOOLBOX.current) TOOLBOX.current = makeDefaultToolbox().current;
-}
-function tbEnsureUsedKeys(){
-  const keys = ["names.human","names.dwarf","names.elf","roles","traits","hooks","voices","seeds"];
-  TOOLBOX.used = TOOLBOX.used || {};
-  for(const k of keys){ if(!Array.isArray(TOOLBOX.used[k])) TOOLBOX.used[k] = []; }
-}
-makeDefaultToolboxIfMissing(); tbEnsureUsedKeys();
-
-/* =========================
-   IMPORT: NPCs (Text)
+   PARSER: NPCs (Text)
 ========================= */
 function parseNpcBlocks(rawText){
   const blocks = splitBlocks(rawText);
@@ -544,14 +432,13 @@ function parseNpcBlocks(rawText){
 
     const nameLine = nonEmpty[0];
     if(!isNpcStartLine(nameLine)){
-      errors.push(`NPC Block ${idx+1}: Keine gültige Überschrift gefunden. Erste Zeile: "${nameLine}"`);
+      errors.push(`NPC Block ${idx+1}: Keine gültige Überschrift. Erste Zeile: "${nameLine}"`);
       return;
     }
 
     const name = extractNameFromLine(nameLine);
     const npc = { id: slugifyNameToId(name), name, categories: [], tags: [], placeIds: [], fields: {} };
 
-    let currentSection = null;
     let lastKey = null;
 
     for(let i=1; i<raw.length; i++){
@@ -563,27 +450,12 @@ function parseNpcBlocks(rawText){
 
       if(kv){
         const keyLower = kv.key.toLowerCase();
+        if(keyLower === "kategorie" || keyLower === "kategorien"){ npc.categories = parseCommaList(kv.value); lastKey=null; continue; }
+        if(keyLower === "tag" || keyLower === "tags"){ npc.tags = parseCommaList(kv.value); lastKey=null; continue; }
+        if(keyLower === "orte" || keyLower === "ort"){ npc.placeIds = parseCommaList(kv.value); lastKey=null; continue; }
 
-        if(keyLower === "kategorie" || keyLower === "kategorien"){ npc.categories = parseCommaList(kv.value); currentSection=null; lastKey=null; continue; }
-        if(keyLower === "tag" || keyLower === "tags"){ npc.tags = parseCommaList(kv.value); currentSection=null; lastKey=null; continue; }
-        if(keyLower === "orte" || keyLower === "ort" || keyLower === "place" || keyLower === "places"){ npc.placeIds = parseCommaList(kv.value); currentSection=null; lastKey=null; continue; }
-
-        if(kv.value === ""){
-          currentSection = kv.key;
-          if(!(kv.key in npc.fields)) npc.fields[kv.key] = "";
-          lastKey = kv.key;
-          continue;
-        }
-
-        const rawLine = raw[i].trim();
-        const isBullet = rawLine.startsWith("*") || rawLine.startsWith("-");
-        let finalKey = kv.key;
-
-        if(currentSection && isBullet) finalKey = `${currentSection} – ${kv.key}`;
-        else currentSection = null;
-
-        npc.fields[finalKey] = kv.value;
-        lastKey = finalKey;
+        npc.fields[kv.key] = kv.value;
+        lastKey = kv.key;
         continue;
       }
 
@@ -602,7 +474,7 @@ function parseNpcBlocks(rawText){
 }
 
 /* =========================
-   IMPORT: PLACES (Text)
+   PARSER: PLACES (Text)
 ========================= */
 function parsePlaceBlocks(rawText){
   const blocks = splitBlocks(rawText);
@@ -617,7 +489,7 @@ function parsePlaceBlocks(rawText){
 
     const header = nonEmpty[0];
     if(!/^#{1,6}\s+/.test(header)){
-      errors.push(`Ort Block ${idx+1}: Keine Überschrift gefunden (erwarte "### Name"). Erste Zeile: "${header}"`);
+      errors.push(`Ort Block ${idx+1}: Keine Überschrift (erwarte "### Name"). Erste Zeile: "${header}"`);
       return;
     }
 
@@ -665,99 +537,30 @@ function parsePlaceBlocks(rawText){
 }
 
 /* =========================
-   SIMPLE UPSERT HELPERS (Form)
+   UI STATE
 ========================= */
-function ensureUniqueId(baseId, list){
-  let id = baseId;
-  let i = 2;
-  while(list.some(x => x.id === id)){
-    id = baseId + "-" + i;
-    i++;
-  }
-  return id;
-}
-function upsertNpc(npc){
-  const idx = NPCS.findIndex(n => n.id === npc.id);
-  if(idx >= 0) NPCS[idx] = npc;
-  else NPCS.push(npc);
-}
-function upsertPlace(place){
-  const idx = PLACES.findIndex(p => p.id === place.id);
-  if(idx >= 0) PLACES[idx] = place;
-  else PLACES.push(place);
-}
-
-/* =========================
-   UI ELEMENTS
-========================= */
-const elCatButtons = document.getElementById("catButtons");
-const elEntityList = document.getElementById("entityList");
-const elListTitle = document.getElementById("listTitle");
-const elSearch = document.getElementById("search");
-const elDetailTitle = document.getElementById("detailTitle");
-const elDetailSub = document.getElementById("detailSub");
-const elDetailBody = document.getElementById("detailBody");
-const elSyncStatus = document.getElementById("syncStatus");
-
-const elDetailActions = document.getElementById("detailActions");
-const elDetailActionsHr = document.getElementById("detailActionsHr");
-const btnEditEntity = document.getElementById("btnEditEntity");
-const btnCopyId = document.getElementById("btnCopyId");
-const detailIdHint = document.getElementById("detailIdHint");
-
-const btnModeNpcs = document.getElementById("btnModeNpcs");
-const btnModePlaces = document.getElementById("btnModePlaces");
-const btnModeToolbox = document.getElementById("btnModeToolbox");
-const catsHeader = document.getElementById("catsHeader");
-const catsHint = document.getElementById("catsHint");
-
-const catsArea = document.getElementById("catsArea");
-const toolboxArea = document.getElementById("toolboxArea");
-const btnTbToggleUnused = document.getElementById("btnTbToggleUnused");
-const btnTbTabBlocks = document.getElementById("btnTbTabBlocks");
-const btnTbTabSeeds = document.getElementById("btnTbTabSeeds");
-
-btnModeNpcs.onclick = () => setMode("npcs");
-btnModePlaces.onclick = () => setMode("places");
-btnModeToolbox.onclick = () => setMode("toolbox");
-
-btnTbTabBlocks.onclick = () => { state.tbTab = "blocks"; renderAll(); if(isMobile()) setView("list"); };
-btnTbTabSeeds.onclick = () => { state.tbTab = "seeds"; renderAll(); if(isMobile()) setView("list"); };
-
-btnTbToggleUnused.onclick = () => { TOOLBOX.settings.onlyUnused = !TOOLBOX.settings.onlyUnused; saveWorld(); renderAll(); };
-
-/* =========================
-   MOBILE VIEW STATE
-========================= */
-function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 900px)").matches; }
-const panels = { cats: document.getElementById("panelCats"), list: document.getElementById("panelList"), detail: document.getElementById("panelDetail") };
-const topbarTitle = document.getElementById("topbarTitle");
-const btnBack = document.getElementById("btnBack");
-const btnTopSync = document.getElementById("btnTopSync");
-const btnTopMode = document.getElementById("btnTopMode");
-
 const state = {
   mode: "npcs",
   selectedCategory: null,
   selectedEntityId: null,
   search: "",
-  view: "cats",
-  tbTab: "blocks",
-  selectedSeedId: null
+  view: "cats"
 };
+
+function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 900px)").matches; }
+
+const panels = {
+  cats: document.getElementById("panelCats"),
+  list: document.getElementById("panelList"),
+  detail: document.getElementById("panelDetail")
+};
+const topbarTitle = document.getElementById("topbarTitle");
+const btnBack = document.getElementById("btnBack");
+const btnTopSync = document.getElementById("btnTopSync");
+const btnTopMode = document.getElementById("btnTopMode");
+
 function setView(v){ state.view = v; applyMobileVisibility(); }
-function setMode(mode){
-  state.mode = mode;
-  state.selectedCategory = null;
-  state.selectedEntityId = null;
-  state.search = "";
-  state.selectedSeedId = null;
-  elSearch.value = "";
-  state.view = "cats";
-  updateModeUi();
-  renderAll();
-  applyMobileVisibility();
-}
+
 function applyMobileVisibility(){
   if(!isMobile()){
     panels.cats.dataset.mobileHidden = "false";
@@ -772,59 +575,68 @@ function applyMobileVisibility(){
   let title = "Kategorien";
   let backEnabled = false;
   if(state.view === "list"){
-    title = state.mode === "toolbox" ? "Toolbox" : (state.selectedCategory || "Liste");
+    title = state.selectedCategory || "Liste";
     backEnabled = true;
   } else if(state.view === "detail"){
     const ent = getSelectedEntity();
-    title = state.mode === "toolbox" ? "Toolbox" : (ent ? ent.name : "Detail");
+    title = ent ? ent.name : "Detail";
     backEnabled = true;
   }
 
   topbarTitle.textContent = title;
   btnBack.disabled = !backEnabled;
-  btnTopMode.textContent = (state.mode === "places") ? "📍" : (state.mode === "toolbox" ? "🎲" : "🧑");
+  btnTopMode.textContent = (state.mode === "places") ? "📍" : "🧑";
 }
-btnBack.onclick = () => { if(state.view === "detail") setView("list"); else if(state.view === "list") setView("cats"); else setView("cats"); };
+
+btnBack.onclick = () => {
+  if(state.view === "detail") setView("list");
+  else if(state.view === "list") setView("cats");
+  else setView("cats");
+};
 btnTopSync.onclick = () => syncLoad();
-btnTopMode.onclick = () => { if(state.mode === "places") setMode("npcs"); else setMode("places"); };
+btnTopMode.onclick = () => {
+  setMode(state.mode === "places" ? "npcs" : "places");
+};
+
 window.addEventListener("resize", () => applyMobileVisibility());
 
 /* =========================
    MODE UI
 ========================= */
+const btnModeNpcs = document.getElementById("btnModeNpcs");
+const btnModePlaces = document.getElementById("btnModePlaces");
+const catsHeader = document.getElementById("catsHeader");
+const catsHint = document.getElementById("catsHint");
+
+btnModeNpcs.onclick = () => setMode("npcs");
+btnModePlaces.onclick = () => setMode("places");
+
+function setMode(mode){
+  state.mode = mode;
+  state.selectedCategory = null;
+  state.selectedEntityId = null;
+  state.search = "";
+  document.getElementById("search").value = "";
+  state.view = "cats";
+  updateModeUi();
+  renderAll();
+  applyMobileVisibility();
+}
+
 function updateModeUi(){
   const isNpc = state.mode === "npcs";
-  const isPlace = state.mode === "places";
-  const isTb = state.mode === "toolbox";
-
   btnModeNpcs.classList.toggle("active", isNpc);
-  btnModePlaces.classList.toggle("active", isPlace);
-  btnModeToolbox.classList.toggle("active", isTb);
-
-  catsArea.style.display = isTb ? "none" : "block";
-  toolboxArea.style.display = isTb ? "block" : "none";
-
-  btnTbTabBlocks.classList.toggle("active", state.tbTab === "blocks");
-  btnTbTabSeeds.classList.toggle("active", state.tbTab === "seeds");
-
-  if(isTb){
-    catsHeader.textContent = "🎲 NPC-Toolbox";
-    catsHint.textContent = state.tbTab === "seeds" ? "Seeds auswählen/ziehen" : "Bausteine ziehen & used markieren";
-    btnTbToggleUnused.textContent = TOOLBOX.settings.onlyUnused ? "✅ Nur unbenutzt" : "♻️ Auch benutzte";
-  } else {
-    catsHeader.textContent = isNpc ? "📚 Kategorien (NPCs)" : "📚 Kategorien (Orte)";
-    catsHint.textContent = isNpc ? "Klick → NPC-Liste" : "Klick → Orte-Liste";
-  }
-
-  elSearch.disabled = isTb;
-  elSearch.placeholder = isTb ? "Toolbox nutzt keine Suche" : "🔎 Suche nach Name/Tags/Feldern…";
+  btnModePlaces.classList.toggle("active", !isNpc);
+  catsHeader.textContent = isNpc ? "📚 Kategorien (NPCs)" : "📚 Kategorien (Orte)";
+  catsHint.textContent = "Klick → Liste";
 }
 
 /* =========================
    DATA ACCESS
 ========================= */
-function getEntities(){ return (state.mode === "npcs") ? NPCS : (state.mode === "places" ? PLACES : []); }
+function getEntities(){ return (state.mode === "npcs") ? NPCS : PLACES; }
 function getSelectedEntity(){ return getEntities().find(e => e.id === state.selectedEntityId) || null; }
+
 function collectCategories(list){
   const set = new Set();
   list.forEach(n => (n.categories || []).forEach(c => set.add(c)));
@@ -879,8 +691,22 @@ window.__openNpc = openNpcById;
 window.__openPlace = openPlaceById;
 
 /* =========================
-   RENDER: Kategorien
+   RENDER
 ========================= */
+const elCatButtons = document.getElementById("catButtons");
+const elEntityList = document.getElementById("entityList");
+const elListTitle = document.getElementById("listTitle");
+const elSearch = document.getElementById("search");
+const elDetailTitle = document.getElementById("detailTitle");
+const elDetailSub = document.getElementById("detailSub");
+const elDetailBody = document.getElementById("detailBody");
+
+const elDetailActions = document.getElementById("detailActions");
+const elDetailActionsHr = document.getElementById("detailActionsHr");
+const btnEditEntity = document.getElementById("btnEditEntity");
+const btnCopyId = document.getElementById("btnCopyId");
+const detailIdHint = document.getElementById("detailIdHint");
+
 function renderCategories(){
   const cats = collectCategories(getEntities());
   elCatButtons.innerHTML = "";
@@ -901,33 +727,8 @@ function renderCategories(){
   });
 }
 
-/* =========================
-   TOOLBOX (keine Änderung am Render nötig für Formular-Import)
-   -> Wir lassen Toolbox im "fertig" Zustand aus, hier minimal Dummy
-========================= */
-function renderToolboxList(){
-  elListTitle.textContent = "🎲 Toolbox";
-  elEntityList.innerHTML = `<div class="muted">Toolbox ist aktiv – bleibt wie zuletzt.</div>`;
-  elDetailActions.style.display = "none";
-  elDetailActionsHr.style.display = "none";
-  detailIdHint.textContent = "";
-  elDetailTitle.textContent = "🎲 Toolbox";
-  elDetailSub.textContent = "—";
-  elDetailBody.innerHTML = `<div class="muted">Toolbox UI ist vorhanden; Formular-Import betrifft NPCs/Orte.</div>`;
-  if(isMobile()) setView("list");
-}
-
-/* =========================
-   RENDER: Liste
-========================= */
 function renderEntityList(){
   elEntityList.innerHTML = "";
-
-  if(state.mode === "toolbox"){
-    renderToolboxList();
-    return;
-  }
-
   if(!state.selectedCategory){
     elListTitle.textContent = "Kategorie wählen";
     return;
@@ -964,12 +765,7 @@ function renderEntityList(){
   });
 }
 
-/* =========================
-   RENDER: Detail (NPC/Orte)
-========================= */
 function renderDetail(ent){
-  if(state.mode === "toolbox"){ return; }
-
   if(!ent){
     elDetailActions.style.display = "none";
     elDetailActionsHr.style.display = "none";
@@ -1075,45 +871,30 @@ function renderDetail(ent){
   `;
 }
 
-/* =========================
-   COPY ID
-========================= */
-async function copyToClipboard(text){
-  try{
-    await navigator.clipboard.writeText(text);
-    showToast("Kopiert ✅");
-  }catch{
-    const tmp = document.createElement("textarea");
-    tmp.value = text;
-    document.body.appendChild(tmp);
-    tmp.select();
-    document.execCommand("copy");
-    tmp.remove();
-    showToast("Kopiert ✅");
-  }
-}
 btnCopyId.onclick = async () => {
   const ent = getSelectedEntity();
   if(!ent) return;
   await copyToClipboard(ent.id);
 };
 
-/* =========================
-   EDIT MODAL (Placeholder – bleibt wie vorher: nicht nötig fürs Formular-Import)
-========================= */
-const editBg = document.getElementById("editBg");
-const editText = document.getElementById("editText");
-const editInfo = document.getElementById("editInfo");
-const btnSaveEdit = document.getElementById("btnSaveEdit");
-const btnCancelEdit = document.getElementById("btnCancelEdit");
-let editing = null;
+btnEditEntity.onclick = () => {
+  alert("Edit ist in deiner früheren Version vorhanden. Wenn du willst, ziehen wir es als nächsten Schritt wieder rein.");
+};
 
-function openEdit(ent){
-  alert("Edit-Modal ist in deiner vorherigen Version vorhanden. Für diesen Schritt (Formular-Import) haben wir es nicht verändert.");
+function renderAll(){
+  renderCategories();
+  renderEntityList();
+  renderDetail(getSelectedEntity());
 }
-btnEditEntity.onclick = () => openEdit(getSelectedEntity());
-btnCancelEdit.onclick = () => editBg.style.display = "none";
-btnSaveEdit.onclick = () => editBg.style.display = "none";
+updateModeUi();
+
+/* =========================
+   SEARCH
+========================= */
+elSearch.addEventListener("input", (e) => {
+  state.search = e.target.value.trim();
+  renderEntityList();
+});
 
 /* =========================
    IMPORT MODAL (Text + Formular)
@@ -1124,102 +905,18 @@ const importInfo = document.getElementById("importInfo");
 const btnDoImport = document.getElementById("btnDoImport");
 const btnImportModeNpcs = document.getElementById("btnImportModeNpcs");
 const btnImportModePlaces = document.getElementById("btnImportModePlaces");
-const btnImportModeToolbox = document.getElementById("btnImportModeToolbox");
 const importHeaderTitle = document.getElementById("importHeaderTitle");
 const importFormatHelp = document.getElementById("importFormatHelp");
-const toolboxImportControls = document.getElementById("toolboxImportControls");
-const tbImportTarget = document.getElementById("tbImportTarget");
-const tbImportModeSel = document.getElementById("tbImportMode");
 
-const importSubTabs = document.getElementById("importSubTabs");
 const btnImportSubText = document.getElementById("btnImportSubText");
 const btnImportSubForm = document.getElementById("btnImportSubForm");
 const importBodyText = document.getElementById("importBodyText");
 const importBodyForm = document.getElementById("importBodyForm");
 const importFormWrap = document.getElementById("importFormWrap");
 
-let importMode = "npcs";     // npcs | places | toolbox
+let importMode = "npcs";     // npcs | places
 let importSubMode = "text";  // text | form
 
-function setImportSubMode(sub){
-  importSubMode = sub;
-
-  btnImportSubText.classList.toggle("active", sub === "text");
-  btnImportSubForm.classList.toggle("active", sub === "form");
-
-  importBodyText.style.display = (sub === "text") ? "block" : "none";
-  importBodyForm.style.display = (sub === "form") ? "block" : "none";
-
-  // Rebuild Form IMMER, sobald Formular aktiv ist
-  if(sub === "form" && importMode !== "toolbox"){
-    if(importMode === "npcs") buildNpcForm();
-    if(importMode === "places") buildPlaceForm();
-  }
-
-  // Button-Text
-  if(importMode === "npcs") btnDoImport.textContent = (sub === "text") ? "✅ Importieren (NPCs)" : "✅ Speichern (NPC Formular)";
-  if(importMode === "places") btnDoImport.textContent = (sub === "text") ? "✅ Importieren (Orte)" : "✅ Speichern (Ort Formular)";
-  if(importMode === "toolbox") btnDoImport.textContent = "✅ Importieren (Toolbox)";
-}
-
-function setImportMode(mode){
-  importMode = mode;
-  btnImportModeNpcs.classList.toggle("active", mode === "npcs");
-  btnImportModePlaces.classList.toggle("active", mode === "places");
-  btnImportModeToolbox.classList.toggle("active", mode === "toolbox");
-
-  const isToolbox = mode === "toolbox";
-  toolboxImportControls.style.display = isToolbox ? "block" : "none";
-  importSubTabs.style.display = isToolbox ? "none" : "flex";
-
-  if(isToolbox){
-    importHeaderTitle.textContent = "⬇️ Import: Toolbox (Pools/Seeds)";
-    importFormatHelp.innerHTML =
-      `Pools: 1 Eintrag pro Zeile (oder JSON-Array).<br>` +
-      `Seeds: <code>Label | tags, tags | note ...</code> (note kann <code>name=</code>, <code>role=</code>, <code>hook=</code> enthalten) oder JSON-Array.<br>` +
-      `Beispiel Seed: <code>Müde Wache | Phandalin, Guard | name=Rurik; role=Wache; hook=Hat was gesehen</code>`;
-    setImportSubMode("text");
-    btnDoImport.textContent = "✅ Importieren (Toolbox)";
-  } else if(mode === "npcs") {
-    importHeaderTitle.textContent = "⬇️ Import: NPCs";
-    importFormatHelp.innerHTML =
-      `Text: Start je NPC mit <code>### 🟢 Name</code> … trennen mit <code>---</code>.<br>` +
-      `Formular: Standard-Schablone + Custom Fields.`;
-    setImportSubMode(importSubMode); // keep current if possible
-    buildNpcForm();
-  } else {
-    importHeaderTitle.textContent = "⬇️ Import: Orte";
-    importFormatHelp.innerHTML =
-      `Text: Start je Ort mit <code>### Name</code> & <code>**ID:**</code> … trennen mit <code>---</code>.<br>` +
-      `Formular: Basics + Standardfelder + Custom Fields.`;
-    setImportSubMode(importSubMode);
-    buildPlaceForm();
-  }
-}
-
-function openImport(){
-  importInfo.textContent = "";
-  importText.value = "";
-  importBg.style.display = "flex";
-  if(state.mode === "places") setImportMode("places");
-  else if(state.mode === "toolbox") setImportMode("toolbox");
-  else setImportMode("npcs");
-  setImportSubMode("text");
-}
-function closeImport(){ importBg.style.display = "none"; }
-
-document.getElementById("btnImport").onclick = openImport;
-document.getElementById("btnCloseImport").onclick = closeImport;
-importBg.addEventListener("click", (e) => { if(e.target === importBg) closeImport(); });
-
-btnImportModeNpcs.onclick = () => { setImportMode("npcs"); setImportSubMode("text"); };
-btnImportModePlaces.onclick = () => { setImportMode("places"); setImportSubMode("text"); };
-btnImportModeToolbox.onclick = () => { setImportMode("toolbox"); setImportSubMode("text"); };
-
-btnImportSubText.onclick = () => setImportSubMode("text");
-btnImportSubForm.onclick = () => setImportSubMode("form");
-
-/* ---------- FORM BUILDERS ---------- */
 const NPC_STANDARD_FIELDS = [
   "Volk / Geschlecht / Statur",
   "Rolle / Funktion",
@@ -1246,19 +943,82 @@ const PLACE_STANDARD_FIELDS = [
   "SL-Notizen"
 ];
 
-function buildCustomFieldsUI(containerOrId){
-  const wrap = (typeof containerOrId === "string")
-    ? document.getElementById(containerOrId)
-    : containerOrId;
+function setImportMode(mode){
+  importMode = mode;
+  btnImportModeNpcs.classList.toggle("active", mode === "npcs");
+  btnImportModePlaces.classList.toggle("active", mode === "places");
 
+  if(mode === "npcs"){
+    importHeaderTitle.textContent = "⬇️ Import: NPCs";
+    importFormatHelp.innerHTML =
+      `Text: Start je NPC mit <code>### 🟢 Name</code> … trennen mit <code>---</code>.<br>` +
+      `Spezial: <code>**Kategorien:**</code>, <code>**Tags:**</code>, <code>**Orte:**</code> (IDs).<br>` +
+      `Formular: Standardfelder + Custom Fields.`;
+  } else {
+    importHeaderTitle.textContent = "⬇️ Import: Orte";
+    importFormatHelp.innerHTML =
+      `Text: Start je Ort mit <code>### Name</code> & optional <code>**ID:**</code> … trennen mit <code>---</code>.<br>` +
+      `Spezial: <code>**Typ:**</code>, <code>**Parent:**</code>, <code>**Kategorien:**</code>, <code>**Tags:**</code>, <code>**NPCs:**</code> (IDs).<br>` +
+      `Formular: Basics + Standardfelder + Custom Fields.`;
+  }
+
+  // wenn Formular aktiv: neu aufbauen
+  if(importSubMode === "form"){
+    if(importMode === "npcs") buildNpcForm();
+    else buildPlaceForm();
+  }
+  setImportSubMode(importSubMode);
+}
+
+function setImportSubMode(sub){
+  importSubMode = sub;
+
+  btnImportSubText.classList.toggle("active", sub === "text");
+  btnImportSubForm.classList.toggle("active", sub === "form");
+
+  importBodyText.style.display = (sub === "text") ? "block" : "none";
+  importBodyForm.style.display = (sub === "form") ? "block" : "none";
+
+  // Rebuild IMMER, sobald Formular aktiv ist
+  if(sub === "form"){
+    if(importMode === "npcs") buildNpcForm();
+    else buildPlaceForm();
+  }
+
+  if(importMode === "npcs") btnDoImport.textContent = (sub === "text") ? "✅ Importieren (NPCs)" : "✅ Speichern (NPC Formular)";
+  else btnDoImport.textContent = (sub === "text") ? "✅ Importieren (Orte)" : "✅ Speichern (Ort Formular)";
+}
+
+function openImport(){
+  importInfo.textContent = "";
+  importText.value = "";
+  importBg.style.display = "flex";
+  setImportMode(state.mode === "places" ? "places" : "npcs");
+  setImportSubMode("text");
+}
+function closeImport(){ importBg.style.display = "none"; }
+
+document.getElementById("btnImport").onclick = openImport;
+document.getElementById("btnCloseImport").onclick = closeImport;
+importBg.addEventListener("click", (e) => { if(e.target === importBg) closeImport(); });
+
+btnImportModeNpcs.onclick = () => { setImportMode("npcs"); };
+btnImportModePlaces.onclick = () => { setImportMode("places"); };
+
+btnImportSubText.onclick = () => setImportSubMode("text");
+btnImportSubForm.onclick = () => setImportSubMode("form");
+
+/* ---------- Custom Fields UI (FIXED) ---------- */
+function buildCustomFieldsUI(containerEl){
+  const wrap = containerEl;
   if(!wrap){
-    console.warn("buildCustomFieldsUI: container not found", containerOrId);
+    console.warn("buildCustomFieldsUI: container missing");
     return;
   }
 
   const list = document.createElement("div");
   list.className = "grid";
-  list.dataset.cfList = "1"; // marker
+  list.dataset.cfList = "1";
 
   const btnAdd = document.createElement("button");
   btnAdd.className = "center";
@@ -1280,21 +1040,10 @@ function buildCustomFieldsUI(containerOrId){
   wrap.appendChild(btnAdd);
 }
 
-
-  wrap.appendChild(list);
-  wrap.appendChild(btnAdd);
-}
-
-function readCustomFields(containerOrId){
-  const wrap = (typeof containerOrId === "string")
-    ? document.getElementById(containerOrId)
-    : containerOrId;
-
+function readCustomFields(containerEl){
+  const wrap = containerEl;
   const out = {};
   if(!wrap) return out;
-
-  const list = wrap.querySelector('[data-cf-list="1"]') || wrap.querySelector("[data-cf-list]") || wrap.querySelector(".grid");
-  if(!list) return out;
 
   wrap.querySelectorAll(".customfield").forEach(row => {
     const k = row.querySelector("[data-cfkey]")?.value?.trim();
@@ -1305,21 +1054,20 @@ function readCustomFields(containerOrId){
   return out;
 }
 
+/* ---------- Form Builders ---------- */
 function buildNpcForm(){
   importFormWrap.innerHTML = "";
 
   const card = document.createElement("div");
   card.className = "formcard";
-  card.innerHTML = `<div class="title">🧑 NPC (Formular)</div><div class="muted">Tipp: Emoji darf im Namen stehen. Kategorien/Tags/Orte als Komma-Liste.</div>`;
+  card.innerHTML = `<div class="title">🧑 NPC (Formular)</div><div class="muted">Kategorien/Tags/Orte als Komma-Liste. Orte = IDs.</div>`;
 
-  const basics = document.createElement("div");
-  basics.className = "grid";
-  basics.innerHTML = `
+  card.innerHTML += `
     <div class="fieldrow">
       <div class="label">Name</div>
       <div class="right">
         <input id="fNpcName" placeholder="z.B. 🟢 Toblen Stonehill" />
-        <div class="muted">Wichtig: Name ist Pflicht.</div>
+        <div class="muted">Pflicht.</div>
       </div>
     </div>
 
@@ -1327,33 +1075,28 @@ function buildNpcForm(){
       <div class="label">ID (optional)</div>
       <div class="right">
         <input id="fNpcId" placeholder="leer lassen = aus Name erzeugen" />
-        <div class="muted">Wenn gesetzt: überschreibt vorhandenen NPC mit gleicher ID.</div>
+        <div class="muted">Wenn gesetzt und existiert: überschreibt per ID.</div>
       </div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Kategorien</div>
-      <div class="right">
-        <input id="fNpcCats" placeholder="z.B. Phandalin, Quest 1" />
-      </div>
+      <div class="right"><input id="fNpcCats" placeholder="z.B. Phandalin, Quest 1" /></div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Tags</div>
-      <div class="right">
-        <input id="fNpcTags" placeholder="optional: Händler, Harper, …" />
-      </div>
+      <div class="right"><input id="fNpcTags" placeholder="optional" /></div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Orte (IDs)</div>
       <div class="right">
         <input id="fNpcPlaces" placeholder="z.B. phandalin, stonehill-inn" />
-        <div class="muted">Strict IDs. Du kannst IDs in Ort-Detail per „🆔 ID kopieren“ holen.</div>
+        <div class="muted">Strict IDs.</div>
       </div>
     </div>
   `;
-  card.appendChild(basics);
 
   const fieldsCard = document.createElement("div");
   fieldsCard.className = "formcard";
@@ -1361,7 +1104,6 @@ function buildNpcForm(){
 
   const fieldsGrid = document.createElement("div");
   fieldsGrid.className = "grid";
-
   for(const key of NPC_STANDARD_FIELDS){
     const row = document.createElement("div");
     row.className = "fieldrow";
@@ -1378,7 +1120,7 @@ function buildNpcForm(){
   const customCard = document.createElement("div");
   customCard.className = "formcard";
   customCard.id = "npcCustomWrap";
-  customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Für alles, was nicht in der Standardliste ist (z.B. Familie, Gehilfen, etc.).</div>`;
+  customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Alles extra (Familie, Gehilfen, etc.).</div>`;
   buildCustomFieldsUI(customCard);
 
   importFormWrap.appendChild(card);
@@ -1393,9 +1135,7 @@ function buildPlaceForm(){
   card.className = "formcard";
   card.innerHTML = `<div class="title">📍 Ort (Formular)</div><div class="muted">ID ist wichtig für Links (NPC ↔ Ort).</div>`;
 
-  const basics = document.createElement("div");
-  basics.className = "grid";
-  basics.innerHTML = `
+  card.innerHTML += `
     <div class="fieldrow">
       <div class="label">Name</div>
       <div class="right">
@@ -1407,47 +1147,36 @@ function buildPlaceForm(){
     <div class="fieldrow">
       <div class="label">ID</div>
       <div class="right">
-        <input id="fPlaceId" placeholder="z.B. stonehill-inn (leer = aus Name erzeugen)" />
-        <div class="muted">Wenn gesetzt: überschreibt vorhandenen Ort mit gleicher ID.</div>
+        <input id="fPlaceId" placeholder="leer = aus Name erzeugen" />
+        <div class="muted">Wenn gesetzt und existiert: überschreibt per ID.</div>
       </div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Typ</div>
-      <div class="right">
-        <input id="fPlaceType" placeholder="z.B. Gasthof, Laden, Siedlung" />
-      </div>
+      <div class="right"><input id="fPlaceType" placeholder="z.B. Gasthof, Laden, Siedlung" /></div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Parent (ID)</div>
-      <div class="right">
-        <input id="fPlaceParent" placeholder="z.B. phandalin" />
-      </div>
+      <div class="right"><input id="fPlaceParent" placeholder="z.B. phandalin" /></div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Kategorien</div>
-      <div class="right">
-        <input id="fPlaceCats" placeholder="z.B. Phandalin, Gasthof" />
-      </div>
+      <div class="right"><input id="fPlaceCats" placeholder="z.B. Phandalin, Gasthof" /></div>
     </div>
 
     <div class="fieldrow">
       <div class="label">Tags</div>
-      <div class="right">
-        <input id="fPlaceTags" placeholder="z.B. Gerüchte, Sicherer Hafen" />
-      </div>
+      <div class="right"><input id="fPlaceTags" placeholder="optional" /></div>
     </div>
 
     <div class="fieldrow">
       <div class="label">NPCs (IDs)</div>
-      <div class="right">
-        <input id="fPlaceNpcs" placeholder="z.B. toblen-stonehill, harbin-wester" />
-      </div>
+      <div class="right"><input id="fPlaceNpcs" placeholder="z.B. toblen-stonehill" /></div>
     </div>
   `;
-  card.appendChild(basics);
 
   const fieldsCard = document.createElement("div");
   fieldsCard.className = "formcard";
@@ -1455,7 +1184,6 @@ function buildPlaceForm(){
 
   const fieldsGrid = document.createElement("div");
   fieldsGrid.className = "grid";
-
   for(const key of PLACE_STANDARD_FIELDS){
     const row = document.createElement("div");
     row.className = "fieldrow";
@@ -1472,7 +1200,7 @@ function buildPlaceForm(){
   const customCard = document.createElement("div");
   customCard.className = "formcard";
   customCard.id = "placeCustomWrap";
-  customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Für alles extra (z.B. Preise, Personal, Sicherheit, Geheimnisse…).</div>`;
+  customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Alles extra (Personal, Preise, Geheimnisse…).</div>`;
   buildCustomFieldsUI(customCard);
 
   importFormWrap.appendChild(card);
@@ -1480,174 +1208,149 @@ function buildPlaceForm(){
   importFormWrap.appendChild(customCard);
 }
 
-/* ---------- TOOLBOX IMPORT (wie vorher: minimal) ---------- */
-function parseToolboxImport(text, target){
-  const raw = String(text || "").trim();
-  if(!raw) return { items: [], seeds: [], errors: ["Leerer Import."] };
-  try{
-    const maybe = JSON.parse(raw);
-    if(Array.isArray(maybe)){
-      const items = maybe.map(x => String(x)).map(s => s.trim()).filter(Boolean);
-      return { items, seeds: [], errors: [] };
-    }
-  }catch{}
-  const lines = raw.replace(/\r\n/g,"\n").split("\n").map(l => l.trim()).filter(l => l && !l.startsWith("#") && !l.startsWith("//"));
-  return { items: lines, seeds: [], errors: [] };
+/* ---------- Upsert Helpers ---------- */
+function upsertNpc(npc){
+  const idx = NPCS.findIndex(n => n.id === npc.id);
+  if(idx >= 0) NPCS[idx] = npc;
+  else NPCS.push(npc);
+}
+function upsertPlace(place){
+  const idx = PLACES.findIndex(p => p.id === place.id);
+  if(idx >= 0) PLACES[idx] = place;
+  else PLACES.push(place);
 }
 
-/* =========================
-   IMPORT EXEC
-========================= */
+/* ---------- Import Exec ---------- */
 btnDoImport.onclick = () => {
   importInfo.textContent = "";
 
-  if(importMode === "toolbox"){
-    const target = tbImportTarget.value;
-    const mode = tbImportModeSel.value;
-    const { items, errors } = parseToolboxImport(importText.value, target);
-    if(items.length === 0){
-      importInfo.textContent = errors.length ? ("Keine Einträge erkannt. " + errors[0]) : "Keine Einträge erkannt.";
+  // TEXT IMPORT
+  if(importSubMode === "text"){
+    if(importMode === "npcs"){
+      const { parsed, errors } = parseNpcBlocks(importText.value);
+      if(parsed.length === 0){
+        importInfo.textContent = errors.length ? "Keine NPCs erkannt. Hinweis: " + errors[0] : "Keine NPCs erkannt.";
+        return;
+      }
+      const map = new Map(NPCS.map(n => [n.id, n]));
+      for(const n of parsed){ map.set(n.id, n); }
+      NPCS = Array.from(map.values());
+      saveWorld();
+      importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+      showToast("Import ✅");
+      renderAll();
+      return;
+    } else {
+      const { parsed, errors } = parsePlaceBlocks(importText.value);
+      if(parsed.length === 0){
+        importInfo.textContent = errors.length ? "Keine Orte erkannt. Hinweis: " + errors[0] : "Keine Orte erkannt.";
+        return;
+      }
+      const map = new Map(PLACES.map(p => [p.id, p]));
+      for(const p of parsed){ map.set(p.id, p); }
+      PLACES = Array.from(map.values());
+      saveWorld();
+      importInfo.textContent = `✅ Importiert: ${parsed.length} Ort(e).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
+      showToast("Import ✅");
+      renderAll();
       return;
     }
-    // Minimal: packe in roles als Demo, echte Toolbox-Version hast du ja schon
-    TOOLBOX.pools = TOOLBOX.pools || {};
-    TOOLBOX.pools.roles = TOOLBOX.pools.roles || [];
-    TOOLBOX.pools.roles = (mode === "replace") ? uniq(items) : uniq(TOOLBOX.pools.roles.concat(items));
-    saveWorld();
-    importInfo.textContent = `✅ Toolbox importiert (${items.length}).`;
-    renderAll();
-    return;
   }
 
-  if(importMode === "npcs" && importSubMode === "text"){
-    const { parsed, errors } = parseNpcBlocks(importText.value);
-    if(parsed.length === 0){
-      importInfo.textContent = errors.length ? "Keine NPCs erkannt. Hinweis: " + errors[0] : "Keine NPCs erkannt.";
+  // FORM IMPORT
+  if(importSubMode === "form"){
+    if(importMode === "npcs"){
+      const name = document.getElementById("fNpcName")?.value?.trim();
+      if(!name){ importInfo.textContent = "Name fehlt."; return; }
+
+      let id = document.getElementById("fNpcId")?.value?.trim();
+      if(!id) id = slugifyNameToId(name);
+
+      // unique for new
+      if(!NPCS.some(n => n.id === id)) id = ensureUniqueId(id, NPCS);
+
+      const categories = parseCommaList(document.getElementById("fNpcCats")?.value ?? "");
+      const tags = parseCommaList(document.getElementById("fNpcTags")?.value ?? "");
+      const placeIds = parseCommaList(document.getElementById("fNpcPlaces")?.value ?? "");
+
+      const fields = {};
+      for(const key of NPC_STANDARD_FIELDS){
+        const val = document.getElementById("fNpc_" + slugifyNameToId(key))?.value ?? "";
+        if(val.trim() !== "") fields[key] = val;
+      }
+
+      const customEl = document.getElementById("npcCustomWrap");
+      const custom = readCustomFields(customEl);
+      for(const [k,v] of Object.entries(custom)){ fields[k] = v; }
+
+      const npc = {
+        id,
+        name,
+        categories: categories.length ? categories : ["Unkategorisiert"],
+        tags,
+        placeIds: uniq(placeIds),
+        fields
+      };
+
+      upsertNpc(npc);
+      saveWorld();
+      importInfo.textContent = `✅ NPC gespeichert: ${name} (${id})`;
+      showToast("NPC gespeichert ✅");
+      renderAll();
+      return;
+    } else {
+      const name = document.getElementById("fPlaceName")?.value?.trim();
+      if(!name){ importInfo.textContent = "Name fehlt."; return; }
+
+      let id = document.getElementById("fPlaceId")?.value?.trim();
+      if(!id) id = slugifyNameToId(name);
+
+      if(!PLACES.some(p => p.id === id)) id = ensureUniqueId(id, PLACES);
+
+      const type = document.getElementById("fPlaceType")?.value?.trim() ?? "";
+      const parentId = document.getElementById("fPlaceParent")?.value?.trim() ?? "";
+      const categories = parseCommaList(document.getElementById("fPlaceCats")?.value ?? "");
+      const tags = parseCommaList(document.getElementById("fPlaceTags")?.value ?? "");
+      const npcIds = parseCommaList(document.getElementById("fPlaceNpcs")?.value ?? "");
+
+      const fields = {};
+      for(const key of PLACE_STANDARD_FIELDS){
+        const val = document.getElementById("fPlace_" + slugifyNameToId(key))?.value ?? "";
+        if(val.trim() !== "") fields[key] = val;
+      }
+
+      const customEl = document.getElementById("placeCustomWrap");
+      const custom = readCustomFields(customEl);
+      for(const [k,v] of Object.entries(custom)){ fields[k] = v; }
+
+      const place = {
+        id,
+        name,
+        type,
+        parentId,
+        categories: categories.length ? categories : ["Unkategorisiert"],
+        tags,
+        npcIds: uniq(npcIds),
+        fields
+      };
+
+      upsertPlace(place);
+      saveWorld();
+      importInfo.textContent = `✅ Ort gespeichert: ${name} (${id})`;
+      showToast("Ort gespeichert ✅");
+      renderAll();
       return;
     }
-    // simple merge by id
-    const map = new Map(NPCS.map(n => [n.id, n]));
-    for(const n of parsed){ map.set(n.id, n); }
-    NPCS = Array.from(map.values());
-    saveWorld();
-    importInfo.textContent = `✅ Importiert: ${parsed.length} NPC(s).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
-    renderAll();
-    return;
-  }
-
-  if(importMode === "places" && importSubMode === "text"){
-    const { parsed, errors } = parsePlaceBlocks(importText.value);
-    if(parsed.length === 0){
-      importInfo.textContent = errors.length ? "Keine Orte erkannt. Hinweis: " + errors[0] : "Keine Orte erkannt.";
-      return;
-    }
-    const map = new Map(PLACES.map(p => [p.id, p]));
-    for(const p of parsed){ map.set(p.id, p); }
-    PLACES = Array.from(map.values());
-    saveWorld();
-    importInfo.textContent = `✅ Importiert: ${parsed.length} Ort(e).` + (errors.length ? ` Hinweise: ${errors.length}` : "");
-    renderAll();
-    return;
-  }
-
-  // FORM: NPC
-  if(importMode === "npcs" && importSubMode === "form"){
-    const name = document.getElementById("fNpcName")?.value?.trim();
-    if(!name){ importInfo.textContent = "Name fehlt."; return; }
-
-    let id = document.getElementById("fNpcId")?.value?.trim();
-    if(!id) id = slugifyNameToId(name);
-
-    // If new and collision, make unique
-    if(!NPCS.some(n => n.id === id)) id = ensureUniqueId(id, NPCS);
-
-    const categories = parseCommaList(document.getElementById("fNpcCats")?.value ?? "");
-    const tags = parseCommaList(document.getElementById("fNpcTags")?.value ?? "");
-    const placeIds = parseCommaList(document.getElementById("fNpcPlaces")?.value ?? "");
-
-    const fields = {};
-    for(const key of NPC_STANDARD_FIELDS){
-      const val = document.getElementById("fNpc_" + slugifyNameToId(key))?.value ?? "";
-      if(val.trim() !== "") fields[key] = val;
-    }
-    const custom = readCustomFields(document.getElementById("npcCustomWrap"));
-    for(const [k,v] of Object.entries(custom)){ fields[k] = v; }
-
-    const npc = {
-      id,
-      name,
-      categories: categories.length ? categories : ["Unkategorisiert"],
-      tags,
-      placeIds: uniq(placeIds),
-      fields
-    };
-    upsertNpc(npc);
-    saveWorld();
-    importInfo.textContent = `✅ NPC gespeichert: ${name} (${id})`;
-    showToast("NPC gespeichert ✅");
-    renderAll();
-    return;
-  }
-
-  // FORM: Place
-  if(importMode === "places" && importSubMode === "form"){
-    const name = document.getElementById("fPlaceName")?.value?.trim();
-    if(!name){ importInfo.textContent = "Name fehlt."; return; }
-
-    let id = document.getElementById("fPlaceId")?.value?.trim();
-    if(!id) id = slugifyNameToId(name);
-    if(!PLACES.some(p => p.id === id)) id = ensureUniqueId(id, PLACES);
-
-    const type = document.getElementById("fPlaceType")?.value?.trim() ?? "";
-    const parentId = document.getElementById("fPlaceParent")?.value?.trim() ?? "";
-    const categories = parseCommaList(document.getElementById("fPlaceCats")?.value ?? "");
-    const tags = parseCommaList(document.getElementById("fPlaceTags")?.value ?? "");
-    const npcIds = parseCommaList(document.getElementById("fPlaceNpcs")?.value ?? "");
-
-    const fields = {};
-    for(const key of PLACE_STANDARD_FIELDS){
-      const val = document.getElementById("fPlace_" + slugifyNameToId(key))?.value ?? "";
-      if(val.trim() !== "") fields[key] = val;
-    }
-    const custom = readCustomFields(document.getElementById("placeCustomWrap"));
-    for(const [k,v] of Object.entries(custom)){ fields[k] = v; }
-
-    const place = {
-      id,
-      name,
-      type,
-      parentId,
-      categories: categories.length ? categories : ["Unkategorisiert"],
-      tags,
-      npcIds: uniq(npcIds),
-      fields
-    };
-    upsertPlace(place);
-    saveWorld();
-    importInfo.textContent = `✅ Ort gespeichert: ${name} (${id})`;
-    showToast("Ort gespeichert ✅");
-    renderAll();
-    return;
   }
 
   importInfo.textContent = "Nichts zu importieren.";
 };
 
 /* =========================
-   SEARCH
+   EXPORT / RESET / SYNC
 ========================= */
-elSearch.addEventListener("input", (e) => {
-  if(state.mode === "toolbox") return;
-  state.search = e.target.value.trim();
-  renderEntityList();
-});
-
-/* =========================
-   EXPORT / RESET
-========================= */
-function getWorldObject(){ return { npcs: NPCS, places: PLACES, toolbox: TOOLBOX }; }
 document.getElementById("btnExport").onclick = () => {
-  const data = JSON.stringify(getWorldObject(), null, 2);
+  const data = JSON.stringify({ npcs: NPCS, places: PLACES }, null, 2);
   const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -1658,13 +1361,15 @@ document.getElementById("btnExport").onclick = () => {
   a.remove();
   URL.revokeObjectURL(url);
 };
+
 document.getElementById("btnExportClipboard").onclick = async () => {
-  const data = JSON.stringify(getWorldObject(), null, 2);
+  const data = JSON.stringify({ npcs: NPCS, places: PLACES }, null, 2);
   await copyToClipboard(data);
-  showToast("Export JSON in Zwischenablage ✅");
+  showToast("Export JSON in Clipboard ✅");
 };
+
 document.getElementById("btnReset").onclick = () => {
-  const ok = confirm("Wirklich alle NPCs UND Orte löschen? (Toolbox bleibt)");
+  const ok = confirm("Wirklich alle NPCs UND Orte löschen?");
   if(!ok) return;
   NPCS = [];
   PLACES = [];
@@ -1678,9 +1383,7 @@ document.getElementById("btnReset").onclick = () => {
   applyMobileVisibility();
 };
 
-/* =========================
-   SYNC LOAD (einfach)
-========================= */
+const elSyncStatus = document.getElementById("syncStatus");
 async function syncLoad(){
   const btn = document.getElementById("btnSyncLoad");
   btn.disabled = true;
@@ -1694,9 +1397,6 @@ async function syncLoad(){
     if(data && typeof data === "object"){
       if(Array.isArray(data.npcs)) NPCS = data.npcs;
       if(Array.isArray(data.places)) PLACES = data.places;
-      if(data.toolbox) TOOLBOX = data.toolbox;
-    } else if(Array.isArray(data)){
-      NPCS = data;
     } else {
       throw new Error("Unerwartetes JSON-Format");
     }
@@ -1725,24 +1425,15 @@ async function syncLoad(){
 document.getElementById("btnSyncLoad").onclick = syncLoad;
 
 /* =========================
-   Init + Render
+   IMPORT BUTTON
 ========================= */
-function renderAll(){
-  updateModeUi();
-  if(state.mode === "toolbox"){
-    elCatButtons.innerHTML = "";
-    renderToolboxList();
-    return;
-  }
-  renderCategories();
-  renderEntityList();
-  renderDetail(getSelectedEntity());
-}
-updateModeUi();
+document.getElementById("btnImport").onclick = openImport;
+
+/* =========================
+   INIT
+========================= */
 renderAll();
 applyMobileVisibility();
 </script>
 </body>
 </html>
-
-
