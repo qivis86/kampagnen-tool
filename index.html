@@ -1246,11 +1246,19 @@ const PLACE_STANDARD_FIELDS = [
   "SL-Notizen"
 ];
 
-function buildCustomFieldsUI(containerId){
-  const wrap = document.getElementById(containerId);
+function buildCustomFieldsUI(containerOrId){
+  const wrap = (typeof containerOrId === "string")
+    ? document.getElementById(containerOrId)
+    : containerOrId;
+
+  if(!wrap){
+    console.warn("buildCustomFieldsUI: container not found", containerOrId);
+    return;
+  }
+
   const list = document.createElement("div");
-  list.id = containerId + "_list";
   list.className = "grid";
+  list.dataset.cfList = "1"; // marker
 
   const btnAdd = document.createElement("button");
   btnAdd.className = "center";
@@ -1272,15 +1280,28 @@ function buildCustomFieldsUI(containerId){
   wrap.appendChild(btnAdd);
 }
 
-function readCustomFields(containerId){
-  const list = document.getElementById(containerId + "_list");
+
+  wrap.appendChild(list);
+  wrap.appendChild(btnAdd);
+}
+
+function readCustomFields(containerOrId){
+  const wrap = (typeof containerOrId === "string")
+    ? document.getElementById(containerOrId)
+    : containerOrId;
+
   const out = {};
+  if(!wrap) return out;
+
+  const list = wrap.querySelector('[data-cf-list="1"]') || wrap.querySelector("[data-cf-list]") || wrap.querySelector(".grid");
   if(!list) return out;
-  list.querySelectorAll(".customfield").forEach(row => {
+
+  wrap.querySelectorAll(".customfield").forEach(row => {
     const k = row.querySelector("[data-cfkey]")?.value?.trim();
     const v = row.querySelector("[data-cfval]")?.value ?? "";
     if(k) out[k] = v;
   });
+
   return out;
 }
 
@@ -1358,7 +1379,7 @@ function buildNpcForm(){
   customCard.className = "formcard";
   customCard.id = "npcCustomWrap";
   customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Für alles, was nicht in der Standardliste ist (z.B. Familie, Gehilfen, etc.).</div>`;
-  buildCustomFieldsUI("npcCustomWrap");
+  buildCustomFieldsUI(customCard);
 
   importFormWrap.appendChild(card);
   importFormWrap.appendChild(fieldsCard);
@@ -1452,7 +1473,7 @@ function buildPlaceForm(){
   customCard.className = "formcard";
   customCard.id = "placeCustomWrap";
   customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Für alles extra (z.B. Preise, Personal, Sicherheit, Geheimnisse…).</div>`;
-  buildCustomFieldsUI("placeCustomWrap");
+  buildCustomFieldsUI(customCard);
 
   importFormWrap.appendChild(card);
   importFormWrap.appendChild(fieldsCard);
@@ -1549,7 +1570,7 @@ btnDoImport.onclick = () => {
       const val = document.getElementById("fNpc_" + slugifyNameToId(key))?.value ?? "";
       if(val.trim() !== "") fields[key] = val;
     }
-    const custom = readCustomFields("npcCustomWrap");
+    const custom = readCustomFields(document.getElementById("npcCustomWrap"));
     for(const [k,v] of Object.entries(custom)){ fields[k] = v; }
 
     const npc = {
@@ -1588,7 +1609,7 @@ btnDoImport.onclick = () => {
       const val = document.getElementById("fPlace_" + slugifyNameToId(key))?.value ?? "";
       if(val.trim() !== "") fields[key] = val;
     }
-    const custom = readCustomFields("placeCustomWrap");
+    const custom = readCustomFields(document.getElementById("placeCustomWrap"));
     for(const [k,v] of Object.entries(custom)){ fields[k] = v; }
 
     const place = {
@@ -1723,4 +1744,5 @@ applyMobileVisibility();
 </script>
 </body>
 </html>
+
 
