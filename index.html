@@ -1143,15 +1143,23 @@ let importSubMode = "text";  // text | form
 
 function setImportSubMode(sub){
   importSubMode = sub;
+
   btnImportSubText.classList.toggle("active", sub === "text");
   btnImportSubForm.classList.toggle("active", sub === "form");
 
   importBodyText.style.display = (sub === "text") ? "block" : "none";
   importBodyForm.style.display = (sub === "form") ? "block" : "none";
 
-  // Button text depends
+  // Rebuild Form IMMER, sobald Formular aktiv ist
+  if(sub === "form" && importMode !== "toolbox"){
+    if(importMode === "npcs") buildNpcForm();
+    if(importMode === "places") buildPlaceForm();
+  }
+
+  // Button-Text
   if(importMode === "npcs") btnDoImport.textContent = (sub === "text") ? "✅ Importieren (NPCs)" : "✅ Speichern (NPC Formular)";
   if(importMode === "places") btnDoImport.textContent = (sub === "text") ? "✅ Importieren (Orte)" : "✅ Speichern (Ort Formular)";
+  if(importMode === "toolbox") btnDoImport.textContent = "✅ Importieren (Toolbox)";
 }
 
 function setImportMode(mode){
@@ -1209,11 +1217,7 @@ btnImportModePlaces.onclick = () => { setImportMode("places"); setImportSubMode(
 btnImportModeToolbox.onclick = () => { setImportMode("toolbox"); setImportSubMode("text"); };
 
 btnImportSubText.onclick = () => setImportSubMode("text");
-btnImportSubForm.onclick = () => {
-  setImportSubMode("form");
-  if(importMode === "npcs") buildNpcForm();
-  if(importMode === "places") buildPlaceForm();
-};
+btnImportSubForm.onclick = () => setImportSubMode("form");
 
 /* ---------- FORM BUILDERS ---------- */
 const NPC_STANDARD_FIELDS = [
@@ -1719,3 +1723,4 @@ applyMobileVisibility();
 </script>
 </body>
 </html>
+
