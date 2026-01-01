@@ -110,7 +110,7 @@
   }
   .toast.show{ opacity:1; }
 
-  /* Import Form */
+  /* Import + Edit Form */
   .formwrap{
     display:grid;
     gap:10px;
@@ -264,6 +264,28 @@
         <button id="btnCloseImport" class="center">✖ Schließen</button>
       </div>
       <div class="muted" id="importInfo" style="margin-top:8px;"></div>
+    </footer>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-bg" id="editBg">
+  <div class="modal">
+    <header>
+      <div style="font-weight:600;" id="editHeaderTitle">✏️ Edit</div>
+      <div class="muted" style="margin-top:4px;" id="editHeaderHint">ID bleibt stabil (Links).</div>
+    </header>
+
+    <div id="editBody" style="height:100%; overflow:auto;">
+      <div class="formwrap" id="editFormWrap"></div>
+    </div>
+
+    <footer>
+      <div class="row">
+        <button id="btnSaveEdit" class="center">💾 Speichern</button>
+        <button id="btnCloseEdit" class="center">✖ Schließen</button>
+      </div>
+      <div class="muted" id="editInfo" style="margin-top:8px;"></div>
     </footer>
   </div>
 </div>
@@ -877,10 +899,6 @@ btnCopyId.onclick = async () => {
   await copyToClipboard(ent.id);
 };
 
-btnEditEntity.onclick = () => {
-  alert("Edit ist in deiner früheren Version vorhanden. Wenn du willst, ziehen wir es als nächsten Schritt wieder rein.");
-};
-
 function renderAll(){
   renderCategories();
   renderEntityList();
@@ -962,7 +980,6 @@ function setImportMode(mode){
       `Formular: Basics + Standardfelder + Custom Fields.`;
   }
 
-  // wenn Formular aktiv: neu aufbauen
   if(importSubMode === "form"){
     if(importMode === "npcs") buildNpcForm();
     else buildPlaceForm();
@@ -979,7 +996,6 @@ function setImportSubMode(sub){
   importBodyText.style.display = (sub === "text") ? "block" : "none";
   importBodyForm.style.display = (sub === "form") ? "block" : "none";
 
-  // Rebuild IMMER, sobald Formular aktiv ist
   if(sub === "form"){
     if(importMode === "npcs") buildNpcForm();
     else buildPlaceForm();
@@ -1008,8 +1024,8 @@ btnImportModePlaces.onclick = () => { setImportMode("places"); };
 btnImportSubText.onclick = () => setImportSubMode("text");
 btnImportSubForm.onclick = () => setImportSubMode("form");
 
-/* ---------- Custom Fields UI (FIXED) ---------- */
-function buildCustomFieldsUI(containerEl){
+/* ---------- Custom Fields UI ---------- */
+function buildCustomFieldsUI(containerEl, existingObj = null){
   const wrap = containerEl;
   if(!wrap){
     console.warn("buildCustomFieldsUI: container missing");
@@ -1020,11 +1036,7 @@ function buildCustomFieldsUI(containerEl){
   list.className = "grid";
   list.dataset.cfList = "1";
 
-  const btnAdd = document.createElement("button");
-  btnAdd.className = "center";
-  btnAdd.textContent = "➕ Feld hinzufügen";
-
-  btnAdd.onclick = () => {
+  function addRow(k="", v=""){
     const row = document.createElement("div");
     row.className = "customfield";
     row.innerHTML = `
@@ -1032,9 +1044,23 @@ function buildCustomFieldsUI(containerEl){
       <textarea class="inputlike" placeholder="Wert" data-cfval></textarea>
       <button class="center danger" style="width:auto; padding:10px 12px;" data-cfdel>🗑️</button>
     `;
+    row.querySelector("[data-cfkey]").value = k;
+    row.querySelector("[data-cfval]").value = v;
     row.querySelector("[data-cfdel]").onclick = () => row.remove();
     list.appendChild(row);
-  };
+  }
+
+  const btnAdd = document.createElement("button");
+  btnAdd.className = "center";
+  btnAdd.textContent = "➕ Feld hinzufügen";
+  btnAdd.onclick = () => addRow();
+
+  // prefill
+  if(existingObj && typeof existingObj === "object"){
+    for(const [k,v] of Object.entries(existingObj)){
+      addRow(k, v ?? "");
+    }
+  }
 
   wrap.appendChild(list);
   wrap.appendChild(btnAdd);
@@ -1054,7 +1080,7 @@ function readCustomFields(containerEl){
   return out;
 }
 
-/* ---------- Form Builders ---------- */
+/* ---------- Form Builders (Import) ---------- */
 function buildNpcForm(){
   importFormWrap.innerHTML = "";
 
@@ -1224,7 +1250,6 @@ function upsertPlace(place){
 btnDoImport.onclick = () => {
   importInfo.textContent = "";
 
-  // TEXT IMPORT
   if(importSubMode === "text"){
     if(importMode === "npcs"){
       const { parsed, errors } = parseNpcBlocks(importText.value);
@@ -1257,7 +1282,6 @@ btnDoImport.onclick = () => {
     }
   }
 
-  // FORM IMPORT
   if(importSubMode === "form"){
     if(importMode === "npcs"){
       const name = document.getElementById("fNpcName")?.value?.trim();
@@ -1266,7 +1290,6 @@ btnDoImport.onclick = () => {
       let id = document.getElementById("fNpcId")?.value?.trim();
       if(!id) id = slugifyNameToId(name);
 
-      // unique for new
       if(!NPCS.some(n => n.id === id)) id = ensureUniqueId(id, NPCS);
 
       const categories = parseCommaList(document.getElementById("fNpcCats")?.value ?? "");
@@ -1346,6 +1369,368 @@ btnDoImport.onclick = () => {
   importInfo.textContent = "Nichts zu importieren.";
 };
 
+function setImportMode(mode){
+  importMode = mode;
+  btnImportModeNpcs.classList.toggle("active", mode === "npcs");
+  btnImportModePlaces.classList.toggle("active", mode === "places");
+
+  if(mode === "npcs"){
+    importHeaderTitle.textContent = "⬇️ Import: NPCs";
+    importFormatHelp.innerHTML =
+      `Text: Start je NPC mit <code>### 🟢 Name</code> … trennen mit <code>---</code>.<br>` +
+      `Spezial: <code>**Kategorien:**</code>, <code>**Tags:**</code>, <code>**Orte:**</code> (IDs).<br>` +
+      `Formular: Standardfelder + Custom Fields.`;
+  } else {
+    importHeaderTitle.textContent = "⬇️ Import: Orte";
+    importFormatHelp.innerHTML =
+      `Text: Start je Ort mit <code>### Name</code> & optional <code>**ID:**</code> … trennen mit <code>---</code>.<br>` +
+      `Spezial: <code>**Typ:**</code>, <code>**Parent:**</code>, <code>**Kategorien:**</code>, <code>**Tags:**</code>, <code>**NPCs:**</code> (IDs).<br>` +
+      `Formular: Basics + Standardfelder + Custom Fields.`;
+  }
+
+  if(importSubMode === "form"){
+    if(importMode === "npcs") buildNpcForm();
+    else buildPlaceForm();
+  }
+  setImportSubMode(importSubMode);
+}
+
+/* =========================
+   EDIT MODAL
+========================= */
+const editBg = document.getElementById("editBg");
+const editFormWrap = document.getElementById("editFormWrap");
+const btnSaveEdit = document.getElementById("btnSaveEdit");
+const btnCloseEdit = document.getElementById("btnCloseEdit");
+const editInfo = document.getElementById("editInfo");
+const editHeaderTitle = document.getElementById("editHeaderTitle");
+
+let editMode = null; // "npcs" | "places"
+let editId = null;
+
+btnCloseEdit.onclick = () => closeEdit();
+editBg.addEventListener("click", (e) => { if(e.target === editBg) closeEdit(); });
+
+btnEditEntity.onclick = () => {
+  const ent = getSelectedEntity();
+  if(!ent) return;
+  openEdit(ent);
+};
+
+function closeEdit(){
+  editBg.style.display = "none";
+  editFormWrap.innerHTML = "";
+  editInfo.textContent = "";
+  editMode = null;
+  editId = null;
+}
+
+function openEdit(ent){
+  editMode = state.mode;
+  editId = ent.id;
+  editInfo.textContent = "";
+  editFormWrap.innerHTML = "";
+  editBg.style.display = "flex";
+
+  editHeaderTitle.textContent = editMode === "npcs" ? "✏️ Edit NPC" : "✏️ Edit Ort";
+
+  if(editMode === "npcs") buildNpcEditForm(ent);
+  else buildPlaceEditForm(ent);
+}
+
+function buildNpcEditForm(ent){
+  const card = document.createElement("div");
+  card.className = "formcard";
+  card.innerHTML = `<div class="title">🧑 Basis</div><div class="muted">ID bleibt stabil, damit Links nicht brechen.</div>`;
+
+  card.innerHTML += `
+    <div class="fieldrow">
+      <div class="label">Name</div>
+      <div class="right">
+        <input id="eNpcName" />
+      </div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">ID</div>
+      <div class="right">
+        <input id="eNpcId" disabled />
+        <div class="muted">Read-only.</div>
+      </div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Kategorien</div>
+      <div class="right"><input id="eNpcCats" placeholder="Komma-getrennt" /></div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Tags</div>
+      <div class="right"><input id="eNpcTags" placeholder="Komma-getrennt" /></div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Orte (IDs)</div>
+      <div class="right"><input id="eNpcPlaces" placeholder="Komma-getrennt" /></div>
+    </div>
+  `;
+
+  const fieldsCard = document.createElement("div");
+  fieldsCard.className = "formcard";
+  fieldsCard.innerHTML = `<div class="title">📋 Felder</div><div class="muted">Du kannst Standard + vorhandene Extras bearbeiten.</div>`;
+
+  // keys: standard + whatever already exists (stable order)
+  const existingKeys = Object.keys(ent.fields || {});
+  const allKeys = uniq([...NPC_STANDARD_FIELDS, ...existingKeys]);
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  // We separate "standard" and "custom" for convenience:
+  const standardSet = new Set(NPC_STANDARD_FIELDS);
+  const customObj = {};
+
+  for(const k of existingKeys){
+    if(!standardSet.has(k)) customObj[k] = ent.fields[k];
+  }
+
+  for(const key of allKeys){
+    if(!standardSet.has(key)) continue; // custom handled below in custom card
+    const row = document.createElement("div");
+    row.className = "fieldrow";
+    row.innerHTML = `
+      <div class="label">${escapeHtml(key)}</div>
+      <div class="right">
+        <textarea class="inputlike" id="${"eNpc_" + slugifyNameToId(key)}"></textarea>
+      </div>
+    `;
+    grid.appendChild(row);
+  }
+
+  fieldsCard.appendChild(grid);
+
+  const customCard = document.createElement("div");
+  customCard.className = "formcard";
+  customCard.id = "eNpcCustomWrap";
+  customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Alles außerhalb der Standardfelder.</div>`;
+  buildCustomFieldsUI(customCard, customObj);
+
+  editFormWrap.appendChild(card);
+  editFormWrap.appendChild(fieldsCard);
+  editFormWrap.appendChild(customCard);
+
+  // Prefill
+  document.getElementById("eNpcName").value = ent.name || "";
+  document.getElementById("eNpcId").value = ent.id || "";
+  document.getElementById("eNpcCats").value = (ent.categories || []).join(", ");
+  document.getElementById("eNpcTags").value = (ent.tags || []).join(", ");
+  document.getElementById("eNpcPlaces").value = (ent.placeIds || []).join(", ");
+
+  for(const key of NPC_STANDARD_FIELDS){
+    const id = "eNpc_" + slugifyNameToId(key);
+    const el = document.getElementById(id);
+    if(el) el.value = (ent.fields && ent.fields[key]) ? ent.fields[key] : "";
+  }
+}
+
+function buildPlaceEditForm(ent){
+  const card = document.createElement("div");
+  card.className = "formcard";
+  card.innerHTML = `<div class="title">📍 Basis</div><div class="muted">ID bleibt stabil, damit Links nicht brechen.</div>`;
+
+  card.innerHTML += `
+    <div class="fieldrow">
+      <div class="label">Name</div>
+      <div class="right">
+        <input id="ePlaceName" />
+      </div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">ID</div>
+      <div class="right">
+        <input id="ePlaceId" disabled />
+        <div class="muted">Read-only.</div>
+      </div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Typ</div>
+      <div class="right"><input id="ePlaceType" /></div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Parent (ID)</div>
+      <div class="right"><input id="ePlaceParent" /></div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Kategorien</div>
+      <div class="right"><input id="ePlaceCats" placeholder="Komma-getrennt" /></div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">Tags</div>
+      <div class="right"><input id="ePlaceTags" placeholder="Komma-getrennt" /></div>
+    </div>
+
+    <div class="fieldrow">
+      <div class="label">NPCs (IDs)</div>
+      <div class="right"><input id="ePlaceNpcs" placeholder="Komma-getrennt" /></div>
+    </div>
+  `;
+
+  const fieldsCard = document.createElement("div");
+  fieldsCard.className = "formcard";
+  fieldsCard.innerHTML = `<div class="title">📋 Felder</div><div class="muted">Standard + vorhandene Extras.</div>`;
+
+  const existingKeys = Object.keys(ent.fields || {});
+  const allKeys = uniq([...PLACE_STANDARD_FIELDS, ...existingKeys]);
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  const standardSet = new Set(PLACE_STANDARD_FIELDS);
+  const customObj = {};
+  for(const k of existingKeys){
+    if(!standardSet.has(k)) customObj[k] = ent.fields[k];
+  }
+
+  for(const key of allKeys){
+    if(!standardSet.has(key)) continue;
+    const row = document.createElement("div");
+    row.className = "fieldrow";
+    row.innerHTML = `
+      <div class="label">${escapeHtml(key)}</div>
+      <div class="right">
+        <textarea class="inputlike" id="${"ePlace_" + slugifyNameToId(key)}"></textarea>
+      </div>
+    `;
+    grid.appendChild(row);
+  }
+
+  fieldsCard.appendChild(grid);
+
+  const customCard = document.createElement("div");
+  customCard.className = "formcard";
+  customCard.id = "ePlaceCustomWrap";
+  customCard.innerHTML = `<div class="title">➕ Custom Fields</div><div class="muted">Alles außerhalb der Standardfelder.</div>`;
+  buildCustomFieldsUI(customCard, customObj);
+
+  editFormWrap.appendChild(card);
+  editFormWrap.appendChild(fieldsCard);
+  editFormWrap.appendChild(customCard);
+
+  // Prefill
+  document.getElementById("ePlaceName").value = ent.name || "";
+  document.getElementById("ePlaceId").value = ent.id || "";
+  document.getElementById("ePlaceType").value = ent.type || "";
+  document.getElementById("ePlaceParent").value = ent.parentId || "";
+  document.getElementById("ePlaceCats").value = (ent.categories || []).join(", ");
+  document.getElementById("ePlaceTags").value = (ent.tags || []).join(", ");
+  document.getElementById("ePlaceNpcs").value = (ent.npcIds || []).join(", ");
+
+  for(const key of PLACE_STANDARD_FIELDS){
+    const id = "ePlace_" + slugifyNameToId(key);
+    const el = document.getElementById(id);
+    if(el) el.value = (ent.fields && ent.fields[key]) ? ent.fields[key] : "";
+  }
+}
+
+btnSaveEdit.onclick = () => {
+  editInfo.textContent = "";
+  if(!editMode || !editId){ editInfo.textContent = "Kein Edit-Kontext."; return; }
+
+  if(editMode === "npcs"){
+    const idx = NPCS.findIndex(n => n.id === editId);
+    if(idx < 0){ editInfo.textContent = "NPC nicht gefunden."; return; }
+    const old = NPCS[idx];
+
+    const name = document.getElementById("eNpcName").value.trim();
+    if(!name){ editInfo.textContent = "Name fehlt."; return; }
+
+    const categories = parseCommaList(document.getElementById("eNpcCats").value);
+    const tags = parseCommaList(document.getElementById("eNpcTags").value);
+    const placeIds = uniq(parseCommaList(document.getElementById("eNpcPlaces").value));
+
+    const fields = {};
+    for(const key of NPC_STANDARD_FIELDS){
+      const el = document.getElementById("eNpc_" + slugifyNameToId(key));
+      const val = el ? el.value : "";
+      if(val.trim() !== "") fields[key] = val;
+    }
+
+    const custom = readCustomFields(document.getElementById("eNpcCustomWrap"));
+    for(const [k,v] of Object.entries(custom)){
+      if(String(v).trim() !== "") fields[k] = v;
+    }
+
+    NPCS[idx] = {
+      ...old,
+      name,
+      categories: categories.length ? categories : ["Unkategorisiert"],
+      tags,
+      placeIds,
+      fields
+    };
+
+    saveWorld();
+    showToast("Gespeichert ✅");
+    renderAll();
+    // keep selection
+    state.selectedEntityId = editId;
+    renderDetail(getSelectedEntity());
+    closeEdit();
+    return;
+  }
+
+  if(editMode === "places"){
+    const idx = PLACES.findIndex(p => p.id === editId);
+    if(idx < 0){ editInfo.textContent = "Ort nicht gefunden."; return; }
+    const old = PLACES[idx];
+
+    const name = document.getElementById("ePlaceName").value.trim();
+    if(!name){ editInfo.textContent = "Name fehlt."; return; }
+
+    const type = document.getElementById("ePlaceType").value.trim();
+    const parentId = document.getElementById("ePlaceParent").value.trim();
+    const categories = parseCommaList(document.getElementById("ePlaceCats").value);
+    const tags = parseCommaList(document.getElementById("ePlaceTags").value);
+    const npcIds = uniq(parseCommaList(document.getElementById("ePlaceNpcs").value));
+
+    const fields = {};
+    for(const key of PLACE_STANDARD_FIELDS){
+      const el = document.getElementById("ePlace_" + slugifyNameToId(key));
+      const val = el ? el.value : "";
+      if(val.trim() !== "") fields[key] = val;
+    }
+
+    const custom = readCustomFields(document.getElementById("ePlaceCustomWrap"));
+    for(const [k,v] of Object.entries(custom)){
+      if(String(v).trim() !== "") fields[k] = v;
+    }
+
+    PLACES[idx] = {
+      ...old,
+      name,
+      type,
+      parentId,
+      categories: categories.length ? categories : ["Unkategorisiert"],
+      tags,
+      npcIds,
+      fields
+    };
+
+    saveWorld();
+    showToast("Gespeichert ✅");
+    renderAll();
+    state.selectedEntityId = editId;
+    renderDetail(getSelectedEntity());
+    closeEdit();
+    return;
+  }
+};
+
 /* =========================
    EXPORT / RESET / SYNC
 ========================= */
@@ -1423,11 +1808,6 @@ async function syncLoad(){
   }
 }
 document.getElementById("btnSyncLoad").onclick = syncLoad;
-
-/* =========================
-   IMPORT BUTTON
-========================= */
-document.getElementById("btnImport").onclick = openImport;
 
 /* =========================
    INIT
