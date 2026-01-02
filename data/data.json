@@ -6,16 +6,19 @@
       "categories": [
         "Phandalin"
       ],
-      "tags": [],
-      "placeIds": [
-        "stonehill-inn",
-        "phandalin"
+      "tags": [
+        "Wirt",
+        "Gasthof",
+        "Familie",
+        "Gerüchte"
       ],
+      "placeIds": [],
       "fields": {
+        "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, männlich, eher klein",
         "Rolle / Funktion": "Wirt des Stonehill Inn",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Freundlich, bodenständig; geschäftig, wettergegerbtes Gesicht",
-        "Herkunft & kurze Vorgeschichte": "Stammt aus Triboar; kam als Goldsucher, wurde Wirt",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Freundlich, bodenständig, stets geschäftig; wettergegerbtes Gesicht",
+        "Herkunft & kurze Vorgeschichte": "Stammt aus Triboar, kam als Goldsucher nach Phandalin und wurde Wirt",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
         "Motivation (offen)": "Sicherheit für Familie und Gasthof",
         "Motivation (verdeckt / langfristig)": "Angst um Phandalins Zukunft",
@@ -23,14 +26,95 @@
         "Haltung zu Greyveins / Stormveins / Talos": "Skeptisch, nicht feindselig",
         "Wissen / Gerüchte": "Hört viel, filtert wenig",
         "Was wissen die SCs aktuell über diese Person?": "Freundlicher Wirt, erste Anlaufstelle",
-        "Mögliche Interaktionen mit den SCs": "Gerüchte, Aufträge, Erdung",
+        "Mögliche Interaktionen mit den SCs": "Gerüchte, Aufträge, emotionale Erdung",
         "Entwicklung im Kampagnenverlauf": "Wird mutiger oder vorsichtiger",
-        "Notizen für den SL": "Stimme des einfachen Volkes; möglicher emotionaler Ankerpunkt; ggf. Familie ausarbeiten",
-        "Familie (SL-Notiz)": "",
-        "Familie (SL-Notiz) – Frau": "*Mara Stonehill* – pragmatisch, warmherzig, hält den Laden im Hintergrund zusammen; bemerkt Spannungen früh",
-        "Familie (SL-Notiz) – Kind 1": "*Elly* – aufgewecktes Mädchen, neugierig, stellt viele Fragen, beobachtet Abenteurer mit leuchtenden Augen",
-        "Familie (SL-Notiz) – Kind 2": "*Finn* – schüchterner Junge, ruhig, bleibt gern in der Nähe vertrauter Menschen",
-        "Familie (SL-Notiz) – Kind 3": "*Bram* – Kleinkind, laut, chaotisch, stets auf Entdeckungstour; sorgt für Leben (und gelegentlich Chaos) im Gasthof"
+        "Notizen für den SL": "Emotionaler Ankerpunkt für SCs"
+      }
+    },
+    {
+      "id": "mara-stonehill",
+      "name": "🟢 Mara Stonehill",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Familie",
+        "Gasthof"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, weiblich",
+        "Rolle / Funktion": "Mitbetreiberin des Stonehill Inn",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Warmherzig, pragmatisch, aufmerksam",
+        "Herkunft & kurze Vorgeschichte": "Lebt seit Jahren in Phandalin",
+        "Einstellung gegenüber den SCs (Start)": "freundlich",
+        "Motivation (offen)": "Familie zusammenhalten",
+        "Motivation (verdeckt / langfristig)": "Phandalin als sicheren Ort bewahren",
+        "Was wissen die SCs aktuell über diese Person?": "Freundliche Wirtin im Hintergrund",
+        "Notizen für den SL": "Bemerkt Spannungen früh"
+      }
+    },
+    {
+      "id": "elly-stonehill",
+      "name": "🧑 Elly Stonehill",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Kind",
+        "Familie"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, weiblich, Kind",
+        "Rolle / Funktion": "Tochter von Toblen",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Aufgeweckt, neugierig",
+        "Einstellung gegenüber den SCs (Start)": "freundlich",
+        "Was wissen die SCs aktuell über diese Person?": "Neugieriges Kind, bewundert Abenteurer",
+        "Notizen für den SL": "Stellt viele Fragen"
+      }
+    },
+    {
+      "id": "finn-stonehill",
+      "name": "🧑 Finn Stonehill",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Kind",
+        "Familie"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, männlich, Kind",
+        "Rolle / Funktion": "Sohn von Toblen",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Schüchtern, ruhig",
+        "Einstellung gegenüber den SCs (Start)": "neutral",
+        "Was wissen die SCs aktuell über diese Person?": "Ruhiger Junge, bleibt im Hintergrund",
+        "Notizen für den SL": "Sucht Nähe zu vertrauten Personen"
+      }
+    },
+    {
+      "id": "bram-stonehill",
+      "name": "🧑 Bram Stonehill",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Kind",
+        "Familie"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, Kleinkind",
+        "Rolle / Funktion": "Jüngstes Kind der Stonehills",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Laut, chaotisch",
+        "Was wissen die SCs aktuell über diese Person?": "Kleinkind im Gasthof",
+        "Notizen für den SL": "Sorgt für Leben und Chaos"
       }
     },
     {
@@ -39,25 +123,21 @@
       "categories": [
         "Phandalin"
       ],
-      "tags": [],
-      "placeIds": [
-        "phandalin"
+      "tags": [
+        "Ortsvorsteher",
+        "Politik"
       ],
+      "placeIds": [],
       "fields": {
+        "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, männlich, beleibt",
         "Rolle / Funktion": "Ortsvorsteher (Townmaster)",
         "Auftreten & Eindruck (inkl. Aussehen)": "Wichtigtuerisch, ängstlich; spricht nur durch verschlossene Tür",
-        "Herkunft & kurze Vorgeschichte": "Amt durch Besitz und Beharrlichkeit, nicht Führung",
         "Einstellung gegenüber den SCs (Start)": "skeptisch",
         "Motivation (offen)": "Eigene Sicherheit",
         "Motivation (verdeckt / langfristig)": "Machterhalt ohne Risiko",
-        "Beziehung zu Phandalin": "Amtlich, distanziert",
-        "Haltung zu Greyveins / Stormveins / Talos": "Sieht pauschal Gefahren",
-        "Wissen / Gerüchte": "Weiß mehr, handelt nicht",
-        "Was wissen die SCs aktuell über diese Person?": "Ängstlicher Ortsvorsteher hinter verschlossener Tür",
-        "Mögliche Interaktionen mit den SCs": "Quests & Belohnungen durch die Tür",
-        "Entwicklung im Kampagnenverlauf": "Isolation, Entmachtung oder Zwang zur Stellungnahme",
-        "Notizen für den SL": "Antwortet stets: „Falls du ein Drache bist: Ich bin dünn und zäh und schmecke nicht.“ Münzen einzeln unter der Tür auszahlen"
+        "Was wissen die SCs aktuell über diese Person?": "Ängstlicher Ortsvorsteher",
+        "Notizen für den SL": "Öffnet niemals die Tür; zahlt Münzen einzeln unter der Tür aus"
       }
     },
     {
@@ -66,25 +146,19 @@
       "categories": [
         "Phandalin"
       ],
-      "tags": [],
-      "placeIds": [
-        "phandalin"
+      "tags": [
+        "Religion",
+        "Joker",
+        "Harper"
       ],
+      "placeIds": [],
       "fields": {
-        "Volk / Geschlecht / Statur": "Elf, weiblich, schlank",
-        "Rolle / Funktion": "Schreinwächterin von Tymora (Harper-Mitgliedschaft nicht öffentlich)",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, aufmerksam",
-        "Herkunft & kurze Vorgeschichte": "Wirken reicht über Phandalin hinaus",
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Elf, weiblich",
+        "Rolle / Funktion": "Tymora-Priesterin",
         "Einstellung gegenüber den SCs (Start)": "neutral",
-        "Motivation (offen)": "Balance wahren",
-        "Motivation (verdeckt / langfristig)": "Beobachtung größerer Zusammenhänge",
-        "Beziehung zu Phandalin": "Spirituelle Randfigur",
-        "Haltung zu Greyveins / Stormveins / Talos": "Differenziert",
-        "Wissen / Gerüchte": "Fragmentarisch, verlässlich",
-        "Was wissen die SCs aktuell über diese Person?": "Tymora-Priesterin, derzeit abwesend",
-        "Mögliche Interaktionen mit den SCs": "Moralischer Kompass, Informationsquelle",
-        "Entwicklung im Kampagnenverlauf": "Offener Joker",
-        "Notizen für den SL": "Laut Buch über die gesamte Kampagne abwesend; flexibel als Joker nutzbar"
+        "Was wissen die SCs aktuell über diese Person?": "Derzeit abwesend",
+        "Notizen für den SL": "Laut Buch über gesamte Kampagne abwesend; bewusster Joker"
       }
     },
     {
@@ -93,82 +167,20 @@
       "categories": [
         "Phandalin"
       ],
-      "tags": [],
-      "placeIds": [
-        "phandalin"
+      "tags": [
+        "Handel",
+        "Einfluss"
       ],
+      "placeIds": [],
       "fields": {
-        "Volk / Geschlecht / Statur": "Halbling, weiblich, gepflegt, selbstsicher",
-        "Rolle / Funktion": "Leiterin der Phandaliner Miner’s Exchange",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Kühl höflich, berechnend",
-        "Herkunft & kurze Vorgeschichte": "Kam wegen wirtschaftlicher Chancen; baut Einfluss über Handel auf",
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Halbling, weiblich",
+        "Rolle / Funktion": "Leiterin der Miner’s Exchange",
         "Einstellung gegenüber den SCs (Start)": "skeptisch",
-        "Motivation (offen)": "Gewinn und Stabilität",
+        "Motivation (offen)": "Gewinn",
         "Motivation (verdeckt / langfristig)": "Netzwerkaufbau",
-        "Beziehung zu Phandalin": "Wirtschaftlich zentral, sozial distanziert",
-        "Haltung zu Greyveins / Stormveins / Talos": "Bewertet nach Nutzen/Risiko",
-        "Wissen / Gerüchte": "Vage Gerüchte über größere Netzwerke",
         "Was wissen die SCs aktuell über diese Person?": "Berechnende Geschäftsfrau",
-        "Mögliche Interaktionen mit den SCs": "Wird freundlicher, wenn sie Nutzen sieht",
-        "Entwicklung im Kampagnenverlauf": "Machtgewinn oder -verlust",
-        "Notizen für den SL": "Fraktionsbezüge bewusst vage halten"
-      }
-    },
-    {
-      "id": "elmar-barthen",
-      "name": "🟢 Elmar Barthen",
-      "categories": [
-        "Phandalin"
-      ],
-      "tags": [],
-      "placeIds": [
-        "barthens-provisions",
-        "phandalin"
-      ],
-      "fields": {
-        "Volk / Geschlecht / Statur": "Ork, männlich, kräftig, charmantes Lächeln",
-        "Rolle / Funktion": "Händler (Barthen’s Provisions)",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Offen, herzlich",
-        "Herkunft & kurze Vorgeschichte": "Reisender Händler; kaputtes Rad führte zu längerem Aufenthalt. Verliebte sich in Aven und blieb in Phandalin",
-        "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Motivation (offen)": "Ehrlicher Handel",
-        "Motivation (verdeckt / langfristig)": "Sicherheit und Anerkennung für sich und Aven",
-        "Beziehung zu Phandalin": "Gut integriert",
-        "Haltung zu Greyveins / Stormveins / Talos": "Pragmatisch",
-        "Wissen / Gerüchte": "Alltagswissen, Durchreisende",
-        "Was wissen die SCs aktuell über diese Person?": "Freundlicher Ork-Händler",
-        "Mögliche Interaktionen mit den SCs": "Faire Geschäfte, kleine Gefallen",
-        "Entwicklung im Kampagnenverlauf": "Stütze des Ortes",
-        "Notizen für den SL": "Beziehung als selbstverständlicher Ruhepol",
-        "Gehilfen (Kurzsteckbriefe, SL-Notiz)": "* **Ander** – Mensch, männlich; zuverlässig, wortkarg, behält Lagerbestände und Lieferungen im Blick\n* **Thistle** – Mensch, weiblich; aufgeweckt, redegewandt, gut im Umgang mit Kundschaft und Gerüchten"
-      }
-    },
-    {
-      "id": "aven-elmwood-ave",
-      "name": "🟢♟️ Aven Elmwood („Ave“)",
-      "categories": [
-        "Phandalin"
-      ],
-      "tags": [],
-      "placeIds": [
-        "barthens-provisions",
-        "phandalin"
-      ],
-      "fields": {
-        "Volk / Geschlecht / Statur": "Mensch, männlich, groß, breites Kreuz, struppiges Haar",
-        "Rolle / Funktion": "Handwerker (Reparaturen, Bau)",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, praktisch, warmherzig",
-        "Herkunft & kurze Vorgeschichte": "Arbeitet seit Jahren in Phandalin",
-        "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Motivation (offen)": "Gute Arbeit leisten",
-        "Motivation (verdeckt / langfristig)": "Sicherheit für sich und Barthen",
-        "Beziehung zu Phandalin": "Bodenständig, gebraucht",
-        "Haltung zu Greyveins / Stormveins / Talos": "Pragmatisch",
-        "Wissen / Gerüchte": "Alltagsklatsch",
-        "Was wissen die SCs aktuell über diese Person?": "Verlässlicher Handwerker; Partner von Barthen",
-        "Mögliche Interaktionen mit den SCs": "Reparaturen, Hilfe",
-        "Entwicklung im Kampagnenverlauf": "Baumeister neuer Hoffnung",
-        "Notizen für den SL": "Spitznamen: „Bart“ & „Ave“"
+        "Notizen für den SL": "Fraktionsbezüge bewusst vage"
       }
     },
     {
@@ -177,26 +189,154 @@
       "categories": [
         "Phandalin"
       ],
-      "tags": [],
-      "placeIds": [
-        "lionshield-coster",
-        "phandalin"
+      "tags": [
+        "Handel",
+        "Sicherheit"
       ],
+      "placeIds": [],
       "fields": {
-        "Volk / Geschlecht / Statur": "Mensch, weiblich, kräftig gebaut, praktische Kleidung",
-        "Rolle / Funktion": "Leiterin des Lionshield-Handelspostens in Phandalin",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Direkt, offen, zupackend; scheut sich nicht, selbst mit anzupacken oder schmutzig zu werden",
-        "Herkunft & kurze Vorgeschichte": "Wurde von der Lionshield Company nach Phandalin entsandt, um den Handel vor Ort aufzubauen und abzusichern. Hat sich schnell mit den lokalen Gegebenheiten arrangiert und fühlt sich dem Ort inzwischen persönlich verpflichtet.",
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, weiblich",
+        "Rolle / Funktion": "Lionshield-Händlerin",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Motivation (offen)": "Sicherer Handel und Stabilität für Phandalin",
-        "Motivation (verdeckt / langfristig)": "Den Ort als verlässlichen, geschützten Knotenpunkt etablieren – wirtschaftlich wie menschlich",
-        "Beziehung zu Phandalin": "Eng verbunden; sieht sich als Teil der Gemeinschaft, nicht nur als Außenposten",
-        "Haltung zu Greyveins / Stormveins / Talos": "Sehr wachsam; handelt nur mit Personen, die sie nicht als Bedrohung für Phandalin einschätzt",
-        "Wissen / Gerüchte": "Gut informiert über Sicherheitslage und Warenströme; weniger Gerüchte, mehr überprüfte Fakten",
-        "Was wissen die SCs aktuell über diese Person?": "Verlässliche, tatkräftige Händlerin, der die Sicherheit des Ortes am Herzen liegt",
-        "Mögliche Interaktionen mit den SCs": "Faire Geschäfte, Unterstützung bei Ausrüstung; Vertrauen wächst mit verantwortungsvollem Handeln der SCs",
-        "Entwicklung im Kampagnenverlauf": "Kann zu einer Schlüsselfigur für die Verteidigung und Versorgung Phandalins werden",
-        "Notizen für den SL": "Bewusster Gegenpol zu Halia Thornton: transparent, gemeinschaftsorientiert, sicherheitsfokussiert statt nutzenorientiert"
+        "Motivation (offen)": "Sicherheit Phandalins",
+        "Was wissen die SCs aktuell über diese Person?": "Verlässliche Händlerin",
+        "Notizen für den SL": "Gegenpol zu Halia"
+      }
+    },
+    {
+      "id": "elmar-barthen",
+      "name": "🟢 Elmar „Barthen“",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Händler",
+        "Alltag"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Ork, männlich",
+        "Rolle / Funktion": "Händler",
+        "Einstellung gegenüber den SCs (Start)": "freundlich",
+        "Was wissen die SCs aktuell über diese Person?": "Herzensguter Ork-Händler",
+        "Notizen für den SL": "Partner von Aven"
+      }
+    },
+    {
+      "id": "aven-elmwood",
+      "name": "🟢♟️ Aven Elmwood",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Handwerk",
+        "Alltag"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, männlich",
+        "Rolle / Funktion": "Handwerker",
+        "Einstellung gegenüber den SCs (Start)": "freundlich",
+        "Was wissen die SCs aktuell über diese Person?": "Verlässlicher Handwerker",
+        "Notizen für den SL": "Nebencharakter; Spitzname „Ave“"
+      }
+    },
+    {
+      "id": "ander",
+      "name": "🧑 Ander",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Handel",
+        "Nebenfigur"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, männlich",
+        "Rolle / Funktion": "Gehilfe bei Barthen",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Wortkarg, zuverlässig",
+        "Notizen für den SL": "Kümmert sich um Lager & Lieferungen"
+      }
+    },
+    {
+      "id": "thistle",
+      "name": "🧑 Thistle",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Handel",
+        "Nebenfigur"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, weiblich",
+        "Rolle / Funktion": "Gehilfin bei Barthen",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Redegewandt, freundlich",
+        "Notizen für den SL": "Gut für Gerüchte & Smalltalk"
+      }
+    },
+    {
+      "id": "barthens-provisions",
+      "name": "Barthen’s Provisions",
+      "categories": [
+        "Phandalin",
+        "Handel"
+      ],
+      "tags": [
+        "Ausrüstung",
+        "Proviant",
+        "Versorgung"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "barthens-provisions",
+        "Typ": "Geschäft (Ausrüstung & Proviant)",
+        "Parent": "phandalin",
+        "NPCs": "elmar-barthen, ander, thistle",
+        "Kurzbeschreibung": "Barthen’s Provisions ist der zentrale Anlaufpunkt für alltägliche Ausrüstung und Reisebedarf in Phandalin. Kein Ort für große Worte, aber zuverlässig – zumindest im Rahmen dessen, was ein Grenzdorf leisten kann.",
+        "Stimmung": "Pragmatisch, geschäftig, bodenständig. Wenig Smalltalk, dafür klare Absprachen.",
+        "Angebot": "- Standardmäßig **Adventuring Gear bis 25 GP**\n- Verbrauchsgüter, Proviant, einfache Werkzeuge\n- **Keine Waffen und keine Rüstungen**\n- Nicht alles ist jederzeit vorrätig, aber fehlende Gegenstände sollen den Spielfluss nicht künstlich bremsen",
+        "Besonderheiten / Fortschritt": "- Im Laufe der Kampagne können einzelne, höherwertige oder ungewöhnliche Gegenstände als **Belohnung**, Sonderbeschaffung oder „gerade reingekommen“ verfügbar sein\n- Verfügbarkeit kann sich mit dem Ansehen der SCs, Ereignissen im Umland oder Lieferproblemen ändern\n- Spielbarkeit hat Vorrang vor Realismus",
+        "Typische Szenen": "- Schnelle Einkäufe vor dem Aufbruch\n- Kurze Gespräche über Knappheit, Lieferprobleme oder Neuigkeiten\n- Nebenbei aufgeschnappte Gerüchte ohne große Tiefe",
+        "SL-Notizen": "- Barthen’s Provisions ist funktional, kein Story-Hotspot\n- Ideal, um Fortschritt subtil zu zeigen (bessere Auswahl, Vertrauen, kleine Extras)\n- Keine künstlichen Engpässe, die Spielerentscheidungen blockieren"
+      }
+    },
+    {
+      "id": "daran-edermath",
+      "name": "🟢 Daran Edermath",
+      "categories": [
+        "Phandalin"
+      ],
+      "tags": [
+        "Veteran",
+        "Apfelgarten",
+        "Ordnung",
+        "Wächter"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Halbelf, männlich, drahtig, sehnig",
+        "Rolle / Funktion": "Veteran, Besitzer des Edermath-Apfelgartens",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Wachsam, ruhig, humorlos auf den ersten Blick; trägt alte Narben, bewegt sich kontrolliert",
+        "Herkunft & kurze Vorgeschichte": "Ehemaliger Abenteurer und Kämpfer, zog sich nach Phandalin zurück, um ein ruhigeres Leben zu führen. Hat den Apfelgarten aufgebaut, ohne seine alten Instinkte je ganz abzulegen.",
+        "Einstellung gegenüber den SCs (Start)": "freundlich",
+        "Motivation (offen)": "Sicherheit Phandalins und seiner Bewohner",
+        "Motivation (verdeckt / langfristig)": "Verhindern, dass Bedrohungen eskalieren, bevor sie den Ort erreichen",
+        "Beziehung zu Phandalin": "Beschützer im Hintergrund; kein offizielles Amt, aber hohes Vertrauen bei den Bewohnern",
+        "Haltung zu Greyveins / Stormveins / Talos": "Sehr wachsam; erkennt Muster von Gewalt und Radikalisierung früh und nimmt sie ernst",
+        "Wissen / Gerüchte": "Hat ein gutes Gespür für Gefahren im Umland und Bewegungen außerhalb des Dorfes",
+        "Was wissen die SCs aktuell über diese Person?": "Ruhiger Halbelf, Veteran, dem die Sicherheit des Ortes wichtig ist",
+        "Mögliche Interaktionen mit den SCs": "Warnungen vor Gefahren, Einschätzungen zu Bedrohungen, stille Unterstützung",
+        "Entwicklung im Kampagnenverlauf": "Kann zum wichtigen Verbündeten werden oder sich aktiv einmischen, wenn Phandalin ernsthaft bedroht ist",
+        "Notizen für den SL": "Guter Gegenpol zu Harbin Wester – handelt, statt sich zu verstecken; ideal als Stimme der Erfahrung"
       }
     }
   ],
@@ -204,177 +344,180 @@
     {
       "id": "phandalin",
       "name": "Phandalin",
-      "type": "Siedlung",
+      "type": "Siedlung (Dorf / Frontier-Town)",
       "parentId": "",
       "categories": [
-        "Phandalin"
+        "Phandalin",
+        "Zivilisation",
+        "Startort"
       ],
       "tags": [
-        "Startort",
-        "Frontier"
+        "Handel",
+        "Frontier",
+        "Wiederaufbau",
+        "Gerüchte",
+        "Spannungen"
       ],
       "npcIds": [
-        "toblen-stonehill",
         "harbin-wester",
-        "sister-garaele",
+        "linene-graywind",
         "halia-thornton",
-        "elmar-barthen",
-        "aven-elmwood-ave",
-        "linene-graywind"
+        "sister-garaele",
+        "toblen-stonehill"
       ],
       "fields": {
-        "Kurzbeschreibung": "Ein raues, aber hoffnungsvolles Minendorf an der Triboar Trail. Die Leute sind vorsichtig, aber nicht herzlos.",
-        "Stimmung": "Pragmatisch, angespannt, trotzdem ein Funken Aufbruch.",
-        "Wichtige Themen": "Drache in der Region, Gerüchte über Kultisten, Schutz der Handelsroute.",
-        "SL-Notizen": "Guter Ort für Gerüchte. Zeig die Auswirkungen von Angst (Drache) vs. Gemeinschaft."
+        "Kurzbeschreibung": "Phandalin ist ein kleines Grenzdorf, errichtet auf den Ruinen einer älteren Siedlung. Händler, Glücksritter und einfache Dorfbewohner leben hier zwischen Hoffnung auf Wohlstand und der ständigen Angst vor äußeren Bedrohungen.",
+        "Stimmung": "Unsicher, geschäftig, angespannt. Freundlich im Auftreten, vorsichtig im Vertrauen.",
+        "Wichtige Themen": "- Wiederaufbau und Neuanfang\n- Abhängigkeit von Abenteurern\n- Angst vor Drachen, Monstern und Überfällen\n- Gerüchte, Halbwissen und widersprüchliche Meinungen\n- Moralische Grauzonen zwischen Wegsehen und Eingreifen",
+        "Typische Szenen": "- Gespräche und Gerüchte im Stonehill Inn\n- Händler klagen über ausbleibende Lieferungen\n- Dorfbewohner mustern Fremde mit Neugier und Misstrauen\n- Aushänge mit Bitten, Sorgen oder Hilfsgesuchen\n- Spürbare Spannungen zwischen Alteingesessenen und Neuankömmlingen",
+        "Angebot": "- Unterkunft und Verpflegung\n- Grundlegende Ausrüstung und Proviant\n- Informationen, Gerüchte und Aufträge\n- Soziale Anknüpfungspunkte und Konfliktlinien",
+        "SL-Notizen": "- Phandalin dient als emotionaler Anker der Kampagne. Bedrohungen wirken stärker, wenn Beziehungen zu Dorfbewohnern bestehen.\n- Die Bewohner sind Überlebende, keine Helden; Feigheit und Pragmatismus sind nachvollziehbar.\n- Gerüchte dürfen sich widersprechen – Wahrheit ist fragmentiert.\n- Entwicklungen im Umland sollten hier indirekt spürbar sein.\n- Der Wind kann Stimmungen und Szenen verstärken, ohne eindeutige Hinweise zu liefern.",
+        "Der Wind in Phandalin ist meist unscheinbar, fällt aber in bestimmten Momenten auf – durch plötzliche Böen, ungewöhnliche Richtungen oder das Gefühl, dass er etwas mit sich bringt. Dorfbewohner deuten dies unterschiedlich": "als normales Wetter, schlechtes Omen oder bloßen Zufall."
       }
     },
     {
       "id": "stonehill-inn",
       "name": "Stonehill Inn",
-      "type": "Gasthof",
+      "type": "Gasthaus / Taverne",
       "parentId": "phandalin",
       "categories": [
-        "Phandalin",
-        "Gasthof"
+        "Phandalin"
       ],
       "tags": [
-        "Gerüchte",
-        "Sicherer Hafen"
+        "Gasthaus",
+        "Taverne",
+        "Treffpunkt",
+        "Unterkunft",
+        "Gerüchte"
       ],
       "npcIds": [
-        "toblen-stonehill"
+        "toblen-stonehill",
+        "mara-stonehill",
+        "elly-stonehill",
+        "finn-stonehill",
+        "bram-stonehill"
       ],
       "fields": {
-        "Kurzbeschreibung": "Der zentrale Treffpunkt in Phandalin. Warmes Essen, laute Stimmen, müde Reisende.",
-        "Typische Szenen": "Gerüchte am Kamin, Stammgäste mit Meinungen, ein kleines Drama am Nebentisch.",
-        "Angebot": "Essen, Zimmer, Stallplatz (je nach Laune/Verfügbarkeit).",
-        "SL-Notizen": "Perfekt für Quest-Aufhänger und NSC-Begegnungen; ein Ort für 'Alltag'."
+        "Kurzbeschreibung": "Das Stonehill Inn ist das soziale Herz von Phandalin – warm, belebt und für viele der erste sichere Hafen nach einer Reise durch die Wildnis.",
+        "Stimmung": "Gemütlich, bodenständig, lebendig; abends laut und voller Stimmen, tagsüber ruhig und familiär.",
+        "Wichtige Themen": "Gemeinschaft, Alltag in Phandalin, Sicherheit vs. unterschwellige Bedrohung",
+        "Typische Szenen": "Ankunft der SCs nach einer Reise; Gespräche mit Dorfbewohnern; Gerüchte bei Bier und Eintopf; abrupte Stille bei heiklen Themen.",
+        "Angebot": "Einfache Mahlzeiten, Bier und Dünnbier, saubere Zimmer, Informationen und Gerüchte.",
+        "SL-Notizen": "Zentraler sozialer Knotenpunkt für Phandalin. Ideal zum Dosieren von Informationen, zum Spiegeln der Lage im Dorf und als Ruhepol zwischen Quests. Veränderungen in Stimmung, Auslastung oder Angebot zeigen Fortschritt oder Eskalation der Kampagne."
       }
     },
     {
       "id": "barthens-provisions",
       "name": "Barthen’s Provisions",
-      "type": "Laden",
+      "type": "Geschäft (Ausrüstung & Proviant)",
       "parentId": "phandalin",
       "categories": [
         "Phandalin",
-        "Shop"
+        "Handel"
       ],
       "tags": [
         "Ausrüstung",
+        "Proviant",
         "Versorgung"
       ],
       "npcIds": [
         "elmar-barthen",
-        "aven-elmwood-ave"
+        "ander",
+        "thistle"
       ],
       "fields": {
-        "Kurzbeschreibung": "Ein gut sortierter Gemischtwarenladen. Nicht billig, aber verlässlich.",
-        "Typische Ware": "Reisebedarf, Seile, Fackeln, Rationen, einfache Werkzeuge.",
-        "SL-Notizen": "Wenn du Knappheit zeigen willst: Lieferprobleme, ausverkaufte Basics, Preisanstieg."
+        "Kurzbeschreibung": "Barthen’s Provisions ist der zentrale Anlaufpunkt für alltägliche Ausrüstung und Reisebedarf in Phandalin. Kein Ort für große Worte, aber zuverlässig – zumindest im Rahmen dessen, was ein Grenzdorf leisten kann.",
+        "Stimmung": "Pragmatisch, geschäftig, bodenständig. Wenig Smalltalk, dafür klare Absprachen.",
+        "Angebot": "- Standardmäßig **Adventuring Gear bis 25 GP**\n- Verbrauchsgüter, Proviant, einfache Werkzeuge\n- **Keine Waffen und keine Rüstungen**\n- Nicht alles ist jederzeit vorrätig, aber fehlende Gegenstände sollen den Spielfluss nicht künstlich bremsen",
+        "Besonderheiten / Fortschritt": "- Im Laufe der Kampagne können einzelne, höherwertige oder ungewöhnliche Gegenstände als **Belohnung**, Sonderbeschaffung oder „gerade reingekommen“ verfügbar sein\n- Verfügbarkeit kann sich mit dem Ansehen der SCs, Ereignissen im Umland oder Lieferproblemen ändern\n- Spielbarkeit hat Vorrang vor Realismus",
+        "Typische Szenen": "- Schnelle Einkäufe vor dem Aufbruch\n- Kurze Gespräche über Knappheit, Lieferprobleme oder Neuigkeiten\n- Nebenbei aufgeschnappte Gerüchte ohne große Tiefe",
+        "SL-Notizen": "- Barthen’s Provisions ist funktional, kein Story-Hotspot\n- Ideal, um Fortschritt subtil zu zeigen (bessere Auswahl, Vertrauen, kleine Extras)\n- Keine künstlichen Engpässe, die Spielerentscheidungen blockieren"
       }
     },
     {
       "id": "lionshield-coster",
       "name": "Lionshield Coster",
-      "type": "Handelsposten",
+      "type": "Geschäft (Waffen & Rüstungen)",
       "parentId": "phandalin",
       "categories": [
         "Phandalin",
-        "Shop",
-        "Lionshield"
+        "Handel"
       ],
       "tags": [
-        "Ausrüstung",
-        "Sicherheit"
+        "Waffen",
+        "Rüstungen",
+        "Händlergesellschaft"
       ],
       "npcIds": [
         "linene-graywind"
       ],
       "fields": {
-        "Kurzbeschreibung": "Ein robuster Handelsposten für Waffen und Rüstungen. Alles wirkt 'geschäftlich' und auf Sicherheit bedacht.",
-        "Typische Ware": "Rüstungen, Schilde, Waffen, Pfeile/Armbrustbolzen (je nach Kampagne).",
-        "SL-Notizen": "Guter Anker für Sicherheitslage: 'Was fehlt? Was kommt nicht mehr an? Wer bedroht die Route?'"
+        "Kurzbeschreibung": "Der lokale Ableger der **Lionshield Coster** dient als Umschlagplatz für Waffen, Rüstungen und Schilde. Die Ware ist solide und zweckmäßig – kein Prunk, aber zuverlässig. Linene Graywind führt das Geschäft mit kühlem Blick für Risiken.",
+        "Stimmung": "Sachlich, reserviert, wachsam. Vertrauen ist Voraussetzung für Geschäfte.",
+        "Angebot": "- **Waffen, Rüstungen und Schilde**\n- Keine exotischen Sonderanfertigungen ohne besonderen Anlass\n- Handel nur mit Personen, die Linene **nicht als Bedrohung** für Phandalin oder die Lionshield einstuft",
+        "Besonderheiten / Zugehörigkeit": "- Teil der Händlergesellschaft **Lionshield**",
+        "Wappen": "Holzschild mit blauem Drachen",
+        "Hauptsitz in": "contentReference[oaicite:0]{index=0} (ca. 100 Meilen östlich)",
+        "Verfügbarkeit / Fortschritt": "- Grundsortiment ist vorhanden, Details können schwanken\n- Im Laufe der Kampagne sind **Ausnahmen** möglich (bessere Qualität, einzelne besondere Stücke)\n- Verfügbarkeit kann sich mit Ruf der SCs, Sicherheitslage und Lieferwegen ändern\n- **Spielbarkeit vor Realismus** – kein künstliches Ausbremsen des Fortschritts",
+        "Typische Szenen": "- Abwägende Musterung der SCs vor Geschäftsabschluss\n- Kurze, sachliche Verhandlungen\n- Hinweise auf gestörte Handelsrouten oder Sicherheitsprobleme\n- Spürbare Zurückhaltung bei unbekannten oder auffälligen Gruppen",
+        "SL-Notizen": "",
+        "Lionshield Coster ist selektiv": "Zugang = impliziter Vertrauenscheck\n- Ideal, um Konsequenzen sichtbar zu machen (besserer Ruf → besseres Angebot)\n- Linene kann als ruhiger Gegenpol zu anderen Phandalin-NPCs dienen"
+      }
+    },
+    {
+      "id": "miners-exchange",
+      "name": "Miner’s Exchange",
+      "type": "Geschäft / Umschlagplatz (Bergbau & Handel)",
+      "parentId": "phandalin",
+      "categories": [
+        "Phandalin",
+        "Handel",
+        "Bergbau"
+      ],
+      "tags": [
+        "Erz",
+        "Schätzung",
+        "Gerüchte",
+        "Macht"
+      ],
+      "npcIds": [
+        "halia-thornton"
+      ],
+      "fields": {
+        "Kurzbeschreibung": "Die Miner’s Exchange dient als zentrale Anlaufstelle für Prospektoren und Minenarbeiter. Hier werden Funde geschätzt, registriert und ausgezahlt – oft schneller und zuverlässiger als über offizielle Kanäle.",
+        "Stimmung": "Geschäftsmäßig, beobachtend, unterschwellig angespannt. Worte werden abgewogen, Informationen sind Ware.",
+        "Funktion": "- Schätzung und Auszahlung von Erzen, Edelsteinen und sonstigen Funden\n- **Inoffizielles Register** über Erzadern, Fundstellen und erfolglose Claims\n- Umschlagplatz zwischen Minern, Händlern und Investoren",
+        "Besonderheiten": "- Wissen ist hier oft wertvoller als Erz\n- Informationen werden gesammelt, verglichen und selektiv weitergegeben\n- Nicht alles, was registriert ist, ist offiziell bekannt",
+        "Gerüchte & Kontakte": "- Treffpunkt für Personen, die viel im Umland unterwegs sind\n- Gerüchte über neue Funde, Gefahren, verlassene Orte oder verschwundene Gruppen\n- Ideal, um **zusätzliche oder alternative Hinweise** zu streuen",
+        "Typische Szenen": "- Abwägung eines Fundes mit prüfendem Blick\n- Leise Gespräche über „ergiebige Stellen“ oder tote Claims\n- Neuankömmlinge werden eingeschätzt, bevor man offen spricht\n- Halia Thornton lenkt Gespräche subtil in bestimmte Richtungen",
+        "SL-Notizen": "- Die Miner’s Exchange ist ein Informationsknoten, kein reiner Laden\n- Perfekt, um Gerüchte glaubwürdig zu platzieren oder zu filtern\n- Halia kann hier langfristig Einfluss auf Phandalin ausbauen, ohne offen aufzutreten"
+      }
+    },
+    {
+      "id": "edermath-orchard",
+      "name": "Edermath Orchard",
+      "type": "Anwesen / Obstgarten",
+      "parentId": "phandalin",
+      "categories": [
+        "Phandalin",
+        "Alltag"
+      ],
+      "tags": [
+        "Ruhe",
+        "Gespräche",
+        "Rückblick"
+      ],
+      "npcIds": [
+        "daran-edermath"
+      ],
+      "fields": {
+        "Kurzbeschreibung": "Ein kleiner Apfelhain am Rand von Phandalin. Kein geschäftiger Ort, sondern ein Stück Normalität – gepflegt von einem Mann, der mehr gesehen hat, als er erzählt.",
+        "Stimmung": "Ruhig, nachdenklich, bodenständig. Ein Kontrast zum geschäftigen Dorfkern.",
+        "Funktion": "- Ort für private Gespräche abseits neugieriger Ohren\n- Gelegenheit für Rückblicke, Warnungen oder Einordnung von Ereignissen\n- Kein formeller Handel, gelegentlich Äpfel oder Most",
+        "Besonderheiten": "- Daran Edermath ist ein ehemaliger Abenteurer\n- Er beobachtet aufmerksam, mischt sich aber selten ungefragt ein\n- Seine Einschätzungen sind persönlich, nicht politisch oder wirtschaftlich motiviert",
+        "Typische Szenen": "- Ruhige Gespräche zwischen Apfelbäumen\n- Nachdenkliche Warnungen ohne konkrete Handlungsaufforderung\n- Erinnerungen an „frühere Zeiten“ in der Region\n- Kurze Pausen zwischen zwei gefährlichen Aufträgen",
+        "SL-Notizen": "- Optionaler Ort ohne Plot-Zwang\n- Gut geeignet für moralische Einordnung oder leise Foreshadowing-Momente\n- Kann komplett ignoriert werden, ohne dass etwas fehlt"
       }
     }
-  ],
-  "toolbox": {
-    "settings": {
-      "onlyUnused": true,
-      "defaultCategory": "Toolbox/Spontan",
-      "defaultPlaceId": ""
-    },
-    "pools": {
-      "names": {
-        "human": [
-          "Mara",
-          "Elly",
-          "Finn",
-          "Bram",
-          "Toblen",
-          "Halia",
-          "Linene",
-          "Harbin"
-        ],
-        "dwarf": [
-          "Gundren",
-          "Nundro",
-          "Tharden"
-        ],
-        "elf": [
-          "Syla",
-          "Aelar",
-          "Naivara"
-        ]
-      },
-      "roles": [
-        "Wirt",
-        "Händlerin",
-        "Wache",
-        "Bote",
-        "Minenarbeiter",
-        "Heilerin",
-        "Schmied",
-        "Jäger"
-      ],
-      "traits": [
-        "überhöflich",
-        "misstrauisch",
-        "redet zu viel",
-        "immer nervös",
-        "sehr direkt",
-        "lächelt nie"
-      ],
-      "hooks": [
-        "hat Schulden bei jemandem",
-        "hat etwas Unheimliches gesehen",
-        "sucht eine Person",
-        "will nur in Ruhe gelassen werden"
-      ],
-      "voices": [
-        "spricht sehr leise",
-        "rollt das R",
-        "lacht an falschen Stellen",
-        "spricht in kurzen Befehlen"
-      ]
-    },
-    "used": {
-      "names.human": [],
-      "names.dwarf": [],
-      "names.elf": [],
-      "roles": [],
-      "traits": [],
-      "hooks": [],
-      "voices": []
-    },
-    "current": {
-      "name": "Halia",
-      "role": "Händlerin",
-      "trait1": "misstrauisch",
-      "trait2": "sehr direkt",
-      "hook": "hat etwas Unheimliches gesehen",
-      "voice": "spricht in kurzen Befehlen"
-    }
-  }
+  ]
 }
