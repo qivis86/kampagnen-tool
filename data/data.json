@@ -283,32 +283,6 @@
       }
     },
     {
-      "id": "barthens-provisions",
-      "name": "Barthen’s Provisions",
-      "categories": [
-        "Phandalin",
-        "Handel"
-      ],
-      "tags": [
-        "Ausrüstung",
-        "Proviant",
-        "Versorgung"
-      ],
-      "placeIds": [],
-      "fields": {
-        "ID": "barthens-provisions",
-        "Typ": "Geschäft (Ausrüstung & Proviant)",
-        "Parent": "phandalin",
-        "NPCs": "elmar-barthen, ander, thistle",
-        "Kurzbeschreibung": "Barthen’s Provisions ist der zentrale Anlaufpunkt für alltägliche Ausrüstung und Reisebedarf in Phandalin. Kein Ort für große Worte, aber zuverlässig – zumindest im Rahmen dessen, was ein Grenzdorf leisten kann.",
-        "Stimmung": "Pragmatisch, geschäftig, bodenständig. Wenig Smalltalk, dafür klare Absprachen.",
-        "Angebot": "- Standardmäßig **Adventuring Gear bis 25 GP**\n- Verbrauchsgüter, Proviant, einfache Werkzeuge\n- **Keine Waffen und keine Rüstungen**\n- Nicht alles ist jederzeit vorrätig, aber fehlende Gegenstände sollen den Spielfluss nicht künstlich bremsen",
-        "Besonderheiten / Fortschritt": "- Im Laufe der Kampagne können einzelne, höherwertige oder ungewöhnliche Gegenstände als **Belohnung**, Sonderbeschaffung oder „gerade reingekommen“ verfügbar sein\n- Verfügbarkeit kann sich mit dem Ansehen der SCs, Ereignissen im Umland oder Lieferproblemen ändern\n- Spielbarkeit hat Vorrang vor Realismus",
-        "Typische Szenen": "- Schnelle Einkäufe vor dem Aufbruch\n- Kurze Gespräche über Knappheit, Lieferprobleme oder Neuigkeiten\n- Nebenbei aufgeschnappte Gerüchte ohne große Tiefe",
-        "SL-Notizen": "- Barthen’s Provisions ist funktional, kein Story-Hotspot\n- Ideal, um Fortschritt subtil zu zeigen (bessere Auswahl, Vertrauen, kleine Extras)\n- Keine künstlichen Engpässe, die Spielerentscheidungen blockieren"
-      }
-    },
-    {
       "id": "daran-edermath",
       "name": "🟢 Daran Edermath",
       "categories": [
