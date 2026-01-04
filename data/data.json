@@ -10,25 +10,26 @@
         "Wirt",
         "Gasthof",
         "Familie",
-        "Gerüchte"
+        "Gerüchte",
+        "Alltag"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, männlich, eher klein",
         "Rolle / Funktion": "Wirt des Stonehill Inn",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Freundlich, bodenständig, stets geschäftig; wettergegerbtes Gesicht",
-        "Herkunft & kurze Vorgeschichte": "Stammt aus Triboar, kam als Goldsucher nach Phandalin und wurde Wirt",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Freundlich, bodenständig; stets etwas geschäftig, mit wettergegerbtem Gesicht und offenen Gesten",
+        "Herkunft & kurze Vorgeschichte": "Stammt aus Triboar (östlich von Phandalin). Kam einst als Goldsucher in die Region, merkte jedoch schnell, dass ihm Zuhören, Bewirten und Zusammenbringen von Menschen mehr liegt als das harte Leben in der Mine.",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Motivation (offen)": "Sicherheit für Familie und Gasthof",
-        "Motivation (verdeckt / langfristig)": "Angst um Phandalins Zukunft",
-        "Beziehung zu Phandalin": "Alteingesessen, identitätsstiftend",
-        "Haltung zu Greyveins / Stormveins / Talos": "Skeptisch, nicht feindselig",
-        "Wissen / Gerüchte": "Hört viel, filtert wenig",
-        "Was wissen die SCs aktuell über diese Person?": "Freundlicher Wirt, erste Anlaufstelle",
-        "Mögliche Interaktionen mit den SCs": "Gerüchte, Aufträge, emotionale Erdung",
-        "Entwicklung im Kampagnenverlauf": "Wird mutiger oder vorsichtiger",
-        "Notizen für den SL": "Emotionaler Ankerpunkt für SCs"
+        "Motivation (offen)": "Sicherheit für seine Familie und den Gasthof",
+        "Motivation (verdeckt / langfristig)": "Angst, dass Phandalin den nächsten Sturm nicht übersteht",
+        "Beziehung zu Phandalin": "Alteingesessen, identitätsstiftend für den Ort",
+        "Haltung zu Greyveins / Stormveins / Talos": "Skeptisch, aber nicht feindselig; unterscheidet nicht klar zwischen den Gruppen",
+        "Wissen / Gerüchte": "Hört viel, filtert wenig – idealer Gerüchteverteiler",
+        "Was wissen die SCs aktuell über diese Person?": "Freundlicher Wirt, erste Anlaufstelle in Phandalin",
+        "Mögliche Interaktionen mit den SCs": "Aufträge, Gerüchte, emotionale Erdung",
+        "Entwicklung im Kampagnenverlauf": "Wird vorsichtiger oder mutiger – abhängig von den Erfolgen der SCs",
+        "Notizen für den SL": "Stimme des „einfachen Volkes“; möglicher emotionaler Ankerpunkt für SCs"
       }
     },
     {
@@ -39,19 +40,20 @@
       ],
       "tags": [
         "Familie",
-        "Gasthof"
+        "Gasthof",
+        "Alltag"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, weiblich",
         "Rolle / Funktion": "Mitbetreiberin des Stonehill Inn",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Warmherzig, pragmatisch, aufmerksam",
-        "Herkunft & kurze Vorgeschichte": "Lebt seit Jahren in Phandalin",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Warmherzig, pragmatisch, aufmerksam; hält den Betrieb im Hintergrund zusammen",
+        "Herkunft & kurze Vorgeschichte": "Lebt seit vielen Jahren in Phandalin",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
         "Motivation (offen)": "Familie zusammenhalten",
         "Motivation (verdeckt / langfristig)": "Phandalin als sicheren Ort bewahren",
-        "Was wissen die SCs aktuell über diese Person?": "Freundliche Wirtin im Hintergrund",
+        "Was wissen die SCs aktuell über diese Person?": "Freundliche Wirtin, meist im Hintergrund",
         "Notizen für den SL": "Bemerkt Spannungen früh"
       }
     },
@@ -63,14 +65,15 @@
       ],
       "tags": [
         "Kind",
-        "Familie"
+        "Familie",
+        "Alltag"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, weiblich, Kind",
         "Rolle / Funktion": "Tochter von Toblen",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Aufgeweckt, neugierig",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Aufgeweckt, neugierig, beobachtet alles genau",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
         "Was wissen die SCs aktuell über diese Person?": "Neugieriges Kind, bewundert Abenteurer",
         "Notizen für den SL": "Stellt viele Fragen"
@@ -84,14 +87,15 @@
       ],
       "tags": [
         "Kind",
-        "Familie"
+        "Familie",
+        "Alltag"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, männlich, Kind",
         "Rolle / Funktion": "Sohn von Toblen",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Schüchtern, ruhig",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Schüchtern, ruhig, zurückhaltend",
         "Einstellung gegenüber den SCs (Start)": "neutral",
         "Was wissen die SCs aktuell über diese Person?": "Ruhiger Junge, bleibt im Hintergrund",
         "Notizen für den SL": "Sucht Nähe zu vertrauten Personen"
@@ -105,16 +109,17 @@
       ],
       "tags": [
         "Kind",
-        "Familie"
+        "Familie",
+        "Gasthof"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, Kleinkind",
         "Rolle / Funktion": "Jüngstes Kind der Stonehills",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Laut, chaotisch",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Laut, chaotisch, immer in Bewegung",
         "Was wissen die SCs aktuell über diese Person?": "Kleinkind im Gasthof",
-        "Notizen für den SL": "Sorgt für Leben und Chaos"
+        "Notizen für den SL": "Sorgt für Leben (und Chaos)"
       }
     },
     {
@@ -125,19 +130,26 @@
       ],
       "tags": [
         "Ortsvorsteher",
-        "Politik"
+        "Politik",
+        "Konflikt"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
         "Volk / Geschlecht / Statur": "Mensch, männlich, beleibt",
         "Rolle / Funktion": "Ortsvorsteher (Townmaster)",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Wichtigtuerisch, ängstlich; spricht nur durch verschlossene Tür",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Wichtigtuerisch, ängstlich; spricht stets durch eine verschlossene Tür",
+        "Herkunft & kurze Vorgeschichte": "Amt durch Besitz und Beharrlichkeit, nicht durch Führungsstärke",
         "Einstellung gegenüber den SCs (Start)": "skeptisch",
         "Motivation (offen)": "Eigene Sicherheit",
-        "Motivation (verdeckt / langfristig)": "Machterhalt ohne Risiko",
-        "Was wissen die SCs aktuell über diese Person?": "Ängstlicher Ortsvorsteher",
-        "Notizen für den SL": "Öffnet niemals die Tür; zahlt Münzen einzeln unter der Tür aus"
+        "Motivation (verdeckt / langfristig)": "Machterhalt ohne persönliches Risiko",
+        "Beziehung zu Phandalin": "Amtlich, emotional distanziert",
+        "Haltung zu Greyveins / Stormveins / Talos": "Sieht sie pauschal als Gefahr",
+        "Wissen / Gerüchte": "Weiß mehr als er zugibt, handelt aber nicht",
+        "Was wissen die SCs aktuell über diese Person?": "Ängstlicher Ortsvorsteher, öffnet niemals seine Tür",
+        "Mögliche Interaktionen mit den SCs": "Questvergabe durch die Tür; Belohnungen werden Münze für Münze unter der Tür geschoben",
+        "Entwicklung im Kampagnenverlauf": "Kann isoliert bleiben, entmachtet oder unter Druck gesetzt werden",
+        "Notizen für den SL": "Antwortet auf Klopfen stets mit „Falls du ein Drache bist: Ich bin dünn und zäh und schmecke nicht.“"
       }
     },
     {
@@ -149,16 +161,25 @@
       "tags": [
         "Religion",
         "Joker",
-        "Harper"
+        "Moral"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
-        "Volk / Geschlecht / Statur": "Elf, weiblich",
-        "Rolle / Funktion": "Tymora-Priesterin",
+        "Volk / Geschlecht / Statur": "Elf, weiblich, schlank",
+        "Rolle / Funktion": "Schreinwächterin von Tymora (Harper-Mitgliedschaft nicht öffentlich)",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, gesammelt, aufmerksam",
+        "Herkunft & kurze Vorgeschichte": "Kam vor Jahren nach Phandalin; ihr eigentliches Wirken reicht weit über den Ort hinaus",
         "Einstellung gegenüber den SCs (Start)": "neutral",
-        "Was wissen die SCs aktuell über diese Person?": "Derzeit abwesend",
-        "Notizen für den SL": "Laut Buch über gesamte Kampagne abwesend; bewusster Joker"
+        "Motivation (offen)": "Wahrung von Balance",
+        "Motivation (verdeckt / langfristig)": "Beobachtung größerer Zusammenhänge",
+        "Beziehung zu Phandalin": "Spirituelle Randfigur",
+        "Haltung zu Greyveins / Stormveins / Talos": "Differenziert; warnt vor Radikalisierung",
+        "Wissen / Gerüchte": "Verlässlich, aber nie vollständig",
+        "Was wissen die SCs aktuell über diese Person?": "Tymora-Priesterin; derzeit abwesend",
+        "Mögliche Interaktionen mit den SCs": "Moralischer Kompass, subtile Hinweise",
+        "Entwicklung im Kampagnenverlauf": "Bewusster Joker",
+        "Notizen für den SL": "Laut Buch über gesamte Kampagne abwesend; flexibel einsetzbar"
       }
     },
     {
@@ -169,18 +190,26 @@
       ],
       "tags": [
         "Handel",
-        "Einfluss"
+        "Einfluss",
+        "Grauzone"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
-        "Volk / Geschlecht / Statur": "Halbling, weiblich",
-        "Rolle / Funktion": "Leiterin der Miner’s Exchange",
+        "Volk / Geschlecht / Statur": "Halbling, weiblich, gepflegt, selbstsicher",
+        "Rolle / Funktion": "Leiterin der Phandaliner Miner’s Exchange",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Kühl höflich, geschäftsmäßig, stets kontrolliert",
+        "Herkunft & kurze Vorgeschichte": "Kam wegen wirtschaftlicher Chancen nach Phandalin; baut systematisch Einfluss über Handel und Informationen auf",
         "Einstellung gegenüber den SCs (Start)": "skeptisch",
-        "Motivation (offen)": "Gewinn",
-        "Motivation (verdeckt / langfristig)": "Netzwerkaufbau",
+        "Motivation (offen)": "Gewinn und Stabilität",
+        "Motivation (verdeckt / langfristig)": "Aufbau eines belastbaren Netzwerks",
+        "Beziehung zu Phandalin": "Wirtschaftlich zentral, sozial distanziert",
+        "Haltung zu Greyveins / Stormveins / Talos": "Bewertet nach Nutzen und Risiko",
+        "Wissen / Gerüchte": "Vage Gerüchte über größere Netzwerke",
         "Was wissen die SCs aktuell über diese Person?": "Berechnende Geschäftsfrau",
-        "Notizen für den SL": "Fraktionsbezüge bewusst vage"
+        "Mögliche Interaktionen mit den SCs": "Wird freundlicher, wenn sie Nutzen sieht",
+        "Entwicklung im Kampagnenverlauf": "Machtgewinn oder -verlust",
+        "Notizen für den SL": "Fraktionsbezüge bewusst vage halten"
       }
     },
     {
@@ -191,17 +220,26 @@
       ],
       "tags": [
         "Handel",
-        "Sicherheit"
+        "Sicherheit",
+        "Lionshield"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
-        "Volk / Geschlecht / Statur": "Mensch, weiblich",
-        "Rolle / Funktion": "Lionshield-Händlerin",
+        "Volk / Geschlecht / Statur": "Mensch, weiblich, kräftig",
+        "Rolle / Funktion": "Leiterin des Lionshield-Handelspostens",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Direkt, offen, zupackend",
+        "Herkunft & kurze Vorgeschichte": "Von der Lionshield Company entsandt; fühlt sich dem Ort persönlich verpflichtet",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Motivation (offen)": "Sicherheit Phandalins",
+        "Motivation (offen)": "Sicherer Handel",
+        "Motivation (verdeckt / langfristig)": "Phandalin als geschützten Knotenpunkt etablieren",
+        "Beziehung zu Phandalin": "Teil der Gemeinschaft",
+        "Haltung zu Greyveins / Stormveins / Talos": "Sehr wachsam",
+        "Wissen / Gerüchte": "Fakten statt Gerüchte",
         "Was wissen die SCs aktuell über diese Person?": "Verlässliche Händlerin",
-        "Notizen für den SL": "Gegenpol zu Halia"
+        "Mögliche Interaktionen mit den SCs": "Faire Geschäfte, Ausrüstung, Unterstützung",
+        "Entwicklung im Kampagnenverlauf": "Schlüsselfigur für Versorgung & Verteidigung",
+        "Notizen für den SL": "Klarer Gegenpol zu Halia"
       }
     },
     {
@@ -212,16 +250,26 @@
       ],
       "tags": [
         "Händler",
-        "Alltag"
+        "Alltag",
+        "Beziehung"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
-        "Volk / Geschlecht / Statur": "Ork, männlich",
-        "Rolle / Funktion": "Händler",
+        "Volk / Geschlecht / Statur": "Ork, männlich, kräftig",
+        "Rolle / Funktion": "Händler (Barthen’s Provisions)",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Offen, herzlich, humorvoll",
+        "Herkunft & kurze Vorgeschichte": "Reisender Händler; kaputtes Rad führte zu längerem Aufenthalt. Verliebte sich in Aven und blieb in Phandalin",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Was wissen die SCs aktuell über diese Person?": "Herzensguter Ork-Händler",
-        "Notizen für den SL": "Partner von Aven"
+        "Motivation (offen)": "Ehrlicher Handel",
+        "Motivation (verdeckt / langfristig)": "Sicherheit für sich und Aven",
+        "Beziehung zu Phandalin": "Gut integriert",
+        "Haltung zu Greyveins / Stormveins / Talos": "Pragmatisch",
+        "Wissen / Gerüchte": "Alltagswissen, Durchreisende",
+        "Was wissen die SCs aktuell über diese Person?": "Freundlicher Ork-Händler",
+        "Mögliche Interaktionen mit den SCs": "Faire Geschäfte, kleine Gefallen",
+        "Entwicklung im Kampagnenverlauf": "Stabile Stütze des Ortes",
+        "Notizen für den SL": "Beziehung als selbstverständlicher Ruhepol"
       }
     },
     {
@@ -232,15 +280,25 @@
       ],
       "tags": [
         "Handwerk",
-        "Alltag"
+        "Alltag",
+        "Nebenfigur"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
-        "Volk / Geschlecht / Statur": "Mensch, männlich",
+        "Volk / Geschlecht / Statur": "Mensch, männlich, groß, breites Kreuz",
         "Rolle / Funktion": "Handwerker",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, praktisch, warmherzig",
+        "Herkunft & kurze Vorgeschichte": "Arbeitet seit Jahren in Phandalin",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
+        "Motivation (offen)": "Gute Arbeit leisten",
+        "Motivation (verdeckt / langfristig)": "Sicherheit für sich und Barthen",
+        "Beziehung zu Phandalin": "Bodenständig, gebraucht",
+        "Haltung zu Greyveins / Stormveins / Talos": "Pragmatisch",
+        "Wissen / Gerüchte": "Alltagsklatsch",
         "Was wissen die SCs aktuell über diese Person?": "Verlässlicher Handwerker",
+        "Mögliche Interaktionen mit den SCs": "Reparaturen, Hilfe",
+        "Entwicklung im Kampagnenverlauf": "Baumeister neuer Hoffnung",
         "Notizen für den SL": "Nebencharakter; Spitzname „Ave“"
       }
     },
@@ -291,26 +349,25 @@
       "tags": [
         "Veteran",
         "Apfelgarten",
-        "Ordnung",
-        "Wächter"
+        "Sicherheit"
       ],
       "placeIds": [],
       "fields": {
         "ID": "",
-        "Volk / Geschlecht / Statur": "Halbelf, männlich, drahtig, sehnig",
+        "Volk / Geschlecht / Statur": "Halbelf, männlich, drahtig",
         "Rolle / Funktion": "Veteran, Besitzer des Edermath-Apfelgartens",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Wachsam, ruhig, humorlos auf den ersten Blick; trägt alte Narben, bewegt sich kontrolliert",
-        "Herkunft & kurze Vorgeschichte": "Ehemaliger Abenteurer und Kämpfer, zog sich nach Phandalin zurück, um ein ruhigeres Leben zu führen. Hat den Apfelgarten aufgebaut, ohne seine alten Instinkte je ganz abzulegen.",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Wachsam, ruhig, kontrolliert",
+        "Herkunft & kurze Vorgeschichte": "Ehemaliger Abenteurer, zog sich nach Phandalin zurück",
         "Einstellung gegenüber den SCs (Start)": "freundlich",
-        "Motivation (offen)": "Sicherheit Phandalins und seiner Bewohner",
-        "Motivation (verdeckt / langfristig)": "Verhindern, dass Bedrohungen eskalieren, bevor sie den Ort erreichen",
-        "Beziehung zu Phandalin": "Beschützer im Hintergrund; kein offizielles Amt, aber hohes Vertrauen bei den Bewohnern",
-        "Haltung zu Greyveins / Stormveins / Talos": "Sehr wachsam; erkennt Muster von Gewalt und Radikalisierung früh und nimmt sie ernst",
-        "Wissen / Gerüchte": "Hat ein gutes Gespür für Gefahren im Umland und Bewegungen außerhalb des Dorfes",
-        "Was wissen die SCs aktuell über diese Person?": "Ruhiger Halbelf, Veteran, dem die Sicherheit des Ortes wichtig ist",
-        "Mögliche Interaktionen mit den SCs": "Warnungen vor Gefahren, Einschätzungen zu Bedrohungen, stille Unterstützung",
-        "Entwicklung im Kampagnenverlauf": "Kann zum wichtigen Verbündeten werden oder sich aktiv einmischen, wenn Phandalin ernsthaft bedroht ist",
-        "Notizen für den SL": "Guter Gegenpol zu Harbin Wester – handelt, statt sich zu verstecken; ideal als Stimme der Erfahrung"
+        "Motivation (offen)": "Sicherheit des Ortes",
+        "Motivation (verdeckt / langfristig)": "Bedrohungen früh stoppen",
+        "Beziehung zu Phandalin": "Beschützer im Hintergrund",
+        "Haltung zu Greyveins / Stormveins / Talos": "Erkennt Radikalisierung früh",
+        "Wissen / Gerüchte": "Gutes Gespür für Gefahren",
+        "Was wissen die SCs aktuell über diese Person?": "Ruhiger Veteran mit Erfahrung",
+        "Mögliche Interaktionen mit den SCs": "Warnungen, Einschätzungen, stille Hilfe",
+        "Entwicklung im Kampagnenverlauf": "Kann aktiv eingreifen",
+        "Notizen für den SL": "Rückgrat ohne Amt; Gegenpol zu Harbin"
       }
     }
   ],
