@@ -341,6 +341,32 @@
       }
     },
     {
+      "id": "barthens-provisions",
+      "name": "Barthen’s Provisions",
+      "categories": [
+        "Phandalin",
+        "Handel"
+      ],
+      "tags": [
+        "Ausrüstung",
+        "Proviant",
+        "Versorgung"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "barthens-provisions",
+        "Typ": "Geschäft (Ausrüstung & Proviant)",
+        "Parent": "phandalin",
+        "NPCs": "elmar-barthen, ander, thistle",
+        "Kurzbeschreibung": "Barthen’s Provisions ist der zentrale Anlaufpunkt für alltägliche Ausrüstung und Reisebedarf in Phandalin. Kein Ort für große Worte, aber zuverlässig – zumindest im Rahmen dessen, was ein Grenzdorf leisten kann.",
+        "Stimmung": "Pragmatisch, geschäftig, bodenständig. Wenig Smalltalk, dafür klare Absprachen.",
+        "Angebot": "- Standardmäßig **Adventuring Gear bis 25 GP**\n- Verbrauchsgüter, Proviant, einfache Werkzeuge\n- **Keine Waffen und keine Rüstungen**\n- Nicht alles ist jederzeit vorrätig, aber fehlende Gegenstände sollen den Spielfluss nicht künstlich bremsen",
+        "Besonderheiten / Fortschritt": "- Im Laufe der Kampagne können einzelne, höherwertige oder ungewöhnliche Gegenstände als **Belohnung**, Sonderbeschaffung oder „gerade reingekommen“ verfügbar sein\n- Verfügbarkeit kann sich mit dem Ansehen der SCs, Ereignissen im Umland oder Lieferproblemen ändern\n- Spielbarkeit hat Vorrang vor Realismus",
+        "Typische Szenen": "- Schnelle Einkäufe vor dem Aufbruch\n- Kurze Gespräche über Knappheit, Lieferprobleme oder Neuigkeiten\n- Nebenbei aufgeschnappte Gerüchte ohne große Tiefe",
+        "SL-Notizen": "- Barthen’s Provisions ist funktional, kein Story-Hotspot\n- Ideal, um Fortschritt subtil zu zeigen (bessere Auswahl, Vertrauen, kleine Extras)\n- Keine künstlichen Engpässe, die Spielerentscheidungen blockieren"
+      }
+    },
+    {
       "id": "daran-edermath",
       "name": "🟢 Daran Edermath",
       "categories": [
@@ -368,6 +394,86 @@
         "Mögliche Interaktionen mit den SCs": "Warnungen, Einschätzungen, stille Hilfe",
         "Entwicklung im Kampagnenverlauf": "Kann aktiv eingreifen",
         "Notizen für den SL": "Rückgrat ohne Amt; Gegenpol zu Harbin"
+      }
+    },
+    {
+      "id": "kiki-querwind",
+      "name": "🧙‍♂️ Kiki Querwind",
+      "categories": [
+        "Spieler"
+      ],
+      "tags": [
+        "PC",
+        "gnom",
+        "monk",
+        "großemaul",
+        "waghalsig",
+        "drachen",
+        "grauwacht",
+        "schlüsselbund",
+        "rucksack",
+        "heimatgefühl"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Gnom, weiblich, klein (ca. 90 cm), drahtig",
+        "Rolle / Funktion": "Abenteurerin (selbsternannte „zukünftige Drachentöterin“)",
+        "Auftreten & Eindruck (inkl. Aussehen)": "goldblonde Locken, grüne Augen, Sommersprossen; lange spitze Ohren wippen beim Gehen; abgetragene grün-beige Kleidung; fingerlose Lederhandschuhe; übervoller Rucksack mit „Klimbim“, richtet sich überall ein („Zuhause“ bauen)",
+        "Herkunft & kurze Vorgeschichte": "Aus Grauwacht (Küstendorf zwischen Luskan und Neverwinter). Keine formelle Ausbildung; alles selbst beigebracht (rennen, klettern, hinfallen, aufstehen). Eltern (Hobbab & Mirla) betreiben die Taverne „Zum Windschlag“. Schnappt Abenteurergeschichten auf und gibt sie als eigene aus. Ältere Geschwister: Tami & Bremm. Kurz vor Abreise: Schlüsselbund mit vielen seltsamen Schlüsseln gefunden (keiner passt – „werden irgendwann nützlich“).",
+        "Einstellung gegenüber den SCs (Start)": "offensiv freundlich, schnell kumpelhaft; will beeindrucken",
+        "Motivation (offen)": "Einen Drachen töten (Wette) und beweisen, dass sie recht hatte",
+        "Motivation (verdeckt / langfristig)": "Ernst genommen werden; Selbstbild als „unaufhaltbar“ aufrechterhalten",
+        "Beziehung zu Phandalin": "neu, sucht Anschluss/Publikum; macht Räume schnell „heimisch“",
+        "Haltung zu Greyveins / Stormveins / Talos": "offen / uninformiert; reagiert stark auf „Niemand zweifelt sie an“",
+        "Wissen / Gerüchte": "Viel „aufgeschnapptes“ Wissen aus Tavernenstories, teils übertrieben/unklar; kaum echte Reiseerfahrung",
+        "Was wissen die SCs aktuell über diese Person?": "Lautstarke Gnom-Mönchin, will Drachen töten, hat immer nützlichen Kleinkram dabei",
+        "Mögliche Interaktionen mit den SCs": "Prahlen, Mutproben, vorschnelle Zusagen; kreative Impro-Lösungen mit Rucksackkram; starkes RP bei Überforderung/Realitätscheck (z.B. früher Drachenkontakt)",
+        "Entwicklung im Kampagnenverlauf": "Selbstbild vs Wirklichkeit als wiederkehrender Bogen; Worte bekommen Gewicht, wenn NPCs (v.a. Kinder) ihr ungefiltert glauben; Subklasse kann sich aus Erlebnissen ergeben"
+      }
+    },
+    {
+      "id": "belmo-teaclock",
+      "name": "🧙‍♂️ Belmo Teaclock",
+      "categories": [
+        "Spieler"
+      ],
+      "tags": [
+        "Barde",
+        "Conman",
+        "Wortgewandt",
+        "Gewaltvermeidung",
+        "Heimatssuche"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Alter / Statur": "Halbling, Anfang 20, schlank",
+        "Rolle / Funktion": "Abenteurer, Barde, Vermittler & Trickser",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Selbstsicher, redegewandt, leicht arrogant; beobachtet genau, hört zu, bevor er spricht. Verachtet Einfältigkeit und Einsilbigkeit. Sieht Gewalt als unkreativ und profan.",
+        "Herkunft & kurze Vorgeschichte": "Aufgewachsen auf einer Farm nahe Secomber. Hat früh gelernt, sich mit Worten und Manipulation gegen ein dominanteres älteres Geschwister durchzusetzen. Traf auf einem Markt in Secomber einen reisenden Barden und erkannte, dass Worte Macht besitzen und sogar Magie wirken können. Reiste eine Zeit lang mit diesem Barden als freundschaftliche Begleitung ohne formelles Lehrverhältnis; sieht ihn insgeheim als Mentorfigur. Nach der Trennung der Wege auf der Suche nach Zugehörigkeit und einer festen Bleibe, idealerweise in Phandalin.",
+        "Einstellung gegenüber den SCs (Start)": "Aufgeschlossen und interessiert; loyal zur Gruppe, lügt und trickst nach außen, nicht innerhalb der Gruppe."
+      }
+    },
+    {
+      "id": "thyria",
+      "name": "🧙‍♂️ Thyria",
+      "categories": [
+        "Spieler"
+      ],
+      "tags": [
+        "Druide",
+        "Waldelfe",
+        "Naturverbunden",
+        "Selbstsuche",
+        "Helfend"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Rolle / Funktion": "Abenteurerin, Druide; Unterstützerin, Bewahrerin des Gleichgewichts",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, aufmerksam, zurückhaltend; beobachtet mehr, als sie spricht. Wirkt in der Natur sicher und geerdet, außerhalb davon gelegentlich suchend. Begegnet anderen meist wohlwollend und hilfsbereit.",
+        "Herkunft & kurze Vorgeschichte": "Aufgewachsen im Kryptgarden Forest. Über elfische Kontakte Anschluss an den Dusk Circle gefunden und dort eine druidische Ausbildung erhalten. Ihre Mentorin (noch offen) prägte sie mit einem ruhigen, klaren und eher kryptischen Lehrstil.\nMit den Jahren verspürte Thyria jedoch einen inneren Zwiespalt, den sie für sich behielt, und entschied sich schließlich, den Wald zu verlassen, um sich selbst besser zu verstehen. In der Hoffnung, durch das Helfen anderer Klarheit zu finden, führte ihr Weg nach Phandalin.",
+        "Einstellung gegenüber den SCs (Start)": "Offen, unterstützend und kooperativ; sucht Anschluss, ohne sich aufzudrängen. Neigt dazu, andere zu stärken und Konflikte zu beruhigen.",
+        "Volk / Alter / Statur": "Waldelfe, ca. 110 Jahre, schlank"
       }
     }
   ],
