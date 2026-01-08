@@ -449,6 +449,44 @@
         "Einstellung gegenüber den SCs (Start)": "Offen, unterstützend und kooperativ; sucht Anschluss, ohne sich aufzudrängen. Neigt dazu, andere zu stärken und Konflikte zu beruhigen.",
         "Volk / Alter / Statur": "Waldelfe, ca. 110 Jahre, schlank"
       }
+    },
+    {
+      "id": "adantin",
+      "name": "🧙‍♂️ Adantin",
+      "categories": [
+        "Spieler"
+      ],
+      "tags": [
+        "Paladin",
+        "Adel",
+        "Neverwinter",
+        "Idealist",
+        "Korruption",
+        "Verantwortung",
+        "Oath of the Ancients"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Alter / Statur": "Mensch, männlich, Anfang 20, gepflegt, athletisch",
+        "Rolle / Funktion": "Abenteurer; idealistischer Kämpfer gegen Machtmissbrauch",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Zurückhaltend, aufmerksam, ernsthaft; höfisch erzogen, aber ohne Arroganz. Wirkt entschlossen, wenn es um Fragen von Gerechtigkeit und Verantwortung geht.",
+        "Herkunft & kurze Vorgeschichte": "",
+        "Adantin stammt aus einem adeligen Haus in Neverwinter mit Beziehungen zum Lord Protector. Schon früh fühlte er sich am Hof fehl am Platz": "nicht wegen Ausgrenzung, sondern wegen seiner Werte. Ihn störten das Fixieren auf Äußerlichkeiten, politische Spielchen und insbesondere Korruption.\nAls er Machenschaften seines eigenen Hauses entdeckte, die auf Kosten der einfachen Bevölkerung gingen, kam es zum offenen Bruch mit seinen Eltern. Adantin verließ Neverwinter, um seine Werte fernab von Titeln und Herkunft zu erproben.",
+        "Ausbildung / Fähigkeiten (narrativ)": "Standesgemäßes Kampftraining am Hof; diszipliniert, aber ohne Kriegserfahrung. Stärke liegt in Standhaftigkeit, Präsenz und moralischer Klarheit.",
+        "Eid / Überzeugung (Oath of the Ancients, innerweltlich)": "",
+        "Kein formaler Ritterschwur, kein Orden. Der Eid ist eine innere Überzeugung": "Leben, Würde und Hoffnung zu schützen – besonders dort, wo Macht missbraucht wird. Adantin sieht sich nicht als Auserwählten, sondern als jemanden, der nicht wegschaut.",
+        "Einstellung gegenüber den SCs (Start)": "Offen, respektvoll, beobachtend; Vertrauen entsteht durch Taten, nicht Worte.",
+        "Wichtige Beziehungen": "",
+        "Schwester (Neverwinter)": "emotionale Bindung, moralischer Spiegel",
+        "Kindheitsfreund (vermutlich taubstumm)": "ehrliche, unpolitische Beziehung; starker emotionaler Anker",
+        "Beziehung zur Region / Phandalin": "Hat von der Zerstörung Phandalins durch die Greyveins, dem Wiederaufbau und dem Drachen gehört. Sieht den Ort sowohl als Möglichkeit für echte gute Taten als auch pragmatisch als Gelegenheit, Unterkunft gegen Abenteurerarbeit zu erhalten.",
+        "Motivation (offen)": "Gutes tun, Verantwortung übernehmen, Machtmissbrauch entgegentreten.",
+        "Motivation (verdeckt / langfristig)": "Herausfinden, wer er ist, wenn Herkunft und Titel keine Rolle spielen; klären, ob Ideale allein ausreichen oder ob Veränderung Strukturen braucht.",
+        "Wissen / Gerüchte": "Adelige Politik in Neverwinter; allgemeine Geschichten über Phandalin und den Drachen.\n**Was wissen die SCs aktuell über diese Person?**\nEin junger Adliger aus Neverwinter, der bewusst Abstand zu seiner Herkunft hält und für seine Werte einsteht.",
+        "Mögliche Interaktionen mit den SCs": "Gemeinsame Entscheidungen in moralischen Grauzonen, Schutz Schwächerer, Diskussionen über Verantwortung und Autorität.",
+        "Entwicklung im Kampagnenverlauf (SL-Notiz)": "Konflikte mit Autoritäten, Rückbezug nach Neverwinter möglich; Entwicklung vom Idealisten zum gestaltenden Akteur."
+      }
     }
   ],
   "places": [
