@@ -487,6 +487,40 @@
         "Mögliche Interaktionen mit den SCs": "Gemeinsame Entscheidungen in moralischen Grauzonen, Schutz Schwächerer, Diskussionen über Verantwortung und Autorität.",
         "Entwicklung im Kampagnenverlauf (SL-Notiz)": "Konflikte mit Autoritäten, Rückbezug nach Neverwinter möglich; Entwicklung vom Idealisten zum gestaltenden Akteur."
       }
+    },
+    {
+      "id": "rokhan-grausteig",
+      "name": "🟢 Rokhan Grausteig",
+      "categories": [
+        "Einzelauftritt"
+      ],
+      "tags": [
+        "Halb-Ork",
+        "Händler",
+        "Fuhrmann",
+        "High Road",
+        "Überfall",
+        "Alltags-NPC"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Rolle / Funktion": "Wandernder Händler, Fuhrmann",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Breitschultrig, wettergegerbte Haut, dunkles Haar zu einem kurzen Zopf gebunden.\nEin Stoßzahn fehlt, der andere ist angeschlagen.\nTrägt einfache, robuste Kleidung, mehrfach geflickt.\nWirkt gefährlicher, als er ist – besonders zwischen Rauch und Trümmern seines umgestürzten Wagens.",
+        "Herkunft & kurze Vorgeschichte": "Reist regelmäßig zwischen kleineren Siedlungen und Städten, handelt mit Alltagswaren.\nHat Kontakte in verschiedenen Orten, ohne fest gebunden zu sein.",
+        "Einstellung gegenüber den SCs (Start)": "freundlich (nach dem Überfall dankbar)",
+        "Motivation (offen)": "Sicher ankommen, Ware verkaufen, weiterziehen",
+        "Motivation (verdeckt / langfristig)": "Einfaches, selbstbestimmtes Leben führen",
+        "Beziehung zu Phandalin": "Kennt Barthen",
+        "Wissen / Gerüchte": "Alltagswissen über Handelswege und Gefahren auf der High Road",
+        "Was wissen die SCs aktuell über diese Person?": "Halb-Orkischer Händler, der bei einem Überfall verletzt wurde und Hilfe annahm",
+        "Mögliche Interaktionen mit den SCs": "Dankbarkeit zeigen, kurzer Austausch, verweist die Gruppe nach Phandalin zur Taverne",
+        "Notizen für den SL": "Könnte später nochmal auftauchen und dankbar sein",
+        "Volk / Geschlecht / Alter": "Halb-Ork, männlich, mittleres Alter",
+        "Bezug zu Phandalin": "Hat regelmäßigen Kontakt zu Barthen’s Provisions.\nWenn er Phandalin erreicht, geht er direkt dorthin.",
+        "Abgang / Verwendung": "Geht in Phandalin allein zu Barthen’s Provisions.",
+        "Schickt die SCs weiter zur Taverne mit den Worten": "„Sagt Toblen, das erste Bier geht auf Rokhan.“",
+        "SL-Notizen": "Bewusster Gegenpol zu Ork-Stereotypen.\nKein Plotträger, kein Folgeauftrag.\nDient als Ankerfigur für Übergang nach Phandalin und verschwindet danach aus dem Fokus."
+      }
     }
   ],
   "places": [
