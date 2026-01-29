@@ -499,6 +499,29 @@
         "Schickt die SCs weiter zur Taverne mit den Worten": "„Sagt Toblen, das erste Bier geht auf Rokhan.“",
         "SL-Notizen": "Bewusster Gegenpol zu Ork-Stereotypen.\nKein Plotträger, kein Folgeauftrag.\nDient als Ankerfigur für Übergang nach Phandalin und verschwindet danach aus dem Fokus."
       }
+    },
+    {
+      "id": "norielle-nori-glutdorn",
+      "name": "🌿 Norielle „Nori“ Glutdorn",
+      "categories": [
+        "Spieler"
+      ],
+      "tags": [
+        "Druide",
+        "Waldelfe",
+        "Naturverbunden",
+        "Selbstsuche",
+        "Unterstützend"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "nori",
+        "Volk / Alter / Statur": "Waldelfe, ca. 110 Jahre, schlank",
+        "Rolle / Funktion": "Abenteurerin, Druide; Unterstützerin, Bewahrerin des Gleichgewichts",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, aufmerksam, zurückhaltend; beobachtet mehr, als sie spricht. Wirkt in der Natur sicher und geerdet, außerhalb davon gelegentlich suchend. Begegnet anderen meist wohlwollend und hilfsbereit.",
+        "Herkunft & kurze Vorgeschichte": "Aufgewachsen im Kryptgarden Forest als Tochter von Ellinore und Rinrod. Über elfische Kontakte fand Norielle Anschluss an den Dusk Circle und erhielt dort eine druidische Ausbildung.\nIhre Mentorin Thyria prägte sie mit einem ruhigen, klaren und eher kryptischen Lehrstil.\nMit den Jahren entschied sich Norielle, den Wald zu verlassen, um sich selbst besser zu verstehen. In der Hoffnung, durch das Helfen anderer Klarheit zu finden, führte ihr Weg schließlich nach Phandalin.",
+        "Einstellung gegenüber den SCs (Start)": "Offen, unterstützend und kooperativ; sucht Anschluss, ohne sich aufzudrängen. Neigt dazu, andere zu stärken und Konflikte zu beruhigen."
+      }
     }
   ],
   "places": [
