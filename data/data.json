@@ -429,28 +429,6 @@
       }
     },
     {
-      "id": "thyria",
-      "name": "🧙‍♂️ Thyria",
-      "categories": [
-        "Spieler"
-      ],
-      "tags": [
-        "Druide",
-        "Waldelfe",
-        "Naturverbunden",
-        "Selbstsuche",
-        "Helfend"
-      ],
-      "placeIds": [],
-      "fields": {
-        "Rolle / Funktion": "Abenteurerin, Druide; Unterstützerin, Bewahrerin des Gleichgewichts",
-        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, aufmerksam, zurückhaltend; beobachtet mehr, als sie spricht. Wirkt in der Natur sicher und geerdet, außerhalb davon gelegentlich suchend. Begegnet anderen meist wohlwollend und hilfsbereit.",
-        "Herkunft & kurze Vorgeschichte": "Aufgewachsen im Kryptgarden Forest. Über elfische Kontakte Anschluss an den Dusk Circle gefunden und dort eine druidische Ausbildung erhalten. Ihre Mentorin (noch offen) prägte sie mit einem ruhigen, klaren und eher kryptischen Lehrstil.\nMit den Jahren verspürte Thyria jedoch einen inneren Zwiespalt, den sie für sich behielt, und entschied sich schließlich, den Wald zu verlassen, um sich selbst besser zu verstehen. In der Hoffnung, durch das Helfen anderer Klarheit zu finden, führte ihr Weg nach Phandalin.",
-        "Einstellung gegenüber den SCs (Start)": "Offen, unterstützend und kooperativ; sucht Anschluss, ohne sich aufzudrängen. Neigt dazu, andere zu stärken und Konflikte zu beruhigen.",
-        "Volk / Alter / Statur": "Waldelfe, ca. 110 Jahre, schlank"
-      }
-    },
-    {
       "id": "adantin",
       "name": "🧙‍♂️ Adantin",
       "categories": [
