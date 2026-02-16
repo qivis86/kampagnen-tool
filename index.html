@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kampagnen-Tool – NPCs & Orte</title>
+<title>Kampagnen-Tool – NPCs, Orte & Dungeons</title>
 
 <style>
   body { margin:0; background:#0b0c10; color:#e8e8e8; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
@@ -157,6 +157,15 @@
     .fieldrow{ grid-template-columns:1fr; }
     .customfield{ grid-template-columns: 1fr; }
   }
+
+  .richtext{ line-height:1.45; font-size:14px; }
+  .richtext p{ margin: 0 0 10px 0; }
+  .richtext ul, .richtext ol{ margin: 0 0 10px 18px; }
+  .richtext h2{ margin: 14px 0 8px; font-size: 15px; }
+  .richtext h3{ margin: 12px 0 6px; font-size: 14px; }
+  .richtext pre{ background:#0f111a; border:1px solid #242838; padding:10px; border-radius:10px; overflow:auto; }
+  .richtext code{ background:#0f111a; border:1px solid #242838; padding:1px 4px; border-radius:6px; }
+
 </style>
 </head>
 
@@ -180,6 +189,7 @@
     <div class="seg" style="margin-bottom:10px;">
       <button id="btnModeNpcs" class="active">🧑 NPCs</button>
       <button id="btnModePlaces">📍 Orte</button>
+      <button id="btnModeDungeons">🗺️ Dungeon</button>
     </div>
 
     <div class="muted" id="catsHint">Klick → Liste</div>
@@ -300,7 +310,7 @@ const REMOTE_DATA_URL = "data/data.json";
    STORAGE
 ========================= */
 const STORAGE_KEY = "kampagnen_tool_world_v1";
-let { NPCS, PLACES } = loadWorld();
+let { NPCS, PLACES, DUNGEONS, ROOMS } = loadWorld();
 
 function loadWorld(){
   try{
@@ -309,16 +319,22 @@ function loadWorld(){
     if(parsed && typeof parsed === "object"){
       return {
         NPCS: Array.isArray(parsed.npcs) ? parsed.npcs : [],
-        PLACES: Array.isArray(parsed.places) ? parsed.places : []
+        PLACES: Array.isArray(parsed.places) ? parsed.places : [],
+        DUNGEONS: Array.isArray(parsed.dungeons) ? parsed.dungeons : [],
+        ROOMS: Array.isArray(parsed.rooms) ? parsed.rooms : []
       };
     }
-    return { NPCS: [], PLACES: [] };
+    return { NPCS: [], PLACES: [], DUNGEONS: [], ROOMS: [] };
   }catch{
-    return { NPCS: [], PLACES: [] };
+    return { NPCS: [], PLACES: [], DUNGEONS: [], ROOMS: [] };
   }
 }
+
 function saveWorld(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ npcs: NPCS, places: PLACES }));
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ npcs: NPCS, places: PLACES, dungeons: DUNGEONS, rooms: ROOMS })
+  );
 }
 
 /* =========================
@@ -341,7 +357,7 @@ function escapeHtml(s){
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
-    .replaceAll('"',"quot;")
+    .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
 function normalizeLine(line){
@@ -617,7 +633,9 @@ btnBack.onclick = () => {
 };
 btnTopSync.onclick = () => syncLoad();
 btnTopMode.onclick = () => {
-  setMode(state.mode === "places" ? "npcs" : "places");
+  const order = ["npcs","places","dungeons"];
+  const i = order.indexOf(state.mode);
+  setMode(order[(i + 1) % order.length]);
 };
 
 window.addEventListener("resize", () => applyMobileVisibility());
@@ -627,11 +645,13 @@ window.addEventListener("resize", () => applyMobileVisibility());
 ========================= */
 const btnModeNpcs = document.getElementById("btnModeNpcs");
 const btnModePlaces = document.getElementById("btnModePlaces");
+const btnModeDungeons = document.getElementById("btnModeDungeons");
 const catsHeader = document.getElementById("catsHeader");
 const catsHint = document.getElementById("catsHint");
 
 btnModeNpcs.onclick = () => setMode("npcs");
 btnModePlaces.onclick = () => setMode("places");
+btnModeDungeons.onclick = () => setMode("dungeons");
 
 function setMode(mode){
   state.mode = mode;
@@ -647,17 +667,45 @@ function setMode(mode){
 
 function updateModeUi(){
   const isNpc = state.mode === "npcs";
+  const isPlace = state.mode === "places";
+  const isDungeon = state.mode === "dungeons";
+
   btnModeNpcs.classList.toggle("active", isNpc);
-  btnModePlaces.classList.toggle("active", !isNpc);
-  catsHeader.textContent = isNpc ? "📚 Kategorien (NPCs)" : "📚 Kategorien (Orte)";
-  catsHint.textContent = "Klick → Liste";
+  btnModePlaces.classList.toggle("active", isPlace);
+  btnModeDungeons.classList.toggle("active", isDungeon);
+
+  // Side header / hint
+  if(isNpc){
+    catsHeader.textContent = "📚 Kategorien (NPCs)";
+    catsHint.textContent = "Klick → Liste";
+    btnTopMode.textContent = "🧑";
+    topbarTitle.textContent = state.view === "cats" ? "Kategorien" : (state.view === "list" ? "Liste" : "Details");
+  } else if(isPlace){
+    catsHeader.textContent = "📚 Kategorien (Orte)";
+    catsHint.textContent = "Klick → Liste";
+    btnTopMode.textContent = "📍";
+    topbarTitle.textContent = state.view === "cats" ? "Kategorien" : (state.view === "list" ? "Liste" : "Details");
+  } else {
+    catsHeader.textContent = "🗺️ Dungeons";
+    catsHint.textContent = "Dungeon wählen → Räume";
+    btnTopMode.textContent = "🗺️";
+    topbarTitle.textContent = state.view === "cats" ? "Dungeons" : (state.view === "list" ? "Räume" : "Raum");
+  }
 }
 
 /* =========================
    DATA ACCESS
 ========================= */
-function getEntities(){ return (state.mode === "npcs") ? NPCS : PLACES; }
-function getSelectedEntity(){ return getEntities().find(e => e.id === state.selectedEntityId) || null; }
+function getEntities(){
+  if(state.mode === "npcs") return NPCS;
+  if(state.mode === "places") return PLACES;
+  return DUNGEONS;
+}
+function getSelectedEntity(){
+  if(state.mode === "dungeons") return getRoomById(state.selectedEntityId);
+  return getEntities().find(e => e.id === state.selectedEntityId) || null;
+}
+
 
 function collectCategories(list){
   const set = new Set();
@@ -686,6 +734,86 @@ function getVisibleEntities(){
   return list;
 }
 
+
+/* =========================
+   DUNGEON HELPERS
+========================= */
+function getDungeonById(id){ return (DUNGEONS || []).find(d => d.id === id) || null; }
+function getRoomById(id){ return (ROOMS || []).find(r => r.id === id) || null; }
+function getRoomsForDungeon(dungeonId){
+  return (ROOMS || []).filter(r => r.dungeonId === dungeonId).slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"", 'de'));
+}
+function roomMatchesSearch(room, q){
+  q = (q || "").trim().toLowerCase();
+  if(!q) return true;
+  const hay = [
+    room.name,
+    room.descriptionHtml,
+    room.description,
+    room.short,
+    JSON.stringify(room.fields || {})
+  ].filter(Boolean).join(" ").toLowerCase();
+  return hay.includes(q);
+}
+
+// Very small allowlist sanitizer for descriptionHtml
+function sanitizeHtmlAllowlist(html){
+  const allowedTags = new Set(["P","BR","B","I","EM","STRONG","UL","OL","LI","H2","H3","H4","HR","CODE","PRE","BLOCKQUOTE","A","SPAN","DIV"]);
+  const allowedAttrs = {
+    "A": new Set(["href","title"]),
+    "SPAN": new Set(["class"]),
+    "DIV": new Set(["class"]),
+    "P": new Set(["class"]),
+    "CODE": new Set(["class"]),
+    "PRE": new Set(["class"])
+  };
+
+  try{
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(String(html || ""), "text/html");
+
+    // Remove disallowed nodes & attributes
+    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT, null);
+    const toRemove = [];
+    while(walker.nextNode()){
+      const el = walker.currentNode;
+      if(!allowedTags.has(el.tagName)){
+        toRemove.push(el);
+        continue;
+      }
+      // strip attributes not allowed
+      [...el.attributes].forEach(attr => {
+        const name = attr.name.toLowerCase();
+        const tag = el.tagName;
+        const ok = (allowedAttrs[tag] && allowedAttrs[tag].has(name)) || false;
+        if(!ok) el.removeAttribute(attr.name);
+      });
+
+      // special handling for href
+      if(el.tagName === "A"){
+        const href = (el.getAttribute("href") || "").trim();
+        // allow only http(s) or hash links
+        if(href && !(href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#"))){
+          el.removeAttribute("href");
+        }
+      }
+    }
+    // unwrap removed nodes (keep their text)
+    toRemove.forEach(el => {
+      const parent = el.parentNode;
+      if(!parent) return;
+      while(el.firstChild) parent.insertBefore(el.firstChild, el);
+      parent.removeChild(el);
+    });
+
+    // remove scripts/styles just in case
+    doc.querySelectorAll("script,style").forEach(n => n.remove());
+
+    return doc.body.innerHTML;
+  }catch{
+    return escapeHtml(String(html || ""));
+  }
+}
 /* =========================
    NAV HELPERS (strict IDs)
 ========================= */
@@ -709,8 +837,21 @@ function openPlaceById(placeId){
   if(isMobile()) setView("detail");
   applyMobileVisibility();
 }
+
+function openRoomById(roomId){
+  setMode("dungeons");
+  const r = getRoomById(roomId);
+  if(!r){ alert(`Raum-ID nicht gefunden: ${roomId}`); return; }
+  state.selectedCategory = r.dungeonId; // dungeonId
+  state.selectedEntityId = roomId;      // roomId
+  renderAll();
+  if(isMobile()) setView("detail");
+  applyMobileVisibility();
+}
+
 window.__openNpc = openNpcById;
 window.__openPlace = openPlaceById;
+window.__openRoom = openRoomById;
 
 /* =========================
    RENDER
@@ -730,8 +871,40 @@ const btnCopyId = document.getElementById("btnCopyId");
 const detailIdHint = document.getElementById("detailIdHint");
 
 function renderCategories(){
-  const cats = collectCategories(getEntities());
   elCatButtons.innerHTML = "";
+
+  if(state.mode === "dungeons"){
+    // Dungeon list instead of categories
+    const list = (DUNGEONS || []).slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"", 'de'));
+    if(list.length === 0){
+      const div = document.createElement("div");
+      div.className = "muted";
+      div.style.padding = "6px 0";
+      div.textContent = "Keine Dungeons in data.json gefunden.";
+      elCatButtons.appendChild(div);
+      return;
+    }
+
+    list.forEach(d => {
+      const btn = document.createElement("button");
+      btn.textContent = d.name || d.id;
+      btn.className = (state.selectedCategory === d.id) ? "active" : "";
+      btn.onclick = () => {
+        state.selectedCategory = d.id; // dungeonId
+        state.selectedEntityId = null; // roomId
+        renderCategories();
+        renderEntityList();
+        renderDetail(null);
+        if(isMobile()) setView("list");
+        applyMobileVisibility();
+      };
+      elCatButtons.appendChild(btn);
+    });
+    return;
+  }
+
+  // NPCs / Places category list
+  const cats = collectCategories(getEntities());
   cats.forEach(cat => {
     const btn = document.createElement("button");
     btn.textContent = cat;
@@ -748,13 +921,79 @@ function renderCategories(){
     elCatButtons.appendChild(btn);
   });
 }
-
 function renderEntityList(){
   elEntityList.innerHTML = "";
+
+  if(state.mode === "dungeons"){
+    if(!state.selectedCategory){
+      elListTitle.textContent = "Dungeon wählen";
+      return;
+    }
+    const dungeon = getDungeonById(state.selectedCategory);
+    const rooms = getRoomsForDungeon(state.selectedCategory).filter(r => roomMatchesSearch(r, state.search));
+    elListTitle.textContent = `${dungeon?.name || state.selectedCategory} (${rooms.length})`;
+
+    rooms.forEach(room => {
+      const btn = document.createElement("button");
+      const isActive = state.selectedEntityId === room.id;
+      btn.className = "place-btn" + (isActive ? " active" : "");
+
+      const sub = (room.short || "").trim();
+      const tags = (room.tags || []).slice(0,4).join(" · ");
+      btn.innerHTML = `
+        <div><b>${escapeHtml(room.name || room.id)}</b></div>
+        <div class="sub">${escapeHtml(sub)}${tags ? " · " + escapeHtml(tags) : ""}</div>
+      `;
+
+      btn.onclick = () => {
+        state.selectedEntityId = room.id;
+        renderEntityList();
+        renderDetail(room);
+        if(isMobile()) setView("detail");
+        applyMobileVisibility();
+      };
+
+      elEntityList.appendChild(btn);
+    });
+    return;
+  }
+
+  // NPCs / Places
   if(!state.selectedCategory){
     elListTitle.textContent = "Kategorie wählen";
     return;
   }
+  const visible = getVisibleEntities();
+  elListTitle.textContent = `${state.selectedCategory} (${visible.length})`;
+
+  visible.forEach(ent => {
+    const btn = document.createElement("button");
+    const isActive = state.selectedEntityId === ent.id;
+    btn.className = (state.mode === "npcs" ? "npc-btn" : "place-btn") + (isActive ? " active" : "");
+
+    const sub =
+      state.mode === "npcs"
+        ? (ent.fields?.["Rolle / Funktion"] || ent.fields?.["Rolle"] || "")
+        : (ent.type || (ent.parentId ? "Unterort" : "Ort"));
+
+    const tags = (ent.tags || []).slice(0,4).join(" · ");
+
+    btn.innerHTML = `
+      <div><b>${escapeHtml(ent.name)}</b></div>
+      <div class="sub">${escapeHtml(sub)}${tags ? " · " + escapeHtml(tags) : ""}</div>
+    `;
+
+    btn.onclick = () => {
+      state.selectedEntityId = ent.id;
+      renderEntityList();
+      renderDetail(ent);
+      if(isMobile()) setView("detail");
+      applyMobileVisibility();
+    };
+
+    elEntityList.appendChild(btn);
+  });
+}
   const visible = getVisibleEntities();
   elListTitle.textContent = `${state.selectedCategory} (${visible.length})`;
 
@@ -798,6 +1037,130 @@ function renderDetail(ent){
     return;
   }
 
+  // ===== Dungeon rooms (read-first, tablet-friendly) =====
+  if(state.mode === "dungeons"){
+    elDetailActions.style.display = "none";
+    elDetailActionsHr.style.display = "none";
+    elDetailTitle.textContent = ent.name || ent.id;
+    detailIdHint.textContent = `ID: ${ent.id}`;
+
+    const dungeon = getDungeonById(ent.dungeonId);
+    const tags = (ent.tags || []);
+    const subtitleParts = [];
+    if(dungeon) subtitleParts.push(dungeon.name);
+    if(tags.length) subtitleParts.push(`Tags: ${tags.join(", ")}`);
+    elDetailSub.textContent = subtitleParts.join(" · ") || "—";
+
+    // Exits
+    const exits = Array.isArray(ent.exits) ? ent.exits : [];
+    const exitsHtml = exits.length ? `
+      <div class="hr"></div>
+      <h2>Wege</h2>
+      <div class="grid">
+        ${exits.map(ex => {
+          const target = getRoomById(ex.to);
+          const label = ex.label || target?.name || ex.to;
+          const sub = target ? (target.short || "") : "Zielraum nicht gefunden";
+          const badge = ex.secret ? " (geheim)" : (ex.locked ? " (verschlossen)" : "");
+          return `
+            <button onclick="window.__openRoom('${ex.to}')">
+              <div><b>${escapeHtml(label)}${escapeHtml(badge)}</b></div>
+              <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(ex.to)}</span></div>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    ` : "";
+
+    // Content refs (links into existing NPC/Place modules)
+    const refs = ent.contentRefs || {};
+    const npcIds = uniq(refs.npcs || []);
+    const placeIds = uniq(refs.places || []);
+    const questIds = uniq(refs.quests || []);
+
+    let refsHtml = "";
+    if(placeIds.length){
+      refsHtml += `
+        <div class="hr"></div>
+        <h2>Orte</h2>
+        <div class="grid">
+          ${placeIds.map(pid => {
+            const p = PLACES.find(x => x.id === pid);
+            const label = p ? p.name : `(unbekannt) ${pid}`;
+            const sub = p ? (p.type || "Ort") : "ID fehlt in places";
+            return `
+              <button onclick="window.__openPlace('${pid}')">
+                <div><b>${escapeHtml(label)}</b></div>
+                <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(pid)}</span></div>
+              </button>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+    if(npcIds.length){
+      refsHtml += `
+        <div class="hr"></div>
+        <h2>NPCs</h2>
+        <div class="grid">
+          ${npcIds.map(nid => {
+            const n = NPCS.find(x => x.id === nid);
+            const label = n ? n.name : `(unbekannt) ${nid}`;
+            const sub = n ? (n.fields?.["Rolle / Funktion"] || n.fields?.["Rolle"] || "NPC") : "ID fehlt in npcs";
+            return `
+              <button onclick="window.__openNpc('${nid}')">
+                <div><b>${escapeHtml(label)}</b></div>
+                <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(nid)}</span></div>
+              </button>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+    if(questIds.length){
+      refsHtml += `
+        <div class="hr"></div>
+        <h2>Quests</h2>
+        <div class="muted">Hinweis: Quest-Modul ist geplant – hier sind nur IDs abgelegt.</div>
+        <div class="pillwrap" style="margin-top:8px;">
+          ${questIds.map(q => `<span class="pill">${escapeHtml(q)}</span>`).join("")}
+        </div>
+      `;
+    }
+
+    const desc = ent.descriptionHtml || ent.description || "";
+    const descHtml = desc ? `
+      <div class="hr"></div>
+      <h2>Beschreibung</h2>
+      <div class="richtext">${sanitizeHtmlAllowlist(desc)}</div>
+    ` : "";
+
+    const fields = ent.fields || {};
+    const entries = Object.entries(fields);
+    const fieldsHtml = entries.length ? `
+      <div class="hr"></div>
+      <h2>Notizen</h2>
+      <div class="kv">
+        ${entries.map(([k,v]) => `
+          <div class="k">${escapeHtml(k)}</div>
+          <div class="v">${escapeHtml(String(v))}</div>
+        `).join("")}
+      </div>
+    ` : "";
+
+    elDetailBody.innerHTML = `
+      <div class="pillwrap">
+        ${(tags||[]).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
+      </div>
+      ${descHtml}
+      ${fieldsHtml}
+      ${exitsHtml}
+      ${refsHtml}
+    `;
+    return;
+  }
+
+  // ===== NPCs / Places (existing edit-centric view) =====
   elDetailActions.style.display = "flex";
   elDetailActionsHr.style.display = "block";
   elDetailTitle.textContent = ent.name;
@@ -892,6 +1255,7 @@ function renderDetail(ent){
     ${linksHtml}
   `;
 }
+
 
 btnCopyId.onclick = async () => {
   const ent = getSelectedEntity();
@@ -1369,31 +1733,8 @@ btnDoImport.onclick = () => {
   importInfo.textContent = "Nichts zu importieren.";
 };
 
-function setImportMode(mode){
-  importMode = mode;
-  btnImportModeNpcs.classList.toggle("active", mode === "npcs");
-  btnImportModePlaces.classList.toggle("active", mode === "places");
 
-  if(mode === "npcs"){
-    importHeaderTitle.textContent = "⬇️ Import: NPCs";
-    importFormatHelp.innerHTML =
-      `Text: Start je NPC mit <code>### 🟢 Name</code> … trennen mit <code>---</code>.<br>` +
-      `Spezial: <code>**Kategorien:**</code>, <code>**Tags:**</code>, <code>**Orte:**</code> (IDs).<br>` +
-      `Formular: Standardfelder + Custom Fields.`;
-  } else {
-    importHeaderTitle.textContent = "⬇️ Import: Orte";
-    importFormatHelp.innerHTML =
-      `Text: Start je Ort mit <code>### Name</code> & optional <code>**ID:**</code> … trennen mit <code>---</code>.<br>` +
-      `Spezial: <code>**Typ:**</code>, <code>**Parent:**</code>, <code>**Kategorien:**</code>, <code>**Tags:**</code>, <code>**NPCs:**</code> (IDs).<br>` +
-      `Formular: Basics + Standardfelder + Custom Fields.`;
-  }
 
-  if(importSubMode === "form"){
-    if(importMode === "npcs") buildNpcForm();
-    else buildPlaceForm();
-  }
-  setImportSubMode(importSubMode);
-}
 
 /* =========================
    EDIT MODAL
@@ -1782,6 +2123,8 @@ async function syncLoad(){
     if(data && typeof data === "object"){
       if(Array.isArray(data.npcs)) NPCS = data.npcs;
       if(Array.isArray(data.places)) PLACES = data.places;
+      if(Array.isArray(data.dungeons)) DUNGEONS = data.dungeons;
+      if(Array.isArray(data.rooms)) ROOMS = data.rooms;
     } else {
       throw new Error("Unerwartetes JSON-Format");
     }
