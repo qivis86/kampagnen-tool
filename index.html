@@ -994,37 +994,6 @@ function renderEntityList(){
     elEntityList.appendChild(btn);
   });
 }
-  const visible = getVisibleEntities();
-  elListTitle.textContent = `${state.selectedCategory} (${visible.length})`;
-
-  visible.forEach(ent => {
-    const btn = document.createElement("button");
-    const isActive = state.selectedEntityId === ent.id;
-    btn.className = (state.mode === "npcs" ? "npc-btn" : "place-btn") + (isActive ? " active" : "");
-
-    const sub =
-      state.mode === "npcs"
-        ? (ent.fields?.["Rolle / Funktion"] || ent.fields?.["Rolle"] || "")
-        : (ent.type || (ent.parentId ? "Unterort" : "Ort"));
-
-    const tags = (ent.tags || []).slice(0,4).join(" · ");
-
-    btn.innerHTML = `
-      <div><b>${escapeHtml(ent.name)}</b></div>
-      <div class="sub">${escapeHtml(sub)}${tags ? " · " + escapeHtml(tags) : ""}</div>
-    `;
-
-    btn.onclick = () => {
-      state.selectedEntityId = ent.id;
-      renderEntityList();
-      renderDetail(ent);
-      if(isMobile()) setView("detail");
-      applyMobileVisibility();
-    };
-
-    elEntityList.appendChild(btn);
-  });
-}
 
 function renderDetail(ent){
   if(!ent){
