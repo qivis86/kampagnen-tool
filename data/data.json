@@ -710,100 +710,191 @@
       "id": "gnomengarde",
       "name": "🏔️ Gnomengarde",
       "mapUrl": "assets/maps/gnomengarde.jpg",
-      "defaultsHtml": "<h3>🏗️ Allgemeine Struktur</h3><ul><li>Funktionale Fels-Höhlen.</li><li><b>Standard-Deckenhöhe:</b> 7 ft (größere Kavernen höher).</li></ul><h3>🚪 Türen</h3><ul><li>Holz mit rostigen Eisenbeschlägen.</li><li><b>Öffnen:</b> DC 10 Thieves’ Tools oder DC 15 Athletics.</li><li><b>Geheimtüren:</b> DC 10 Perception bei aktiver Suche.</li></ul><h3>🕯️ Licht</h3><ul><li>Laternen an Seil-/Flaschenzügen.</li></ul><h3>🌊 Wasserfall</h3><ul><li>Ständiges Dröhnen.</li><li>Nebel & Sprühfeuchte in mehreren Bereichen.</li></ul>"
+      "defaultsHtml": "<h3>🏗️ Struktur</h3><ul><li>Massive Fels-Höhlen, funktional angelegt.</li><li><b>Standard-Deckenhöhe:</b> 7 ft (größere Kavernen höher).</li></ul><h3>🚪 Türen</h3><ul><li>Holz mit rostigen Eisenbeschlägen.</li><li><b>Öffnen:</b> DC 10 Thieves’ Tools oder DC 15 Athletics.</li><li><b>Geheimtüren:</b> DC 10 Perception bei aktiver Suche.</li></ul><h3>🕯️ Licht</h3><ul><li>Laternen an Seil-/Flaschenzügen.</li></ul><h3>🌊 Wasserfall</h3><ul><li>Ständiges Dröhnen; Gespräche oft nur rufend möglich.</li><li>Nebel & Sprühfeuchte prägen mehrere Bereiche.</li></ul>"
     }
   ],
 
   "rooms": [
 
     {
-      "id": "g1",
-      "dungeonId": "gnomengarde",
-      "name": "G1 – 🌫️ Misty Pool & Mushroom Islands",
-      "descriptionHtml": "<p>5–10 ft tiefer Pool im Nebel des Wasserfalls. Zwei Inseln ragen empor – Quelle der instabilen Wild Magic.</p><ul><li><b>Inseln:</b> 25×10 ft & 20×10 ft</li><li><b>Höhleneingänge:</b> 20–30 ft hoch</li><li><b>Seilbahn:</b> quietschend, 2–3 Gnome</li></ul>",
-      "exits": [
-        { "to": "g3", "label": "Schmaler Aufgang" },
-        { "to": "g7", "label": "Klippe / Seilbahn" },
-        { "to": "g12", "label": "Klippe" },
-        { "to": "g2", "label": "Erklimmen" },
-        { "to": "g9", "label": "Klippe" },
-        { "to": "g10", "label": "Klippe" }
-      ]
+    "id":"g1",
+    "dungeonId":"gnomengarde",
+    "name":"G1 – 🌫️ Misty Pool & Mushroom Islands",
+    "descriptionHtml":"<p>5–10 ft tiefer Pool im Nebel des Wasserfalls. Zwei Inseln ragen empor – Quelle der instabilen Wild Magic.</p><ul><li><b>Flussbreite:</b> 15 ft Zulauf, 50 ft Becken</li><li><b>Inseln:</b> 25×10 ft & 20×10 ft</li><li><b>Höhleneingänge:</b> 20–30 ft hoch</li><li><b>Seilbahn:</b> handbetrieben, quietschend, 2–3 Gnome</li></ul>",
+    "exits":[
+    {"to":"g3","label":"Schmaler Aufgang"},
+    {"to":"g7","label":"Klippe / Seilbahn"},
+    {"to":"g12","label":"Klippe"},
+    {"to":"g2","label":"Erklimmen"},
+    {"to":"g9","label":"Klippe"},
+    {"to":"g10","label":"Klippe"}
+    ]
     },
-
+    
     {
-      "id": "g3",
-      "dungeonId": "gnomengarde",
-      "name": "G3 – 🍽️ Dining Room",
-      "descriptionHtml": "<p>Kleine Tische, gnomisches Overengineering-Spülbecken.</p><ul><li>🪓 Hämmerchen liegt „vergessen“.</li><li>🚪 Schranktür fehlt – keine Bruchspuren.</li></ul>",
-      "exits": [
-        { "to": "g1", "label": "Schmaler Abgang" },
-        { "to": "g4", "label": "Flur" },
-        { "to": "g7", "label": "Langer Flur" },
-        { "to": "g6", "label": "Langer Flur" }
-      ]
+    "id":"g2",
+    "dungeonId":"gnomengarde",
+    "name":"G2 – 🌊 Waterfall & Rope Bridge",
+    "descriptionHtml":"<p>60-ft-Wasserfall, 35-ft-Seilbrücke zwischen 20-ft-Vorsprüngen. Nebel & Dröhnen.</p><ul><li><b>Brücke:</b> schwieriges Gelände, AC 11, 30 HP</li><li><b>Sturz:</b> kein Fallschaden ins 5-ft-Wasser</li><li>Barrel Crabs (G6) zu klobig für Brücke</li></ul>",
+    "exits":[
+    {"to":"g1","label":"Sprung / Sturz"},
+    {"to":"g9","label":"Treppe auf"},
+    {"to":"g10","label":"Treppe auf"}
+    ]
     },
-
+    
     {
-      "id": "g8",
-      "dungeonId": "gnomengarde",
-      "name": "G8 – 🍷 Mimic & Mushroom Wine",
-      "descriptionHtml": "<p>Weinlager mit 12 großen Fässern.</p><ul><li>Ein Fass ist ein <b>Mimic</b>.</li><li>Reagiert auf Berührung oder AoE.</li><li>Flieht nach einigen Treffern.</li></ul>",
-      "exits": [
-        { "to": "g7", "label": "Langer Flur" },
-        { "to": "g9", "label": "Langer Flur" }
-      ]
+    "id":"g3",
+    "dungeonId":"gnomengarde",
+    "name":"G3 – 🍽️ Dining Room",
+    "descriptionHtml":"<p>Kleine Tische, gnomisches Overengineering-Spülbecken.</p><ul><li>🪓 Hämmerchen liegt „vergessen“</li><li>🚪 Schranktür fehlt – Mimic-Hinweis</li></ul>",
+    "exits":[
+    {"to":"g1","label":"Schmaler Abgang"},
+    {"to":"g4","label":"Flur"},
+    {"to":"g7","label":"Langer Flur"},
+    {"to":"g6","label":"Langer Flur"}
+    ]
     },
-
+    
     {
-      "id": "g11",
-      "dungeonId": "gnomengarde",
-      "name": "G11 – ⚙️ Inventors’ Workshop",
-      "descriptionHtml": "<p>Werkstatt von <b>Fibblestib</b> & <b>Dabbledob</b>. Streit über Heilung Korboz'.</p><ul><li>📡 Entfernungsüberwindungssprechgerät</li><li>📖 Spellbook: <i>Magick of Gnomengarde</i></li></ul>",
-      "exits": [
-        { "to": "g10", "label": "Treppe ab" },
-        { "to": "g12", "label": "Treppe ab" },
-        { "to": "g13", "label": "Langer Flur", "locked": true, "key": "Fibblestib & Dabbledob" },
-        { "to": "g14", "label": "Langer Flur" },
-        { "to": "g15", "label": "Langer Flur", "locked": true, "key": "Korboz" }
-      ]
+    "id":"g4",
+    "dungeonId":"gnomengarde",
+    "name":"G4 – 🍳 Kitchen",
+    "descriptionHtml":"<p>Lebendige Küche, fünf Gnome bei der Arbeit.</p><ul><li>Joybell – rußige Schürze</li><li>Dimble – buschige Augenbrauen</li><li>Panana – zwei verschiedene Socken</li><li>Uppendown – Mehl im Bart</li><li>Tervaround – schiefe Brille</li></ul><p>Verweisen auf Fibblestib & Dabbledob (G11).</p>",
+    "exits":[
+    {"to":"g3","label":"Flur"},
+    {"to":"g5","label":"Treppe auf"}
+    ]
     },
-
+    
     {
-      "id": "g13",
-      "dungeonId": "gnomengarde",
-      "name": "G13 – 💰 Treasury",
-      "descriptionHtml": "<p>Lagerraum mit nicht funktionierenden Gizmos.</p><ul><li>🎁 Clockwork Amulet</li><li>🎁 Pole of Collapsing</li></ul>",
-      "exits": [
-        { "to": "g11", "label": "Langer Flur" },
-        { "to": "g14", "label": "Langer Flur" },
-        { "to": "g15", "label": "Langer Flur", "locked": true, "key": "Korboz" }
-      ]
+    "id":"g5",
+    "dungeonId":"gnomengarde",
+    "name":"G5 – 📦 Pantry",
+    "descriptionHtml":"<p>Vorratslager mit vielen kleinen Kisten.</p><ul><li>Fehlende Kiste – Investigation DC 12–15</li><li>Kein Blut, keine Spuren</li></ul>",
+    "exits":[
+    {"to":"g4","label":"Treppe ab"}
+    ]
     },
-
+    
     {
-      "id": "g14",
-      "dungeonId": "gnomengarde",
-      "name": "G14 – 👑 Throne Room",
-      "descriptionHtml": "<p>Zwei überkonstruierte Metall-Throne.</p><ul><li>⚙️ Drehmechanik</li><li>🛏️ Komforthebel → Liegesessel</li><li>🕵 Geheimgang nach G15</li></ul>",
-      "exits": [
-        { "to": "g15", "label": "Geheimgang", "secret": true },
-        { "to": "g15", "label": "Langer Flur", "locked": true, "key": "Korboz" },
-        { "to": "g11", "label": "Langer Flur" }
-      ]
+    "id":"g6",
+    "dungeonId":"gnomengarde",
+    "name":"G6 – 🦀 Barrel Crabs",
+    "descriptionHtml":"<p>Zwei krabbenartige Fass-Konstruktionen.</p><ul><li>AC 15, 30 HP</li><li>Klauenangriff +2, 2d4 Piercing</li><li>Total Cover bei geschlossener Luke</li></ul>",
+    "exits":[
+    {"to":"g3","label":"Langer Flur"},
+    {"to":"g7","label":"Langer Flur"}
+    ]
     },
-
+    
     {
-      "id": "g15",
-      "dungeonId": "gnomengarde",
-      "name": "G15 – 🛏️ Gnome Kings’ Bedroom",
-      "descriptionHtml": "<p>Korboz (paranoid) & Gnerkli (genervt, angeklebt).</p><ul><li>Überzeugen: DC 12 Persuasion/Deception</li><li>🎁 Hat of Vermin</li><li>🎁 Horn of Silent Alarm</li><li>🎁 Wand of Pyrotechnics</li></ul>",
-      "exits": [
-        { "to": "g13", "label": "Langer Flur", "locked": true, "key": "Fibblestib & Dabbledob" },
-        { "to": "g14", "label": "Langer Flur" },
-        { "to": "g11", "label": "Langer Flur" }
-      ]
+    "id":"g7",
+    "dungeonId":"gnomengarde",
+    "name":"G7 – 🎯 Autoloading Crossbow Platform",
+    "descriptionHtml":"<p>Rotierende Plattform mit 4 Armbrüsten.</p><ul><li>AC 13, 45 HP</li><li>Pro 10 HP fällt eine Armbrust aus</li><li>1d6 Bludgeoning (non-lethal)</li></ul>",
+    "exits":[
+    {"to":"g6","label":"Langer Flur"},
+    {"to":"g3","label":"Langer Flur"},
+    {"to":"g1","label":"Klippe / Seilbahn"},
+    {"to":"g8","label":"Langer Flur"},
+    {"to":"g9","label":"Langer Flur"}
+    ]
+    },
+    
+    {
+    "id":"g8",
+    "dungeonId":"gnomengarde",
+    "name":"G8 – 🍷 Mimic & Mushroom Wine",
+    "descriptionHtml":"<p>12 große Fässer, eines ist ein Mimic.</p><ul><li>Reagiert auf Berührung</li><li>1–2 Runden aggressiv</li><li>Flieht nach einigen Treffern</li></ul>",
+    "exits":[
+    {"to":"g7","label":"Langer Flur"},
+    {"to":"g9","label":"Langer Flur"}
+    ]
+    },
+    
+    {
+    "id":"g9",
+    "dungeonId":"gnomengarde",
+    "name":"G9 – 🛡️ Guard Post",
+    "descriptionHtml":"<p>Wachposten von Ulla & Pog.</p><ul><li>DC 10 CHA Check genügt</li><li>Verweis auf G11</li></ul>",
+    "exits":[
+    {"to":"g8","label":"Langer Flur"},
+    {"to":"g2","label":"Treppe ab"}
+    ]
+    },
+    
+    {
+    "id":"g10",
+    "dungeonId":"gnomengarde",
+    "name":"G10 – ⚔️ Spinning Blades",
+    "descriptionHtml":"<p>Neblige Halle mit zwei rotierenden Klingendrehkreuzen.</p><ul><li>DC 15 DEX Save</li><li>4d8 Slashing (halb bei Erfolg)</li><li>Hebel stoppt Geräte</li></ul>",
+    "exits":[
+    {"to":"g2","label":"Treppe ab"},
+    {"to":"g11","label":"Treppe auf"}
+    ]
+    },
+    
+    {
+    "id":"g11",
+    "dungeonId":"gnomengarde",
+    "name":"G11 – ⚙️ Inventors’ Workshop",
+    "descriptionHtml":"<p>Streit zwischen Fibblestib & Dabbledob.</p><ul><li>Spellbook: Magick of Gnomengarde</li><li>Belohnungen bei Rettung Korboz</li></ul>",
+    "exits":[
+    {"to":"g10","label":"Treppe ab"},
+    {"to":"g12","label":"Treppe ab"},
+    {"to":"g13","label":"Langer Flur","locked":true,"key":"Fibblestib & Dabbledob"},
+    {"to":"g14","label":"Langer Flur"},
+    {"to":"g15","label":"Langer Flur","locked":true,"key":"Korboz"}
+    ]
+    },
+    
+    {
+    "id":"g12",
+    "dungeonId":"gnomengarde",
+    "name":"G12 – 🛏️ Gnome Domiciles",
+    "descriptionHtml":"<p>Wohnbereich mit 8 schlafenden Gnome.</p><ul><li>Möglicher Mimic-Rückzugsort</li></ul>",
+    "exits":[
+    {"to":"g1","label":"Klippe"},
+    {"to":"g11","label":"Treppe auf"}
+    ]
+    },
+    
+    {
+    "id":"g13",
+    "dungeonId":"gnomengarde",
+    "name":"G13 – 💰 Treasury",
+    "descriptionHtml":"<p>Materiallager mit Gizmos.</p><ul><li>Clockwork Amulet</li><li>Pole of Collapsing</li></ul>",
+    "exits":[
+    {"to":"g11","label":"Langer Flur"},
+    {"to":"g14","label":"Langer Flur"},
+    {"to":"g15","label":"Langer Flur","locked":true,"key":"Korboz"}
+    ]
+    },
+    
+    {
+    "id":"g14",
+    "dungeonId":"gnomengarde",
+    "name":"G14 – 👑 Throne Room",
+    "descriptionHtml":"<p>Zwei überkonstruierte Metall-Throne.</p><ul><li>Komforthebel</li><li>Geheimgang nach G15</li></ul>",
+    "exits":[
+    {"to":"g15","label":"Geheimgang","secret":true},
+    {"to":"g15","label":"Langer Flur","locked":true,"key":"Korboz"},
+    {"to":"g11","label":"Langer Flur"}
+    ]
+    },
+    
+    {
+    "id":"g15",
+    "dungeonId":"gnomengarde",
+    "name":"G15 – 🛏️ Gnome Kings’ Bedroom",
+    "descriptionHtml":"<p>Korboz (paranoid) & Gnerkli (angeklebt).</p><ul><li>DC 12 Persuasion/Deception</li><li>Hat of Vermin</li><li>Horn of Silent Alarm</li><li>Wand of Pyrotechnics</li></ul>",
+    "exits":[
+    {"to":"g13","label":"Langer Flur","locked":true,"key":"Fibblestib & Dabbledob"},
+    {"to":"g14","label":"Langer Flur"},
+    {"to":"g11","label":"Langer Flur"}
+    ]
     }
 
-  ]
+]
 }
