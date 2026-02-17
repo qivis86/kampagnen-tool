@@ -1238,9 +1238,19 @@ function renderDetail(ent){
 
     const defaultsBlock = (dungeon?.defaultsHtml) ? `
       <div class="hr"></div>
-      <h2>📌 Dungeon-Defaults</h2>
-      <div class="rich">${sanitizeRichHtml(dungeon.defaultsHtml)}</div>
+      <details class="collapsible">
+        <summary>
+          <div class="sumRow">
+            <b>📌 Dungeon-Defaults</b>
+            <span class="sumActions">
+              <button class="btnSmall" onclick="event.stopPropagation(); event.preventDefault(); window.__openDefaultsModal && window.__openDefaultsModal();">Popout ⤢</button>
+            </span>
+          </div>
+        </summary>
+        <div class="rich">${sanitizeRichHtml(dungeon.defaultsHtml)}</div>
+      </details>
     ` : "";
+    window.__openDefaultsModal = (dungeon?.defaultsHtml) ? (() => openDefaultsModal(dungeon?.name || dungeon?.id || "Dungeon", dungeon.defaultsHtml)) : null;
 
     // Exits
     const exits = Array.isArray(ent.exits) ? ent.exits : [];
