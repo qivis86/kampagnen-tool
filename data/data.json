@@ -709,7 +709,7 @@
     {
       "id": "gnomengarde",
       "name": "🏔️ Gnomengarde",
-      "mapUrl": "assets/maps/gnomengarde.jpg",
+      "mapUrl": "assets/maps/mapGnomengarde.png",
       "defaultsHtml": "<h3>🏗️ Struktur</h3><ul><li>Massive Fels-Höhlen, funktional angelegt.</li><li><b>Standard-Deckenhöhe:</b> 7 ft (größere Kavernen höher).</li></ul><h3>🚪 Türen</h3><ul><li>Holz mit rostigen Eisenbeschlägen.</li><li><b>Öffnen:</b> DC 10 Thieves’ Tools oder DC 15 Athletics.</li><li><b>Geheimtüren:</b> DC 10 Perception bei aktiver Suche.</li></ul><h3>🕯️ Licht</h3><ul><li>Laternen an Seil-/Flaschenzügen.</li></ul><h3>🌊 Wasserfall</h3><ul><li>Ständiges Dröhnen; Gespräche oft nur rufend möglich.</li><li>Nebel & Sprühfeuchte prägen mehrere Bereiche.</li></ul>"
     }
   ],
