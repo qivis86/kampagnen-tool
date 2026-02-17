@@ -1030,11 +1030,34 @@ function renderDetail(ent){
           const target = getRoomById(ex.to);
           const label = ex.label || target?.name || ex.to;
           const sub = target ? (target.short || "") : "Zielraum nicht gefunden";
-          const badge = ex.secret ? " (geheim)" : (ex.locked ? " (verschlossen)" : "");
+        
+          // 🔒 Lock-Info
+          let badge = "";
+          let lockInfo = "";
+        
+          if (ex.secret) {
+            badge = " (geheim)";
+          }
+        
+          if (ex.locked === true) {
+            badge += " 🔒";
+        
+            lockInfo = "<div class='muted' style='font-size:0.85em;margin-top:2px'>";
+            lockInfo += "Verschlossen";
+            if (ex.key) {
+              lockInfo += " – Schlüssel: " + escapeHtml(ex.key);
+            }
+            if (ex.dc) {
+              lockInfo += " (DC " + escapeHtml(String(ex.dc)) + ")";
+            }
+            lockInfo += "</div>";
+          }
+        
           return `
             <button onclick="window.__openRoom('${ex.to}')">
-              <div><b>${escapeHtml(label)}${escapeHtml(badge)}</b></div>
+              <div><b>${escapeHtml(label)}${badge}</b></div>
               <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(ex.to)}</span></div>
+              ${lockInfo}
             </button>
           `;
         }).join("")}
@@ -2129,3 +2152,4 @@ applyMobileVisibility();
 </script>
 </body>
 </html>
+
