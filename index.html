@@ -1031,33 +1031,37 @@ function renderDetail(ent){
           const label = ex.label || target?.name || ex.to;
           const sub = target ? (target.short || "") : "Zielraum nicht gefunden";
         
-          // 🔒 Lock-Info
           let badge = "";
-          let lockInfo = "";
+          let extraInfo = "";
         
-          if (ex.secret) {
-            badge = " (geheim)";
+          // 🕵 Secret
+          if (ex.secret === true) {
+            badge += " 🕵";
           }
         
+          // 🔒 Locked
           if (ex.locked === true) {
             badge += " 🔒";
         
-            lockInfo = "<div class='muted' style='font-size:0.85em;margin-top:2px'>";
-            lockInfo += "Verschlossen";
+            extraInfo += "<div class='muted' style='font-size:0.85em;margin-top:2px'>";
+            extraInfo += "Verschlossen";
+        
             if (ex.key) {
-              lockInfo += " – Schlüssel: " + escapeHtml(ex.key);
+              extraInfo += " – Schlüssel: " + escapeHtml(ex.key);
             }
+        
             if (ex.dc) {
-              lockInfo += " (DC " + escapeHtml(String(ex.dc)) + ")";
+              extraInfo += " (DC " + escapeHtml(String(ex.dc)) + ")";
             }
-            lockInfo += "</div>";
+        
+            extraInfo += "</div>";
           }
         
           return `
             <button onclick="window.__openRoom('${ex.to}')">
               <div><b>${escapeHtml(label)}${badge}</b></div>
               <div class="sub">${escapeHtml(sub)} · <span class="muted">${escapeHtml(ex.to)}</span></div>
-              ${lockInfo}
+              ${extraInfo}
             </button>
           `;
         }).join("")}
@@ -2152,4 +2156,5 @@ applyMobileVisibility();
 </script>
 </body>
 </html>
+
 
