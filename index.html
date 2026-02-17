@@ -351,6 +351,20 @@
   </div>
 </div>
 
+<!-- Map Modal -->
+<div id="mapModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeonkarte">
+  <div class="modalCard">
+    <div class="modalHeader">
+      <b id="mapModalTitle">🗺️ Dungeonkarte</b>
+      <button id="btnCloseMap" class="btn">Schließen ✕</button>
+    </div>
+    <div class="modalBody">
+      <img id="mapModalImg" alt="Dungeonkarte" />
+      <div class="mapHint muted" id="mapModalHint">Tipp: Auf Tablet kannst du zum Zoomen die Browser-Geste nutzen.</div>
+    </div>
+  </div>
+
+
 <script>
 /* =========================
    CONFIG
@@ -2276,18 +2290,6 @@ renderAll();
 applyMobileVisibility();
 </script>
 
-<!-- Map Modal -->
-<div id="mapModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeonkarte">
-  <div class="modalCard">
-    <div class="modalHeader">
-      <b id="mapModalTitle">🗺️ Dungeonkarte</b>
-      <button id="btnCloseMap" class="btn">Schließen ✕</button>
-    </div>
-    <div class="modalBody">
-      <img id="mapModalImg" alt="Dungeonkarte" />
-      <div class="mapHint muted" id="mapModalHint">Tipp: Auf Tablet kannst du zum Zoomen die Browser-Geste nutzen.</div>
-    </div>
-  </div>
 </div>
 
 </body>
