@@ -889,6 +889,12 @@ function sanitizeHtmlAllowlist(html){
     return escapeHtml(String(html || ""));
   }
 }
+
+// Alias used by dungeon defaults/map panel
+function sanitizeRichHtml(html){
+  return sanitizeHtmlAllowlist(html);
+}
+
 /* =========================
    NAV HELPERS (strict IDs)
 ========================= */
