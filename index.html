@@ -166,6 +166,57 @@
   .richtext pre{ background:#0f111a; border:1px solid #242838; padding:10px; border-radius:10px; overflow:auto; }
   .richtext code{ background:#0f111a; border:1px solid #242838; padding:1px 4px; border-radius:6px; }
 
+
+  /* Dungeon map thumbnail + modal */
+  .mapThumb{
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid #2a2f43;
+    background: #0f121a;
+    cursor: pointer;
+  }
+  .mapHint{ font-size: 0.9em; opacity: 0.85; margin-top: 6px; }
+
+  .modalOverlay{
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.72);
+    display: none;
+    z-index: 9999;
+    padding: 18px;
+  }
+  .modalOverlay.open{ display: flex; }
+  .modalCard{
+    margin: auto;
+    width: min(1100px, 100%);
+    max-height: 100%;
+    background: #0f121a;
+    border: 1px solid #2a2f43;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .modalHeader{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #2a2f43;
+  }
+  .modalHeader b{ font-size: 1.02em; }
+  .modalBody{
+    padding: 10px;
+    overflow: auto;
+  }
+  .modalBody img{
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    border: 1px solid #2a2f43;
+    background: #0b0c10;
+  }
+
 </style>
 </head>
 
@@ -360,6 +411,16 @@ function escapeHtml(s){
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
+
+function escJsStr(s){
+  // Escape for single-quoted JS strings embedded in HTML onclick=""
+  return String(s ?? "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll("'", "\\'")
+    .replaceAll("\n", "\\n")
+    .replaceAll("\r", "");
+}
+
 function normalizeLine(line){
   return String(line || "").replace(/\u00A0/g, " ").trim();
 }
@@ -853,6 +914,34 @@ window.__openNpc = openNpcById;
 window.__openPlace = openPlaceById;
 window.__openRoom = openRoomById;
 
+
+/* =========================
+   DUNGEON MAP MODAL
+========================= */
+const mapModal = document.getElementById("mapModal");
+const mapModalImg = document.getElementById("mapModalImg");
+const mapModalTitle = document.getElementById("mapModalTitle");
+const btnCloseMap = document.getElementById("btnCloseMap");
+
+function openMapModal(url, title){
+  if(!url) return;
+  mapModalImg.src = url;
+  mapModalTitle.textContent = title ? `🗺️ ${title}` : "🗺️ Dungeonkarte";
+  mapModal.classList.add("open");
+}
+function closeMapModal(){
+  mapModal.classList.remove("open");
+  // keep src to allow quick reopen; if you want: mapModalImg.src = "";
+}
+btnCloseMap.onclick = closeMapModal;
+mapModal.addEventListener("click", (e) => {
+  if(e.target === mapModal) closeMapModal();
+});
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && mapModal.classList.contains("open")) closeMapModal();
+});
+
+
 /* =========================
    RENDER
 ========================= */
@@ -996,6 +1085,36 @@ function renderEntityList(){
 }
 
 function renderDetail(ent){
+  // ===== Dungeon overview (when a dungeon is selected but no room) =====
+  if(state.mode === "dungeons" && !ent && state.selectedCategory){
+    const d = getDungeonById(state.selectedCategory);
+    elDetailActions.style.display = "none";
+    elDetailActionsHr.style.display = "none";
+    detailIdHint.textContent = d ? `ID: ${d.id}` : "";
+    elDetailTitle.textContent = d?.name || "Dungeon";
+    elDetailSub.textContent = (d?.tags && d.tags.length) ? (`Tags: ${d.tags.join(", ")}`) : "—";
+
+    const mapBlock = (d?.mapUrl) ? `
+      <div class="hr"></div>
+      <h2>🗺️ Karte</h2>
+      <img class="mapThumb" src="${escapeHtml(d.mapUrl)}" alt="Dungeonkarte" onclick="openMapModal('${escJsStr(d.mapUrl)}','${escJsStr(d.name||d.id)}')" />
+      <div class="mapHint muted">Tippen zum Vergrößern</div>
+    ` : "";
+
+    const defaultsBlock = (d?.defaultsHtml) ? `
+      <div class="hr"></div>
+      <h2>📌 Dungeon-Defaults</h2>
+      <div class="rich">${sanitizeRichHtml(d.defaultsHtml)}</div>
+    ` : "";
+
+    elDetailBody.innerHTML = `
+      <div class="muted">Wähle links einen Raum, um Details zu sehen.</div>
+      ${mapBlock}
+      ${defaultsBlock}
+    `;
+    return;
+  }
+
   if(!ent){
     elDetailActions.style.display = "none";
     elDetailActionsHr.style.display = "none";
@@ -1020,6 +1139,20 @@ function renderDetail(ent){
     if(tags.length) subtitleParts.push(`Tags: ${tags.join(", ")}`);
     elDetailSub.textContent = subtitleParts.join(" · ") || "—";
 
+    // Dungeon header: map + defaults (always visible)
+    const mapBlock = (dungeon?.mapUrl) ? `
+      <div class="hr"></div>
+      <h2>🗺️ Karte</h2>
+      <img class="mapThumb" src="${escapeHtml(dungeon.mapUrl)}" alt="Dungeonkarte" onclick="openMapModal('${escJsStr(dungeon.mapUrl)}','${escJsStr(dungeon.name||dungeon.id)}')" />
+      <div class="mapHint muted">Tippen zum Vergrößern</div>
+    ` : "";
+
+    const defaultsBlock = (dungeon?.defaultsHtml) ? `
+      <div class="hr"></div>
+      <h2>📌 Dungeon-Defaults</h2>
+      <div class="rich">${sanitizeRichHtml(dungeon.defaultsHtml)}</div>
+    ` : "";
+
     // Exits
     const exits = Array.isArray(ent.exits) ? ent.exits : [];
     const exitsHtml = exits.length ? `
@@ -1030,33 +1163,20 @@ function renderDetail(ent){
           const target = getRoomById(ex.to);
           const label = ex.label || target?.name || ex.to;
           const sub = target ? (target.short || "") : "Zielraum nicht gefunden";
-        
+
           let badge = "";
           let extraInfo = "";
-        
-          // 🕵 Secret
-          if (ex.secret === true) {
-            badge += " 🕵";
-          }
-        
-          // 🔒 Locked
-          if (ex.locked === true) {
+
+          if(ex.secret === true) badge += " 🕵";
+          if(ex.locked === true){
             badge += " 🔒";
-        
             extraInfo += "<div class='muted' style='font-size:0.85em;margin-top:2px'>";
             extraInfo += "Verschlossen";
-        
-            if (ex.key) {
-              extraInfo += " – Schlüssel: " + escapeHtml(ex.key);
-            }
-        
-            if (ex.dc) {
-              extraInfo += " (DC " + escapeHtml(String(ex.dc)) + ")";
-            }
-        
+            if(ex.key) extraInfo += " – Schlüssel: " + escapeHtml(ex.key);
+            if(ex.dc) extraInfo += " (DC " + escapeHtml(String(ex.dc)) + ")";
             extraInfo += "</div>";
           }
-        
+
           return `
             <button onclick="window.__openRoom('${ex.to}')">
               <div><b>${escapeHtml(label)}${badge}</b></div>
@@ -1067,7 +1187,6 @@ function renderDetail(ent){
         }).join("")}
       </div>
     ` : "";
-
     // Content refs (links into existing NPC/Place modules)
     const refs = ent.contentRefs || {};
     const npcIds = uniq(refs.npcs || []);
@@ -1148,6 +1267,8 @@ function renderDetail(ent){
       <div class="pillwrap">
         ${(tags||[]).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join("")}
       </div>
+      ${mapBlock}
+      ${defaultsBlock}
       ${descHtml}
       ${fieldsHtml}
       ${exitsHtml}
@@ -2154,7 +2275,20 @@ document.getElementById("btnSyncLoad").onclick = syncLoad;
 renderAll();
 applyMobileVisibility();
 </script>
+
+<!-- Map Modal -->
+<div id="mapModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeonkarte">
+  <div class="modalCard">
+    <div class="modalHeader">
+      <b id="mapModalTitle">🗺️ Dungeonkarte</b>
+      <button id="btnCloseMap" class="btn">Schließen ✕</button>
+    </div>
+    <div class="modalBody">
+      <img id="mapModalImg" alt="Dungeonkarte" />
+      <div class="mapHint muted" id="mapModalHint">Tipp: Auf Tablet kannst du zum Zoomen die Browser-Geste nutzen.</div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
-
-
