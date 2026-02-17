@@ -217,6 +217,15 @@
     background: #0b0c10;
   }
 
+
+  /* Collapsible Defaults */
+  details.collapsible { border:1px solid #2a3042; border-radius:12px; padding:10px; background:#0f1117; }
+  details.collapsible > summary { cursor:pointer; list-style:none; }
+  details.collapsible > summary::-webkit-details-marker { display:none; }
+  .sumRow { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .btnSmall { width:auto; padding:6px 10px; border-radius:10px; font-size:12px; text-align:center; }
+  .btnSmall:hover { background:#23283a; }
+
 </style>
 </head>
 
@@ -363,6 +372,22 @@
       <div class="mapHint muted" id="mapModalHint">Tipp: Auf Tablet kannst du zum Zoomen die Browser-Geste nutzen.</div>
     </div>
   </div>
+
+
+<!-- Defaults Modal -->
+<div id="defaultsModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeon-Defaults" style="display:none;">
+  <div class="modalCard">
+    <div class="modalHeader">
+      <b id="defaultsModalTitle">📌 Dungeon-Defaults</b>
+      <button id="btnCloseDefaults" class="btn">Schließen ✕</button>
+    </div>
+    <div class="modalBody">
+      <div id="defaultsModalBody" class="rich"></div>
+    </div>
+  </div>
+</div>
+<!-- /Defaults Modal -->
+
 
 
 <script>
@@ -943,6 +968,37 @@ const mapModalImg = document.getElementById("mapModalImg");
 const mapModalTitle = document.getElementById("mapModalTitle");
 const btnCloseMap = document.getElementById("btnCloseMap");
 
+// Defaults Modal
+const defaultsModal = document.getElementById("defaultsModal");
+const defaultsModalTitle = document.getElementById("defaultsModalTitle");
+const defaultsModalBody = document.getElementById("defaultsModalBody");
+const btnCloseDefaults = document.getElementById("btnCloseDefaults");
+
+function openDefaultsModal(title, html){
+  if(!defaultsModal) return;
+  defaultsModalTitle.textContent = title ? `📌 ${title} – Defaults` : "📌 Dungeon-Defaults";
+  defaultsModalBody.innerHTML = sanitizeRichHtml(html || "");
+  defaultsModal.style.display = "flex";
+}
+
+function closeDefaultsModal(){
+  if(!defaultsModal) return;
+  defaultsModal.style.display = "none";
+  defaultsModalBody.innerHTML = "";
+}
+
+if(btnCloseDefaults){
+  btnCloseDefaults.onclick = closeDefaultsModal;
+}
+if(defaultsModal){
+  defaultsModal.addEventListener("click", (e) => { if(e.target === defaultsModal) closeDefaultsModal(); });
+}
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape") closeDefaultsModal();
+});
+
+
 function openMapModal(url, title){
   if(!url) return;
   mapModalImg.src = url;
@@ -1123,10 +1179,23 @@ function renderDetail(ent){
 
     const defaultsBlock = (d?.defaultsHtml) ? `
       <div class="hr"></div>
-      <h2>📌 Dungeon-Defaults</h2>
-      <div class="rich">${sanitizeRichHtml(d.defaultsHtml)}</div>
+      <details class="collapsible">
+        <summary>
+          <div class="sumRow">
+            <b>📌 Dungeon-Defaults</b>
+            <span class="sumActions">
+              <button class="btnSmall" onclick="event.stopPropagation(); event.preventDefault(); window.__openDefaultsModal && window.__openDefaultsModal();">Popout ⤢</button>
+            </span>
+          </div>
+        </summary>
+        <div class="rich">${sanitizeRichHtml(d.defaultsHtml)}</div>
+      </details>
     ` : "";
 
+
+
+    // Expose Defaults Popout handler for the injected button
+    window.__openDefaultsModal = (d?.defaultsHtml) ? (() => openDefaultsModal(d?.name || "Dungeon", d.defaultsHtml)) : null;
     elDetailBody.innerHTML = `
       <div class="muted">Wähle links einen Raum, um Details zu sehen.</div>
       ${mapBlock}
