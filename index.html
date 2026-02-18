@@ -33,7 +33,12 @@
     flex: 1;
   }
 
-  .app { display:grid; grid-template-columns:280px 340px 1fr; gap:12px; padding:12px; height:100vh; box-sizing:border-box; }
+  .app { display:grid; grid-template-columns:clamp(200px, 22vw, 260px) clamp(220px, 28vw, 320px) 1fr; gap:12px; padding:12px; height:100vh; box-sizing:border-box; }
+  /* allow panels to shrink on tablet without squeezing detail too hard */
+  .panel { min-width:0; }
+  /* room/list buttons: don't force width via long titles */
+  #entityList button b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #entityList button .sub { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .panel { background:#14161c; border:1px solid #242838; border-radius:12px; padding:12px; overflow:auto; }
   h1 { font-size:16px; margin:0 0 10px; }
   h2 { font-size:14px; margin:0 0 10px; opacity:.9; }
@@ -375,7 +380,7 @@
 
 
 <!-- Defaults Modal -->
-<!--<div id="defaultsModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeon-Defaults" style="display:none;">
+<div id="defaultsModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeon-Defaults" style="display:none;">
   <div class="modalCard">
     <div class="modalHeader">
       <b id="defaultsModalTitle">📌 Dungeon-Defaults</b>
@@ -385,7 +390,7 @@
       <div id="defaultsModalBody" class="rich"></div>
     </div>
   </div>
-</div> -->
+</div>
 <!-- /Defaults Modal -->
 
 
@@ -1197,9 +1202,9 @@ function renderDetail(ent){
         <summary>
           <div class="sumRow">
             <b>📌 Dungeon-Defaults</b>
-            <!-- <span class="sumActions">
+            <span class="sumActions">
               <button class="btnSmall" type="button" data-action="open-defaults">Popout ⤢</button>
-            </span> -->
+            </span>
           </div>
         </summary>
         <div class="rich">${sanitizeRichHtml(d.defaultsHtml)}</div>
@@ -1256,9 +1261,9 @@ function renderDetail(ent){
         <summary>
           <div class="sumRow">
             <b>📌 Dungeon-Defaults</b>
-            <!-- <span class="sumActions">
+            <span class="sumActions">
               <button class="btnSmall" type="button" data-action="open-defaults">Popout ⤢</button>
-            </span> -->
+            </span>
           </div>
         </summary>
         <div class="rich">${sanitizeRichHtml(dungeon.defaultsHtml)}</div>
@@ -2393,7 +2398,3 @@ applyMobileVisibility();
 
 </body>
 </html>
-
-
-
-
