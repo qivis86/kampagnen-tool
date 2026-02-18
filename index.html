@@ -994,6 +994,20 @@ if(defaultsModal){
   defaultsModal.addEventListener("click", (e) => { if(e.target === defaultsModal) closeDefaultsModal(); });
 }
 
+// Defaults Popout (robust: works for dynamically injected buttons)
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest('[data-action="open-defaults"]');
+  if(!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const dungeon = getDungeonById(state.selectedDungeonId);
+  if(!dungeon || !dungeon.defaultsHtml) return;
+
+  openDefaultsModal(dungeon.name || dungeon.id || "Dungeon", dungeon.defaultsHtml);
+});
+
+
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape") closeDefaultsModal();
 });
@@ -1184,7 +1198,7 @@ function renderDetail(ent){
           <div class="sumRow">
             <b>📌 Dungeon-Defaults</b>
             <span class="sumActions">
-              <button class="btnSmall" onclick="event.stopPropagation(); event.preventDefault(); window.__openDefaultsModal && window.__openDefaultsModal();">Popout ⤢</button>
+              <button class="btnSmall" type="button" data-action="open-defaults">Popout ⤢</button>
             </span>
           </div>
         </summary>
@@ -1243,7 +1257,7 @@ function renderDetail(ent){
           <div class="sumRow">
             <b>📌 Dungeon-Defaults</b>
             <span class="sumActions">
-              <button class="btnSmall" onclick="event.stopPropagation(); event.preventDefault(); window.__openDefaultsModal && window.__openDefaultsModal();">Popout ⤢</button>
+              <button class="btnSmall" type="button" data-action="open-defaults">Popout ⤢</button>
             </span>
           </div>
         </summary>
