@@ -393,6 +393,39 @@
               "label": "Tempel"
             }
           ]
+        },
+        {
+          "id": "de-e4",
+          "dungeonId": "dwarven-excavation",
+          "name": "E4 – Eingangshalle",
+          "short": "Staubbedecktes Foyer mit mehreren Zugängen.",
+          "tags": [
+            "Tempel",
+            "Eingang",
+            "Geheimtür"
+          ],
+          "descriptionHtml": "<p>Staub bedeckt den Boden der Eingangshalle. Zwei große Doppeltüren wurden mit in den Boden geschlagenen Metallspießen offen gehalten. Im Norden steht eine ehemals geheime Tür offen und gibt den Blick auf einen vollständig verschütteten Raum frei.</p><p>Vor dem östlichen Durchgang zieht sich eine feuchte, schlierige Spur durch den Staub, als wäre dort vor nicht allzu langer Zeit etwas Schweres langsam entlanggeglitten.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e3",
+              "label": "Tempelhof"
+            },
+            {
+              "to": "de-e5",
+              "label": "Altarraum"
+            },
+            {
+              "to": "de-e6",
+              "label": "Geheimgang",
+              "secret": true
+            }
+          ]
         }
     ]
   }
