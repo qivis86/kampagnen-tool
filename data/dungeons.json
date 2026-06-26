@@ -527,6 +527,129 @@
               "secret": true
             }
           ]
+        },
+        {
+          "id": "de-e8",
+          "dungeonId": "dwarven-excavation",
+          "name": "E8 – Schlafkammer der Priester",
+          "short": "Ehemalige Schlafstätte der Tempelpriester.",
+          "tags": [
+            "Schlafkammer",
+            "Geheimraum"
+          ],
+          "descriptionHtml": "<p>Drei steinerne Bettgestelle stehen entlang der Ostwand. Bis auf eine dicke Staubschicht und vereinzelte Geröllbrocken ist der Raum leer.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e5",
+              "label": "Tempel",
+              "secret": true
+            },
+            {
+              "to": "de-e9",
+              "label": "Priesterquartier",
+              "secret": true
+            }
+          ]
+        },
+        {
+          "id": "de-e9",
+          "dungeonId": "dwarven-excavation",
+          "name": "E9 – Sakristei",
+          "short": "Vorbereitungsraum der Tempelpriester.",
+          "tags": [
+            "Sakristei",
+            "Geheimraum"
+          ],
+          "descriptionHtml": "<p>Ein steinernes Weihwasserbecken ragt aus der Südwestwand. Gegenüber steht ein massiver Steinschrank. Darin hängen die verrotteten Überreste zweier roter Ledergewänder – einst die Zeremonienkleidung der Priester Abbathors, heute kaum mehr als wertlose Fetzen.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e7",
+              "label": "Geheimgang",
+              "secret": true
+            },
+            {
+              "to": "de-e11",
+              "label": "Kammer",
+              "secret": true
+            }
+          ]
+        },
+        {
+          "id": "de-e10",
+          "dungeonId": "dwarven-excavation",
+          "name": "E10 – Eingestürzte Kammer",
+          "short": "Ein eingestürzter Raum mit den sterblichen Überresten eines Priesters.",
+          "tags": [
+            "Geheimraum",
+            "Eingestürzt",
+            "Schatz"
+          ],
+          "descriptionHtml": "<p>Große Teile dieser Kammer wurden von einem Einsturz verschüttet. Zwischen den Geröllmassen ragt das Skelett eines Zwergenpriesters hervor. Die einst roten Ledergewänder sind längst verrottet und nur noch in Fetzen erhalten.</p><hr><h2>Schatz</h2><p>Um den Hals des Priesters hängt ein filigranes heiliges Symbol Abbathors: ein kleiner, juwelenbesetzter Dolch an einer silbernen Kette.</p><p>Zwergische Runen tragen die Inschrift: <i>„Gier ist gut.“</i> (Wert: <b>50 gp</b>)</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e7",
+              "label": "Geheimgang",
+              "secret": true
+            },
+            {
+              "to": "de-e11",
+              "label": "Kammer",
+              "secret": true
+            }
+          ]
+        },
+        {
+          "id": "de-e11",
+          "dungeonId": "dwarven-excavation",
+          "name": "E11 – Halle der Gier",
+          "short": "Eine versiegelte Kammer mit einer tödlichen Versuchung.",
+          "tags": [
+            "Geheimraum",
+            "Falle",
+            "Abbathor"
+          ],
+          "descriptionHtml": "<p>Diese Kammer ist durch eingestürztes Geröll vollständig vom restlichen Tempel getrennt. Um sie zu erreichen, muss der Durchgang freigeräumt werden (1 Person: 40 Stunden).</p><p>In einer Nische der Südwand liegen die Trümmer einer zerstörten Zwergenstatue. In der gegenüberliegenden Nische steht eine gehörnte Zwergenstatue, deren gieriger Blick auf einen leuchtend grünen Edelstein in ihren Händen gerichtet ist.</p><hr><h2>Falle</h2><p>Wird der Edelstein entfernt, zerfällt er augenblicklich zu Staub und die Statue explodiert.</p><ul><li><b>DC 15 Dexterity Save</b></li><li><b>22 (4d10) Piercing Damage</b> bei Misserfolg, halber Schaden bei Erfolg.</li><li>Betroffen sind alle Kreaturen im Umkreis von 10 ft.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e7",
+              "label": "Geheimgang",
+              "secret": true
+            },
+            {
+              "to": "de-e9",
+              "label": "Sakristei",
+              "secret": true
+            },
+            {
+              "to": "de-e10",
+              "label": "Eingestürzte Kammer",
+              "secret": true
+            }
+          ]
         }
     ]
   }
