@@ -309,7 +309,31 @@
       "name": "⛏️ Dwarven Excavation",
       "mapUrl": "assets/maps/mapDwarvenexcavation.jpg",
       "defaultsHtml": "<h2>Licht</h2>\n<ul>\n  <li>Keine Lichtquellen im Tempel; vollständige Dunkelheit.</li>\n</ul>\n\n<hr>\n\n<h2>Höhe / Decken</h2>\n<ul>\n  <li>Decken durchgehend 10 ft. hoch und flach.</li>\n</ul>\n\n<hr>\n\n<h2>Türen</h2>\n<ul>\n  <li>Alle Türen bestehen aus behauenem Stein mit Steinbolzen-Scharnieren.</li>\n  <li>Geheime Türen: DC 15 Wisdom (Perception) beim aktiven Suchen.</li>\n</ul>\n\n<hr>\n\n<h2>Geröll</h2>\n<ul>\n  <li>Geröllfelder zählen als Difficult Terrain.</li>\n  <li>Geröll und Schutt können nach Ermessen Deckung bieten.</li>\n</ul>\n\n<hr>\n\n<h2>Geräusche</h2>\n<ul>\n  <li>Schritte, Gespräche und Kämpfe hallen deutlich durch den Tempel.</li>\n</ul>",
-      "rooms": []
-    }
+      "rooms": [
+        {
+          "id": "de-e1",
+          "dungeonId": "dwarven-excavation",
+          "name": "E1 – Canyon",
+          "short": "Zugang zur Ausgrabungsstätte.",
+          "tags": [
+            "Außenbereich",
+            "Ankunft"
+          ],
+          "descriptionHtml": "<p>Der Canyonboden ist von Geröll übersät. Zwischen den Steinen wachsen nur vereinzelte, widerstandsfähige Unkräuter. Am Ende des Canyons führen freigeräumte Steinstufen zum Eingang der Ausgrabungsstätte hinauf.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e2",
+              "label": "Steintreppe zur Ausgrabung"
+            }
+          ]
+        }
+    ]
+  }
   ]
 }
