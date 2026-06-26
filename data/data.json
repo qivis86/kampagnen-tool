@@ -522,6 +522,160 @@
         "Herkunft & kurze Vorgeschichte": "Aufgewachsen im Kryptgarden Forest als Tochter von Ellinore und Rinrod. Über elfische Kontakte fand Norielle Anschluss an den Dusk Circle und erhielt dort eine druidische Ausbildung.\nIhre Mentorin Thyria prägte sie mit einem ruhigen, klaren und eher kryptischen Lehrstil.\nMit den Jahren entschied sich Norielle, den Wald zu verlassen, um sich selbst besser zu verstehen. In der Hoffnung, durch das Helfen anderer Klarheit zu finden, führte ihr Weg schließlich nach Phandalin.",
         "Einstellung gegenüber den SCs (Start)": "Offen, unterstützend und kooperativ; sucht Anschluss, ohne sich aufzudrängen. Neigt dazu, andere zu stärken und Konflikte zu beruhigen."
       }
+    },
+    {
+      "id": "dazlyn-graysband",
+      "name": "⛏️ Dazlyn Graysband",
+      "categories": [
+        "Dwarven Excavation"
+      ],
+      "tags": [
+        "Zwerg",
+        "Expedition",
+        "Anführer"
+      ],
+      "placeIds": [
+        "dwarven-excavation"
+      ],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Schildzwerg, männlich, mittleren Alters, kräftig",
+        "Rolle / Funktion": "Expeditionsleiter",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, höflich und besonnen. Gepflegter Bart, praktische Reisekleidung und hochwertige Bergbauausrüstung.",
+        "Herkunft & kurze Vorgeschichte": "Erfahrene Ausgrabungsleiter mit mehreren Expeditionen im Schwertgebirge. Organisiert die Arbeiten und pflegt Kontakte zu Auftraggebern.",
+        "Einstellung gegenüber den SCs (Start)": "Freundlich und kooperativ.",
+        "Motivation (offen)": "Den Tempel sichern und die Ausgrabung fortsetzen.",
+        "Motivation (verdeckt / langfristig)": "Bedeutende Zwergenrelikte bergen und die Expedition erfolgreich abschließen.",
+        "Beziehung zu Phandalin": "Nutzt Phandalin als Versorgungsstützpunkt.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Keine besonderen Vorurteile; beurteilt Einzelpersonen nach ihrem Verhalten.",
+        "Wissen / Gerüchte": "Kennt die Geschichte der Ausgrabung und den bisherigen Fortschritt.",
+        "Was wissen die SCs aktuell über diese Person?": "Leiter der Expedition.",
+        "Mögliche Interaktionen mit den SCs": "Auftrag vergeben, Informationen austauschen, Belohnung aushandeln.",
+        "Entwicklung im Kampagnenverlauf": "Kann zu einem verlässlichen Kontakt der Gruppe werden.",
+        "Notizen für den SL": "Vermittelt bei Meinungsverschiedenheiten innerhalb der Expedition."
+      }
+    },
+    {
+      "id": "brunna-stonevein",
+      "name": "🛡️ Brunna Stonevein",
+      "categories": [
+        "Dwarven Excavation"
+      ],
+      "tags": [
+        "Zwerg",
+        "Expedition",
+        "Sicherheit"
+      ],
+      "placeIds": [
+        "dwarven-excavation"
+      ],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Schildzwergin, kräftig gebaut",
+        "Rolle / Funktion": "Co-Leiterin und Sicherheitsverantwortliche",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Direkt, schroff und aufmerksam. Trägt ihre Rüstung auch während der Arbeit.",
+        "Herkunft & kurze Vorgeschichte": "Veteranin zahlreicher Bergbau- und Sicherungsexpeditionen.",
+        "Einstellung gegenüber den SCs (Start)": "Reserviert, aber respektvoll gegenüber kompetenten Abenteurern.",
+        "Motivation (offen)": "Die Expedition sicher nach Hause bringen.",
+        "Motivation (verdeckt / langfristig)": "Keine unnötigen Risiken eingehen.",
+        "Beziehung zu Phandalin": "Rein geschäftlich.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Misstrauisch gegenüber fanatischen Kulten, ansonsten pragmatisch.",
+        "Wissen / Gerüchte": "Kennt die Gefahren der Ausgrabung und achtet auf mögliche Einstürze.",
+        "Was wissen die SCs aktuell über diese Person?": "Verantwortlich für die Sicherheit der Expedition.",
+        "Mögliche Interaktionen mit den SCs": "Einschätzung der Fähigkeiten der Gruppe, taktische Gespräche.",
+        "Entwicklung im Kampagnenverlauf": "Fasst Vertrauen, wenn die SC umsichtig handeln.",
+        "Notizen für den SL": "Respektiert Taten mehr als Worte."
+      }
+    },
+    {
+      "id": "norbus-ironrune",
+      "name": "📜 Norbus Ironrune",
+      "categories": [
+        "Dwarven Excavation"
+      ],
+      "tags": [
+        "Zwerg",
+        "Runenmagier",
+        "Abbathor"
+      ],
+      "placeIds": [
+        "dwarven-excavation"
+      ],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Schildzwerg, älter, drahtig",
+        "Rolle / Funktion": "Runenkundiger und Gelehrter",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ernst, vorsichtig und religiös interessiert.",
+        "Herkunft & kurze Vorgeschichte": "Beschäftigt sich seit vielen Jahren mit alten Zwergenheiligtümern und Runen.",
+        "Einstellung gegenüber den SCs (Start)": "Höflich, aber zurückhaltend.",
+        "Motivation (offen)": "Die Geschichte des Tempels erforschen.",
+        "Motivation (verdeckt / langfristig)": "Religiöse Erkenntnisse über Abbathor gewinnen.",
+        "Beziehung zu Phandalin": "Keine besondere.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Ohne Vorurteile.",
+        "Wissen / Gerüchte": "Kennt die religiöse Bedeutung des Tempels.",
+        "Was wissen die SCs aktuell über diese Person?": "Zuständig für Runen und Inschriften.",
+        "Mögliche Interaktionen mit den SCs": "Übersetzt Inschriften, beantwortet Fragen zur Tempelgeschichte.",
+        "Entwicklung im Kampagnenverlauf": "Teilt Wissen bereitwillig mit respektvollen Zuhörern.",
+        "Notizen für den SL": "Akzeptiert kalkulierte Risiken zugunsten neuer Erkenntnisse."
+      }
+    },
+    {
+      "id": "korin-earthshaper",
+      "name": "🪨 Korin Earthshaper",
+      "categories": [
+        "Dwarven Excavation"
+      ],
+      "tags": [
+        "Zwerg",
+        "Magier",
+        "Erdmagie"
+      ],
+      "placeIds": [
+        "dwarven-excavation"
+      ],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Schildzwerg, schlank",
+        "Rolle / Funktion": "Erd- und Transmutationsmagier",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Ruhig, präzise und wortkarg.",
+        "Herkunft & kurze Vorgeschichte": "Unterstützt Expeditionen mit praktischer Magie.",
+        "Einstellung gegenüber den SCs (Start)": "Neutral.",
+        "Motivation (offen)": "Die Ausgrabung effizient voranbringen.",
+        "Motivation (verdeckt / langfristig)": "Seine Magie sinnvoll einsetzen.",
+        "Beziehung zu Phandalin": "Keine.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Gleichgültig.",
+        "Wissen / Gerüchte": "Kennt die Struktur der freigelegten Anlage.",
+        "Was wissen die SCs aktuell über diese Person?": "Nutzt Magie zum Räumen von Geröll.",
+        "Mögliche Interaktionen mit den SCs": "Fachgespräche über Stein und Bauwerke.",
+        "Entwicklung im Kampagnenverlauf": "Bleibt eher im Hintergrund.",
+        "Notizen für den SL": "Spricht wenig, beobachtet viel."
+      }
+    },
+    {
+      "id": "bramm-stouthammer",
+      "name": "🔨 Bramm Stouthammer",
+      "categories": [
+        "Dwarven Excavation"
+      ],
+      "tags": [
+        "Zwerg",
+        "Arbeiter"
+      ],
+      "placeIds": [
+        "dwarven-excavation"
+      ],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Schildzwerg, breit gebaut",
+        "Rolle / Funktion": "Arbeiter und Lastenträger",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Kräftig, gut gelaunt und schlagfertig.",
+        "Herkunft & kurze Vorgeschichte": "Erfahrener Bergarbeiter.",
+        "Einstellung gegenüber den SCs (Start)": "Offen und freundlich.",
+        "Motivation (offen)": "Gute Arbeit leisten und heil wieder abreisen.",
+        "Motivation (verdeckt / langfristig)": "Eine gute Geschichte mit nach Hause bringen.",
+        "Beziehung zu Phandalin": "Kauft dort regelmäßig Vorräte.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Keine starke Meinung.",
+        "Wissen / Gerüchte": "Kennt Bergmannsgeschichten und lokale Gerüchte.",
+        "Was wissen die SCs aktuell über diese Person?": "Kümmert sich um die körperliche Arbeit der Expedition.",
+        "Mögliche Interaktionen mit den SCs": "Erzählt Geschichten, lockert die Stimmung auf.",
+        "Entwicklung im Kampagnenverlauf": "Kann zu einem sympathischen Nebencharakter werden.",
+        "Notizen für den SL": "Liefert Humor, ohne zur Witzfigur zu werden."
+      }
     }
   ],
   "places": [

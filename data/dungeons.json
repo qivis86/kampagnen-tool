@@ -359,6 +359,40 @@
               "label": "Tempel"
             }
           ]
+        },
+        {
+          "id": "de-e3",
+          "dungeonId": "dwarven-excavation",
+          "name": "E3 – Tempelhof",
+          "short": "Vorhof des Tempels und Lager der Expedition.",
+          "tags": [
+            "Außenbereich",
+            "Expedition",
+            "Questgeber"
+          ],
+          "descriptionHtml": "<p>Eine teilweise eingestürzte Mauer trennt den Tempelhof von der Ruinensiedlung. Drei große Geröllhaufen liegen im Hof verstreut. Aus der Felswand erhebt sich die rund 30&nbsp;ft. hohe Tempelfassade mit einer breiten Steintreppe und einem offenen Eingangsportal. Zwei lebensgroße Granitstatuen vermummter Zwerge flankieren den Eingang. Trotz jahrhundertelanger Verwitterung ist ihr bösartiges Grinsen noch deutlich zu erkennen.</p><hr><h2>Zwergische Expedition</h2><p>Die Expedition hat hier ihr Arbeitslager eingerichtet und behält den Tempel ständig im Blick. Die Mitglieder sind sich über das weitere Vorgehen nicht immer einig, verfolgen aber dasselbe Ziel: den Tempel zu sichern und die Ausgrabung fortzusetzen.</p><hr><h2>Auftrag</h2><p>Die Zwerge bitten die Gruppe, den Tempel von allen offensichtlichen Gefahren zu befreien. Als Vorschuss stellen sie ihre beiden <i>Sending Stones</i> zur Verfügung und bieten an, sämtliche Funde gerecht aufzuteilen.</p>",
+          "contentRefs": {
+            "npcs": [
+              "dazlyn-graysband",
+              "brunna-stonevein",
+              "norbus-ironrune",
+              "korin-earthshaper",
+              "bramm-stouthammer"
+            ],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e2",
+              "label": "Ruinensiedlung"
+            },
+            {
+              "to": "de-e4",
+              "label": "Tempel"
+            }
+          ]
         }
     ]
   }
