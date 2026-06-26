@@ -332,6 +332,33 @@
               "label": "Steintreppe zur Ausgrabung"
             }
           ]
+        },
+        {
+          "id": "de-e2",
+          "dungeonId": "dwarven-excavation",
+          "name": "E2 – Ruinensiedlung",
+          "short": "Freigelegte Überreste einer verschütteten Zwergensiedlung.",
+          "tags": [
+            "Außenbereich",
+            "Ruinen"
+          ],
+          "descriptionHtml": "<p>Vor dem Tempel liegen die freigelegten Überreste einer alten Zwergensiedlung. Von den Gebäuden sind nur noch eingestürzte Grundmauern erhalten. Auf der gegenüberliegenden Seite der Ruinen befindet sich ein verschütteter Steinbrunnen.</p><hr><h2>Untersuchen</h2><ul><li>Die Siedlung wurde bereits vollständig geplündert.</li><li>Zwischen den Trümmern finden sich einige zerdrückte Zwergenknochen.</li><li>Mehrere erkaltete Feuerstellen zeugen von einer kürzlichen Grabungsexpedition.</li><li>Es gibt nichts von Wert zu finden.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e1",
+              "label": "Canyon"
+            },
+            {
+              "to": "de-e3",
+              "label": "Tempel"
+            }
+          ]
         }
     ]
   }
