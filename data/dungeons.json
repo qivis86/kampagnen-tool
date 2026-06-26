@@ -311,9 +311,9 @@
       "defaultsHtml": "<h2>Licht</h2>\n<ul>\n  <li>Keine Lichtquellen im Tempel; vollständige Dunkelheit.</li>\n</ul>\n\n<hr>\n\n<h2>Höhe / Decken</h2>\n<ul>\n  <li>Decken durchgehend 10 ft. hoch und flach.</li>\n</ul>\n\n<hr>\n\n<h2>Türen</h2>\n<ul>\n  <li>Alle Türen bestehen aus behauenem Stein mit Steinbolzen-Scharnieren.</li>\n  <li>Geheime Türen: DC 15 Wisdom (Perception) beim aktiven Suchen.</li>\n</ul>\n\n<hr>\n\n<h2>Geröll</h2>\n<ul>\n  <li>Geröllfelder zählen als Difficult Terrain.</li>\n  <li>Geröll und Schutt können nach Ermessen Deckung bieten.</li>\n</ul>\n\n<hr>\n\n<h2>Geräusche</h2>\n<ul>\n  <li>Schritte, Gespräche und Kämpfe hallen deutlich durch den Tempel.</li>\n</ul>",
       "rooms": [
         {
-          "id": "de-e1",
+          "id": "de-e01",
           "dungeonId": "dwarven-excavation",
-          "name": "E1 – Canyon",
+          "name": "E01 – Canyon",
           "short": "Zugang zur Ausgrabungsstätte.",
           "tags": [
             "Außenbereich",
@@ -328,15 +328,15 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e2",
+              "to": "de-e02",
               "label": "Steintreppe zur Ausgrabung"
             }
           ]
         },
         {
-          "id": "de-e2",
+          "id": "de-e02",
           "dungeonId": "dwarven-excavation",
-          "name": "E2 – Ruinensiedlung",
+          "name": "E02 – Ruinensiedlung",
           "short": "Freigelegte Überreste einer verschütteten Zwergensiedlung.",
           "tags": [
             "Außenbereich",
@@ -351,19 +351,19 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e1",
+              "to": "de-e01",
               "label": "Canyon"
             },
             {
-              "to": "de-e3",
+              "to": "de-e03",
               "label": "Tempel"
             }
           ]
         },
         {
-          "id": "de-e3",
+          "id": "de-e03",
           "dungeonId": "dwarven-excavation",
-          "name": "E3 – Tempelhof",
+          "name": "E03 – Tempelhof",
           "short": "Vorhof des Tempels und Lager der Expedition.",
           "tags": [
             "Außenbereich",
@@ -385,19 +385,19 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e2",
+              "to": "de-e02",
               "label": "Ruinensiedlung"
             },
             {
-              "to": "de-e4",
+              "to": "de-e04",
               "label": "Tempel"
             }
           ]
         },
         {
-          "id": "de-e4",
+          "id": "de-e04",
           "dungeonId": "dwarven-excavation",
-          "name": "E4 – Eingangshalle",
+          "name": "E04 – Eingangshalle",
           "short": "Staubbedecktes Foyer mit mehreren Zugängen.",
           "tags": [
             "Tempel",
@@ -413,24 +413,24 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e3",
+              "to": "de-e03",
               "label": "Tempelhof"
             },
             {
-              "to": "de-e5",
+              "to": "de-e05",
               "label": "Altarraum"
             },
             {
-              "to": "de-e6",
+              "to": "de-e06",
               "label": "Geheimgang",
               "secret": true
             }
           ]
         },
         {
-          "id": "de-e5",
+          "id": "de-e05",
           "dungeonId": "dwarven-excavation",
-          "name": "E5 – Tempel",
+          "name": "E05 – Tempel",
           "short": "Der Altarraum des Abbathor-Tempels.",
           "tags": [
             "Tempel",
@@ -446,30 +446,30 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e4",
+              "to": "de-e04",
               "label": "Eingangshalle"
             },
             {
-              "to": "de-e6",
+              "to": "de-e06",
               "label": "Geheimgang",
               "secret": true
             },
             {
-              "to": "de-e7",
+              "to": "de-e07",
               "label": "Priesterquartier",
               "secret": true
             },
             {
-              "to": "de-e8",
+              "to": "de-e08",
               "label": "Geheimgang",
               "secret": true
             }
           ]
         },
         {
-          "id": "de-e6",
+          "id": "de-e06",
           "dungeonId": "dwarven-excavation",
-          "name": "E6 – Teilweise eingestürzter Raum",
+          "name": "E06 – Teilweise eingestürzter Raum",
           "short": "Ein verschütteter Nebenraum.",
           "tags": [
             "Geheimraum",
@@ -484,16 +484,21 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e5",
+              "to": "de-e05",
               "label": "Tempel",
+              "secret": true
+            },
+            {
+              "to": "de-e04",
+              "label": "Eingangshalle",
               "secret": true
             }
           ]
         },
         {
-          "id": "de-e7",
+          "id": "de-e07",
           "dungeonId": "dwarven-excavation",
-          "name": "E7 – Geheimgang",
+          "name": "E07 – Geheimgang",
           "short": "Ein schmaler Verbindungsgang hinter den Tempelwänden.",
           "tags": [
             "Geheimgang"
@@ -507,12 +512,12 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e5",
+              "to": "de-e05",
               "label": "Tempel",
               "secret": true
             },
             {
-              "to": "de-e9",
+              "to": "de-e09",
               "label": "Kammer",
               "secret": true
             },
@@ -529,9 +534,9 @@
           ]
         },
         {
-          "id": "de-e8",
+          "id": "de-e08",
           "dungeonId": "dwarven-excavation",
-          "name": "E8 – Schlafkammer der Priester",
+          "name": "E08 – Schlafkammer der Priester",
           "short": "Ehemalige Schlafstätte der Tempelpriester.",
           "tags": [
             "Schlafkammer",
@@ -546,21 +551,21 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e5",
+              "to": "de-e05",
               "label": "Tempel",
               "secret": true
             },
             {
-              "to": "de-e9",
+              "to": "de-e09",
               "label": "Priesterquartier",
               "secret": true
             }
           ]
         },
         {
-          "id": "de-e9",
+          "id": "de-e09",
           "dungeonId": "dwarven-excavation",
-          "name": "E9 – Sakristei",
+          "name": "E09 – Sakristei",
           "short": "Vorbereitungsraum der Tempelpriester.",
           "tags": [
             "Sakristei",
@@ -575,13 +580,18 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e7",
+              "to": "de-e07",
               "label": "Geheimgang",
               "secret": true
             },
             {
               "to": "de-e11",
               "label": "Kammer",
+              "secret": true
+            },
+            {
+              "to": "de-e08",
+              "label": "Schlafkammer der Priester",
               "secret": true
             }
           ]
@@ -605,7 +615,7 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e7",
+              "to": "de-e07",
               "label": "Geheimgang",
               "secret": true
             },
@@ -635,12 +645,12 @@
           "fields": {},
           "exits": [
             {
-              "to": "de-e7",
+              "to": "de-e07",
               "label": "Geheimgang",
               "secret": true
             },
             {
-              "to": "de-e9",
+              "to": "de-e09",
               "label": "Sakristei",
               "secret": true
             },
@@ -651,7 +661,7 @@
             }
           ]
         }
-    ]
-  }
+      ]
+    }
   ]
 }
