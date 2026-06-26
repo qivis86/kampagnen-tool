@@ -426,6 +426,45 @@
               "secret": true
             }
           ]
+        },
+        {
+          "id": "de-e5",
+          "dungeonId": "dwarven-excavation",
+          "name": "E5 – Tempel",
+          "short": "Der Altarraum des Abbathor-Tempels.",
+          "tags": [
+            "Tempel",
+            "Altar",
+            "Boss"
+          ],
+          "descriptionHtml": "<p>Massive Steinsäulen tragen die Decke dieses Tempels. Am westlichen Ende steht ein Altar aus hellem Kalkstein. Obwohl der Raum von Staub bedeckt ist, zeichnen sich auf seiner Oberfläche noch immer dunkle, tief eingezogene Blutflecken ab – als hätten Jahrhunderte den Stein verwittern, nicht aber die Opfergaben vergessen.</p><p>Eine feuchte, schlierige Spur verliert sich im Staub nahe des Altars.</p><hr><h2>Kreatur</h2><p>Eine <a href=\"https://www.dndbeyond.com/monsters/5195148-ochre-jelly\" target=\"_blank\" rel=\"noopener noreferrer\">Ochre Jelly ↗</a> lauert reglos an der Decke über dem Altar und greift an, sobald sich Beute unter ihr befindet.</p><hr><h2>Geheimnisse</h2><ul><li>Vier geheime Türen führen in andere Bereiche des Tempels.</li><li>Eine weitere Geheimtür befindet sich in einer der Steinsäulen und verbirgt ein kleines Versteck.</li></ul><hr><h2>Schatz</h2><p>Im Hohlraum der Säule liegen zahlreiche Zwergenschädel. Unter ihnen befindet sich eine steinerne Truhe mit <b>15 Edelsteinen (je 10 gp)</b>.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e4",
+              "label": "Eingangshalle"
+            },
+            {
+              "to": "de-e6",
+              "label": "Geheimgang",
+              "secret": true
+            },
+            {
+              "to": "de-e7",
+              "label": "Priesterquartier",
+              "secret": true
+            },
+            {
+              "to": "de-e8",
+              "label": "Geheimgang",
+              "secret": true
+            }
+          ]
         }
     ]
   }
