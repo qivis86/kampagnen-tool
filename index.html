@@ -875,7 +875,7 @@ function roomMatchesSearch(room, q){
 function sanitizeHtmlAllowlist(html){
   const allowedTags = new Set(["P","BR","B","I","EM","STRONG","UL","OL","LI","H2","H3","H4","HR","CODE","PRE","BLOCKQUOTE","A","SPAN","DIV"]);
   const allowedAttrs = {
-    "A": new Set(["href","title"]),
+    "A": new Set(["href","title","target","rel"]),
     "SPAN": new Set(["class"]),
     "DIV": new Set(["class"]),
     "P": new Set(["class"]),

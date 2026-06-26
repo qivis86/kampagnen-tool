@@ -342,7 +342,7 @@
             "Außenbereich",
             "Ruinen"
           ],
-          "descriptionHtml": "<p>Vor dem Tempel liegen die freigelegten Überreste einer alten Zwergensiedlung. Von den Gebäuden sind nur noch eingestürzte Grundmauern erhalten. Auf der gegenüberliegenden Seite der Ruinen befindet sich ein verschütteter Steinbrunnen.</p><hr><h2>Untersuchen</h2><ul><li>Die Siedlung wurde bereits vollständig geplündert.</li><li>Zwischen den Trümmern finden sich einige zerdrückte Zwergenknochen.</li><li>Mehrere erkaltete Feuerstellen zeugen von einer kürzlichen Grabungsexpedition.</li><li>Es gibt nichts von Wert zu finden.</li></ul>",
+          "descriptionHtml": "<p>Vor dem Tempel liegen die freigelegten Überreste einer alten Zwergensiedlung. Von den Gebäuden sind nur noch eingestürzte Grundmauern erhalten. Auf der gegenüberliegenden Seite der Ruinen befindet sich ein verschütteter Steinbrunnen.</p><hr><h2>Untersuchen</h2><ul><li>Die Siedlung wurde bereits vollständig geplündert.</li><li>Zwischen den Trümmern finden sich einige zerdrückte <b>Zwergenknochen</b>.</li><li>Mehrere erkaltete <b>Feuerstellen</b> zeugen von einer kürzlichen Grabungsexpedition.</li><li>Es gibt nichts von Wert zu finden.</li></ul>",
           "contentRefs": {
             "npcs": [],
             "places": [],
@@ -370,7 +370,7 @@
             "Expedition",
             "Questgeber"
           ],
-          "descriptionHtml": "<p>Eine teilweise eingestürzte Mauer trennt den Tempelhof von der Ruinensiedlung. Drei große Geröllhaufen liegen im Hof verstreut. Aus der Felswand erhebt sich die rund 30&nbsp;ft. hohe Tempelfassade mit einer breiten Steintreppe und einem offenen Eingangsportal. Zwei lebensgroße Granitstatuen vermummter Zwerge flankieren den Eingang. Trotz jahrhundertelanger Verwitterung ist ihr bösartiges Grinsen noch deutlich zu erkennen.</p><hr><h2>Zwergische Expedition</h2><p>Die Expedition hat hier ihr Arbeitslager eingerichtet und behält den Tempel ständig im Blick. Die Mitglieder sind sich über das weitere Vorgehen nicht immer einig, verfolgen aber dasselbe Ziel: den Tempel zu sichern und die Ausgrabung fortzusetzen.</p><hr><h2>Auftrag</h2><p>Die Zwerge bitten die Gruppe, den Tempel von allen offensichtlichen Gefahren zu befreien. Als Vorschuss stellen sie ihre beiden <i>Sending Stones</i> zur Verfügung und bieten an, sämtliche Funde gerecht aufzuteilen.</p>",
+          "descriptionHtml": "<p>Eine teilweise eingestürzte Mauer trennt den Tempelhof von der Ruinensiedlung. Drei große Geröllhaufen liegen im Hof verstreut. Aus der Felswand erhebt sich die rund 30&nbsp;ft. hohe Tempelfassade mit einer breiten Steintreppe und einem offenen Eingangsportal. Zwei lebensgroße Granitstatuen vermummter Zwerge flankieren den Eingang. Trotz jahrhundertelanger Verwitterung ist ihr <b>bösartiges Grinsen</b> noch deutlich zu erkennen.</p><hr><h2>Szene</h2><p>Fünf Zwerge arbeiten zwischen Werkzeugen, Seilen und abgestützten Steinplatten. Das rhythmische Krachen von Metall auf Stein verstummt, als sie die Gruppe bemerken.</p><p><b>Dazlyn Graysband</b> tritt vor, ruhig und kontrolliert:</p><blockquote>„Na endlich. Besuch, der nicht nach Gestein riecht. Willkommen – und bleibt besser auf Abstand vom Geröll.“</blockquote><p>Neben ihm steht <b>Brunna Stonevein</b>, die Arme verschränkt:</p><blockquote>„Wenn ihr zum Glotzen hier seid: falscher Ort. Wenn ihr helfen wollt: noch falscher.“</blockquote><p>Aus einer dunklen Öffnung hinter der Geröllhalde dringt ein feuchtes, schmatzendes Geräusch.</p><blockquote>„Merkwürdige Bewegungen im Tempel“, knurrt Brunna. „Widerliche Schlürfgeräusche.“</blockquote><p>Dazlyn ergänzt:</p><blockquote>„Weiter hinten liegt mehr als nur Stein, da müssen noch versteckte Wege sein. Und wir kommen ohne Hilfe nicht weiter.“</blockquote><hr><h2>Zwergische Expedition</h2><p>Die Expedition hat hier ihr Arbeitslager eingerichtet und behält den Tempel ständig im Blick. Die Mitglieder sind sich über das weitere Vorgehen <b>nicht immer einig</b>, verfolgen aber dasselbe Ziel: den Tempel zu sichern und die Ausgrabung fortzusetzen.</p><hr><h2>Auftrag</h2><p>Die Zwerge bitten die Gruppe, den Tempel von allen offensichtlichen Gefahren zu befreien. Als Vorschuss stellen sie ihre beiden <i>Sending Stones</i> zur Verfügung und bieten an, sämtliche Funde <b>gerecht aufzuteilen</b>.</p>",
           "contentRefs": {
             "npcs": [
               "dazlyn-graysband",
@@ -404,7 +404,7 @@
             "Eingang",
             "Geheimtür"
           ],
-          "descriptionHtml": "<p>Staub bedeckt den Boden der Eingangshalle. Zwei große Doppeltüren wurden mit in den Boden geschlagenen Metallspießen offen gehalten. Im Norden steht eine ehemals geheime Tür offen und gibt den Blick auf einen vollständig verschütteten Raum frei.</p><p>Vor dem östlichen Durchgang zieht sich eine feuchte, schlierige Spur durch den Staub, als wäre dort vor nicht allzu langer Zeit etwas Schweres langsam entlanggeglitten.</p>",
+          "descriptionHtml": "<p>Staub bedeckt den Boden der Eingangshalle. Zwei große Doppeltüren wurden mit in den Boden geschlagenen Metallspießen offen gehalten. Im Norden steht eine ehemals geheime Tür offen und gibt den Blick auf einen vollständig verschütteten Raum frei.</p><p>Vor dem östlichen Durchgang zieht sich eine feuchte, <b>schlierige Spur</b> durch den Staub, als wäre dort vor nicht allzu langer Zeit etwas Schweres langsam entlanggeglitten.</p>",
           "contentRefs": {
             "npcs": [],
             "places": [],
@@ -437,7 +437,7 @@
             "Altar",
             "Boss"
           ],
-          "descriptionHtml": "<p>Massive Steinsäulen tragen die Decke dieses Tempels. Am westlichen Ende steht ein Altar aus hellem Kalkstein. Obwohl der Raum von Staub bedeckt ist, zeichnen sich auf seiner Oberfläche noch immer dunkle, tief eingezogene Blutflecken ab – als hätten Jahrhunderte den Stein verwittern, nicht aber die Opfergaben vergessen.</p><p>Eine feuchte, schlierige Spur verliert sich im Staub nahe des Altars.</p><hr><h2>Kreatur</h2><p>Eine <a href=\"https://www.dndbeyond.com/monsters/5195148-ochre-jelly\" target=\"_blank\" rel=\"noopener noreferrer\">Ochre Jelly ↗</a> lauert reglos an der Decke über dem Altar und greift an, sobald sich Beute unter ihr befindet.</p><hr><h2>Geheimnisse</h2><ul><li>Vier geheime Türen führen in andere Bereiche des Tempels.</li><li>Eine weitere Geheimtür befindet sich in einer der Steinsäulen und verbirgt ein kleines Versteck.</li></ul><hr><h2>Schatz</h2><p>Im Hohlraum der Säule liegen zahlreiche Zwergenschädel. Unter ihnen befindet sich eine steinerne Truhe mit <b>15 Edelsteinen (je 10 gp)</b>.</p>",
+          "descriptionHtml": "<p>Massive <b>Steinsäulen</b> tragen die Decke dieses Tempels. Am westlichen Ende steht ein <b>Altar</b> aus hellem Kalkstein. Obwohl der Raum von Staub bedeckt ist, zeichnen sich auf seiner Oberfläche noch immer dunkle, tief eingezogene <b>Blutflecken</b> ab – als hätten Jahrhunderte den Stein verwittern, nicht aber die Opfergaben vergessen.</p><p>Eine feuchte, schlierige Spur verliert sich im Staub nahe des Altars.</p><hr><h2>Kreatur</h2><p>Eine <a href=\"https://www.dndbeyond.com/monsters/5195148-ochre-jelly\" target=\"_blank\" rel=\"noopener noreferrer\">Ochre Jelly ↗</a> lauert reglos an der Decke über dem Altar und greift an, sobald sich Beute unter ihr befindet.</p><hr><h2>Geheimnisse</h2><ul><li>Vier geheime Türen führen in andere Bereiche des Tempels.</li><li>Eine weitere Geheimtür befindet sich in einer der Steinsäulen und verbirgt ein kleines Versteck.</li></ul><hr><h2>Schatz</h2><p>Im Hohlraum der Säule liegen zahlreiche Zwergenschädel. Unter ihnen befindet sich eine steinerne Truhe mit <b>15 Edelsteinen (je 10 gp)</b>.</p>",
           "contentRefs": {
             "npcs": [],
             "places": [],
@@ -481,7 +481,9 @@
             "places": [],
             "quests": []
           },
-          "fields": {},
+          "fields": {
+            "Offener Gedanke": "Hier später etwas Findbares platzieren: kleines Consumable oder Common Item mit Abbathor-Bezug."
+          },
           "exits": [
             {
               "to": "de-e05",
@@ -503,7 +505,7 @@
           "tags": [
             "Geheimgang"
           ],
-          "descriptionHtml": "<p>Ein schmaler, staubbedeckter Gang verbindet mehrere Bereiche des Tempels. An seinem südlichen Ende versperrt ein großer Geröllhaufen den ursprünglichen Verlauf des Tunnels.</p>",
+          "descriptionHtml": "<p>Ein schmaler, staubbedeckter Gang verbindet mehrere Bereiche des Tempels. An seinem südlichen Ende versperrt ein großer Geröllhaufen den ursprünglichen Verlauf des Tunnels.</p><p>Aus den Schatten hinter dem Geröll kommen leise Kratzgeräusche und kurze Bewegungen. Nach einem Moment huschen nur ein paar Ratten aus einem Loch und verschwinden zwischen den Steinen.</p>",
           "contentRefs": {
             "npcs": [],
             "places": [],
@@ -571,7 +573,7 @@
             "Sakristei",
             "Geheimraum"
           ],
-          "descriptionHtml": "<p>Ein steinernes Weihwasserbecken ragt aus der Südwestwand. Gegenüber steht ein massiver Steinschrank. Darin hängen die verrotteten Überreste zweier roter Ledergewänder – einst die Zeremonienkleidung der Priester Abbathors, heute kaum mehr als wertlose Fetzen.</p>",
+          "descriptionHtml": "<p>Ein <b>Steinbecken</b> ragt aus der Südwestwand. Gegenüber steht ein massiver Steinschrank. Darin hängen die verrotteten Überreste zweier roter Ledergewänder – einst die Zeremonienkleidung der Priester Abbathors, heute kaum mehr als wertlose Fetzen.</p>",
           "contentRefs": {
             "npcs": [],
             "places": [],
@@ -642,7 +644,9 @@
             "places": [],
             "quests": []
           },
-          "fields": {},
+          "fields": {
+            "SL-Hinweis": "Wenn die Gruppe die Zwerge zum Freiräumen holt, können Norbus/Korin vor möglichen Fallen oder magischer Sicherung warnen."
+          },
           "exits": [
             {
               "to": "de-e07",
