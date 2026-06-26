@@ -465,6 +465,30 @@
               "secret": true
             }
           ]
+        },
+        {
+          "id": "de-e6",
+          "dungeonId": "dwarven-excavation",
+          "name": "E6 – Teilweise eingestürzter Raum",
+          "short": "Ein verschütteter Nebenraum.",
+          "tags": [
+            "Geheimraum",
+            "Eingestürzt"
+          ],
+          "descriptionHtml": "<p>Ein Erdbeben hat große Teile dieses Raums einstürzen lassen. Geröll bedeckt nahezu den gesamten Boden und versperrt den weiteren Weg. Zwischen den Trümmern ist nichts von Wert zu entdecken.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e5",
+              "label": "Tempel",
+              "secret": true
+            }
+          ]
         }
     ]
   }
