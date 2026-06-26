@@ -489,6 +489,44 @@
               "secret": true
             }
           ]
+        },
+        {
+          "id": "de-e7",
+          "dungeonId": "dwarven-excavation",
+          "name": "E7 – Geheimgang",
+          "short": "Ein schmaler Verbindungsgang hinter den Tempelwänden.",
+          "tags": [
+            "Geheimgang"
+          ],
+          "descriptionHtml": "<p>Ein schmaler, staubbedeckter Gang verbindet mehrere Bereiche des Tempels. An seinem südlichen Ende versperrt ein großer Geröllhaufen den ursprünglichen Verlauf des Tunnels.</p>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "de-e5",
+              "label": "Tempel",
+              "secret": true
+            },
+            {
+              "to": "de-e9",
+              "label": "Kammer",
+              "secret": true
+            },
+            {
+              "to": "de-e10",
+              "label": "Kammer",
+              "secret": true
+            },
+            {
+              "to": "de-e11",
+              "label": "Kammer",
+              "secret": true
+            }
+          ]
         }
     ]
   }
