@@ -400,12 +400,15 @@
    CONFIG
 ========================= */
 const REMOTE_DATA_URL = "data/data.json";
+const REMOTE_DUNGEONS_URL = "data/dungeons.json";
 
 /* =========================
    STORAGE
 ========================= */
 const STORAGE_KEY = "kampagnen_tool_world_v1";
-let { NPCS, PLACES, DUNGEONS, ROOMS } = loadWorld();
+let { NPCS, PLACES } = loadWorld();
+let DUNGEONS = [];
+let ROOMS = [];
 
 function loadWorld(){
   try{
@@ -414,21 +417,28 @@ function loadWorld(){
     if(parsed && typeof parsed === "object"){
       return {
         NPCS: Array.isArray(parsed.npcs) ? parsed.npcs : [],
-        PLACES: Array.isArray(parsed.places) ? parsed.places : [],
-        DUNGEONS: Array.isArray(parsed.dungeons) ? parsed.dungeons : [],
-        ROOMS: Array.isArray(parsed.rooms) ? parsed.rooms : []
+        PLACES: Array.isArray(parsed.places) ? parsed.places : []
       };
     }
-    return { NPCS: [], PLACES: [], DUNGEONS: [], ROOMS: [] };
+    return { NPCS: [], PLACES: [] };
   }catch{
-    return { NPCS: [], PLACES: [], DUNGEONS: [], ROOMS: [] };
+    return { NPCS: [], PLACES: [] };
   }
 }
 
 function saveWorld(){
+  // Dungeons are fixed read-only data from data/dungeons.json and are not persisted/exported.
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ npcs: NPCS, places: PLACES, dungeons: DUNGEONS, rooms: ROOMS })
+    JSON.stringify({ npcs: NPCS, places: PLACES })
+  );
+}
+
+function applyDungeonData(raw){
+  const dungeons = Array.isArray(raw?.dungeons) ? raw.dungeons : [];
+  DUNGEONS = dungeons;
+  ROOMS = dungeons.flatMap(d =>
+    (Array.isArray(d.rooms) ? d.rooms : []).map(r => ({ ...r, dungeonId: r.dungeonId || d.id }))
   );
 }
 
@@ -999,20 +1009,6 @@ if(defaultsModal){
   defaultsModal.addEventListener("click", (e) => { if(e.target === defaultsModal) closeDefaultsModal(); });
 }
 
-// Defaults Popout (robust: works for dynamically injected buttons)
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest('[data-action="open-defaults"]');
-  if(!btn) return;
-  e.preventDefault();
-  e.stopPropagation();
-
-  const dungeon = getDungeonById(state.selectedDungeonId);
-  if(!dungeon || !dungeon.defaultsHtml) return;
-
-  openDefaultsModal(dungeon.name || dungeon.id || "Dungeon", dungeon.defaultsHtml);
-});
-
-
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape") closeDefaultsModal();
 });
@@ -1202,9 +1198,6 @@ function renderDetail(ent){
         <summary>
           <div class="sumRow">
             <b>📌 Dungeon-Defaults</b>
-            <span class="sumActions">
-              <button class="btnSmall" type="button" data-action="open-defaults">Popout ⤢</button>
-            </span>
           </div>
         </summary>
         <div class="rich">${sanitizeRichHtml(d.defaultsHtml)}</div>
@@ -1212,9 +1205,6 @@ function renderDetail(ent){
     ` : "";
 
 
-
-    // Expose Defaults Popout handler for the injected button
-    window.__openDefaultsModal = (d?.defaultsHtml) ? (() => openDefaultsModal(d?.name || "Dungeon", d.defaultsHtml)) : null;
     elDetailBody.innerHTML = `
       <div class="muted">Wähle links einen Raum, um Details zu sehen.</div>
       ${mapBlock}
@@ -1261,15 +1251,11 @@ function renderDetail(ent){
         <summary>
           <div class="sumRow">
             <b>📌 Dungeon-Defaults</b>
-            <span class="sumActions">
-              <button class="btnSmall" type="button" data-action="open-defaults">Popout ⤢</button>
-            </span>
           </div>
         </summary>
         <div class="rich">${sanitizeRichHtml(dungeon.defaultsHtml)}</div>
       </details>
     ` : "";
-    window.__openDefaultsModal = (dungeon?.defaultsHtml) ? (() => openDefaultsModal(dungeon?.name || dungeon?.id || "Dungeon", dungeon.defaultsHtml)) : null;
 
     // Exits
     const exits = Array.isArray(ent.exits) ? ent.exits : [];
@@ -2330,7 +2316,7 @@ document.getElementById("btnExportClipboard").onclick = async () => {
 };
 
 document.getElementById("btnReset").onclick = () => {
-  const ok = confirm("Wirklich alle NPCs UND Orte löschen?");
+  const ok = confirm("Wirklich alle NPCs UND Orte löschen? Dungeons bleiben unverändert.");
   if(!ok) return;
   NPCS = [];
   PLACES = [];
@@ -2358,11 +2344,14 @@ async function syncLoad(){
     if(data && typeof data === "object"){
       if(Array.isArray(data.npcs)) NPCS = data.npcs;
       if(Array.isArray(data.places)) PLACES = data.places;
-      if(Array.isArray(data.dungeons)) DUNGEONS = data.dungeons;
-      if(Array.isArray(data.rooms)) ROOMS = data.rooms;
     } else {
       throw new Error("Unerwartetes JSON-Format");
     }
+
+    const dungeonRes = await fetch(REMOTE_DUNGEONS_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if(!dungeonRes.ok) throw new Error("Dungeons HTTP " + dungeonRes.status);
+    const dungeonData = await dungeonRes.json();
+    applyDungeonData(dungeonData);
 
     saveWorld();
     state.selectedCategory = null;
@@ -2376,7 +2365,7 @@ async function syncLoad(){
     const now = new Date();
     const hh = String(now.getHours()).padStart(2,"0");
     const mm = String(now.getMinutes()).padStart(2,"0");
-    elSyncStatus.textContent = `Sync: geladen (NPCs: ${NPCS.length}, Orte: ${PLACES.length}) · ${hh}:${mm}`;
+    elSyncStatus.textContent = `Sync: geladen (NPCs: ${NPCS.length}, Orte: ${PLACES.length}, Dungeons: ${DUNGEONS.length}) · ${hh}:${mm}`;
     showToast("Sync geladen ✅");
   }catch(err){
     elSyncStatus.textContent = "Sync: Fehler – " + (err?.message || String(err));
@@ -2390,8 +2379,23 @@ document.getElementById("btnSyncLoad").onclick = syncLoad;
 /* =========================
    INIT
 ========================= */
+async function loadFixedDungeons(){
+  try{
+    const res = await fetch(REMOTE_DUNGEONS_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const dungeonData = await res.json();
+    applyDungeonData(dungeonData);
+    renderAll();
+    applyMobileVisibility();
+  }catch(err){
+    console.warn("Dungeons konnten nicht geladen werden:", err);
+    elSyncStatus.textContent = "Dungeons: Fehler – " + (err?.message || String(err));
+  }
+}
+
 renderAll();
 applyMobileVisibility();
+loadFixedDungeons();
 </script>
 
 </div>

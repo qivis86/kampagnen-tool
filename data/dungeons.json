@@ -1,0 +1,308 @@
+{
+  "dungeons": [
+    {
+      "id": "gnomengarde",
+      "name": "🏔️ Gnomengarde",
+      "mapUrl": "assets/maps/mapGnomengarde.png",
+      "defaultsHtml": "<h3>🏗️ Struktur</h3><ul><li>Massive Fels-Höhlen, funktional angelegt.</li><li><b>Standard-Deckenhöhe:</b> 7 ft (größere Kavernen höher).</li></ul><h3>🚪 Türen</h3><ul><li>Holz mit rostigen Eisenbeschlägen.</li><li><b>Öffnen:</b> DC 10 Thieves’ Tools oder DC 15 Athletics.</li><li><b>Geheimtüren:</b> DC 10 Perception bei aktiver Suche.</li></ul><h3>🕯️ Licht</h3><ul><li>Laternen an Seil-/Flaschenzügen.</li></ul><h3>🌊 Wasserfall</h3><ul><li>Ständiges Dröhnen; Gespräche oft nur rufend möglich.</li><li>Nebel & Sprühfeuchte prägen mehrere Bereiche.</li></ul>",
+      "rooms": [
+        {
+          "id": "g1",
+          "name": "G01 – 🌫️ Misty Pool and Mushroom Islands",
+          "descriptionHtml": "<div class='room room--g01'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Außenbereich</span> <span class='tag tag--tone'>Nebel</span> <span class='tag tag--theme'>Wild Magic Quelle</span></p>\n    <p>Breites Wasserbecken vor den Höhlen, gespeist von einem rauschenden Wasserfall. Zwei bewirtschaftete Pilzinseln im Dauernebel – Ursprung der instabilen Wild Magic im Komplex.</p>\n  </div>\n  <div class='box box--details'>\n    <h3>🌊 Wasser & Gelände</h3>\n    <ul><li><b>Wassertiefe:</b> 5–10 ft</li><li><b>Flussbreite:</b> ca. 15 ft im Zulauf; ca. 50 ft im Becken</li><li><b>Inseln:</b> ca. 25×10 ft und 20×10 ft; Pilze bis 2 ft</li><li>Felsen sind feucht und teilweise rutschig.</li></ul>\n  </div>\n  <div class='box box--details'>\n    <h3>🧗 Höhlenzugang</h3>\n    <ul><li><b>Eingänge:</b> 20–30 ft hoch</li><li><b>Östlich:</b> schmaler, begehbarer Aufgang</li><li>Andere Wege erfordern Klettern (bei Nässe ggf. DC 10–12 Athletics).</li></ul>\n  </div>\n  <div class='box box--details'>\n    <h3>🚠 Zugang zu den Pilzinseln</h3>\n    <ul><li>Die Gnome schwimmen nicht regelmäßig.</li><li><b>Seilbahn:</b> mechanischer Korb, handkurbelbetrieben; quietschend, bleibt gelegentlich hängen.</li><li><b>Kapazität:</b> 2–3 Gnome</li><li><b>Start:</b> südwestliche Klippe (nahe G07).</li></ul>\n  </div>\n  <div class='box box--details'>\n    <h3>🍄 Pilzarten</h3>\n    <ul><li>🔴 <b>Ölpilze:</b> Brennstoff für Laternen & Geräte</li><li>🟢 <b>Mehlpilze:</b> Grundlage für Brot</li><li>🟣 <b>Weinpilze:</b> fermentiert zu Pilzwein</li><li>🔵 <b>Säurepilze (HB):</b> erfrischend; Vorteil auf nächsten Con-Save gegen Erschöpfung (1h); Zutat für Heil-/Exhaustion-Rezepte</li><li>⚪ <b>Schimmerpilze (HB):</b> kitzelnd; optional Bonus auf sozialen Check <i>oder</i> Sporen-Ablenkung</li></ul>\n  </div>\n  <div class='box box--details'>\n    <h3>🌁 Atmosphäre</h3>\n    <ul><li>Dauernebel</li><li>Sprühregen vom Wasserfall</li><li>Echo verstärkt Stimmen</li><li><i>Optional:</i> Pilze reagieren subtil auf starke Emotionen.</li></ul>\n  </div>\n  <div class='box box--gm'>\n    <h3>🐙 Mimic-Hinweis</h3>\n    <p><b>Kein direkter Hinweis (außen)</b>, damit das Mystery erst im Inneren kippt. Optional: Seilbahn angeknabbert, Korb fehlt, Laterne heruntergerissen – nicht eindeutig, nur „komisch“.</p>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g3",
+              "label": "Schmaler Aufgang → Innen (G03)"
+            },
+            {
+              "to": "g7",
+              "label": "Klippe / Seilbahn-Start (nahe G07)"
+            },
+            {
+              "to": "g12",
+              "label": "Klippe → alternativer Zugang (G12)"
+            },
+            {
+              "to": "g2",
+              "label": "Erklimmen → Wasserfall/Brücke (G02)"
+            },
+            {
+              "to": "g9",
+              "label": "Klippe → Wachposten-Zugang (G09)"
+            },
+            {
+              "to": "g10",
+              "label": "Klippe → Klingen-Zugang (G10)"
+            }
+          ]
+        },
+        {
+          "id": "g2",
+          "name": "G02 – 🌊 Waterfall and Rope Bridge",
+          "descriptionHtml": "<div class='room room--g02'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Außen/Übergang</span> <span class='tag tag--tone'>Dröhnend</span></p>\n    <p>60-ft-Wasserfall und 35-ft-Seilbrücke zwischen 20-ft-Vorsprüngen. Nebel und Donnern erschweren Gespräche.</p>\n  </div>\n  <div class='box box--mechanics'>\n    <h3>⚙️ Brücke</h3>\n    <ul><li><b>Schwieriges Gelände</b></li><li><b>AC 11</b>, <b>30 HP</b>, immun Poison/Psychic</li><li><b>Sturz:</b> kein Fallschaden, wenn ins 5-ft-Wasser gefallen.</li><li><b>Hinweis:</b> Barrel Crabs (G06) zu klobig für die Brücke.</li></ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g1",
+              "label": "Springen/Fallen → Pool (G01)"
+            },
+            {
+              "to": "g9",
+              "label": "Treppe auf → Wachposten (G09)"
+            },
+            {
+              "to": "g10",
+              "label": "Treppe auf → Klingen (G10)"
+            }
+          ]
+        },
+        {
+          "id": "g3",
+          "name": "G03 – 🍽️ Dining Room",
+          "descriptionHtml": "<div class='room room--g03'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Alltag</span> <span class='tag tag--theme'>Mimic-Setup</span></p>\n    <p>Kleine Tische und ein überkompliziertes Spülbecken. Subtile Hinweise, dass hier „etwas“ nicht stimmt.</p>\n  </div>\n  <div class='box box--details'>\n    <h3>🧺 Details</h3>\n    <ul><li>Schrank mit Zinngeschirr</li><li>Hebel/Greifer/Seile am Spülbecken (gnomisches Overengineering)</li></ul>\n  </div>\n  <div class='box box--gm'>\n    <h3>🐙 Subtile Mimic-Hinweise</h3>\n    <ul><li><b>Hämmerchen</b> liegt neben dem Schrank – untypisch „vergessen“.</li><li><b>Schranktür fehlt</b> (keine Bruchspuren) – späterer Aha-Moment.</li></ul>\n  \n  <div class='box box--details'>\n    <h3>🖼️ Gemälde im Speiseraum</h3>\n    <ul>\n      <li>\n        <b>Carl Glittergold</b> – Gnom (m) mit rotblondem Haar und imposantem Schnurrbart. \n        Er trägt einen taillierten, sandbraunen Gehrock mit dunkelroten Aufschlägen und goldenen Knöpfen, \n        darunter eine helle Weste und einen Schmuckanhänger. \n        Seine knielange Hose ist grün-gold gestreift, dazu cremefarbene Strümpfe und Lederschuhe mit goldenen Schnallen. \n        Insgesamt geschniegelt, wohlhabend und leicht eitel.\n      </li>\n      <li>\n        <b>Baervan Wildwanderer</b> – Gnom (m) mit grauem Bart und brauner Zipfelmütze, \n        gekleidet in erdige Waldkleidung mit grasbewachsenen Details. \n        Neben ihm sitzt ein Waschbär, während er zufrieden auf einer kleinen Insel \n        zwischen übergroßen Pilzen steht.\n      </li>\n    </ul>\n  </div>\n\n</div>\n</div>",
+          "exits": [
+            {
+              "to": "g1",
+              "label": "Schmaler Abgang → Außen (G01)"
+            },
+            {
+              "to": "g4",
+              "label": "Flur → Küche (G04)"
+            },
+            {
+              "to": "g7",
+              "label": "Langer Flur → Plattform (G07)"
+            },
+            {
+              "to": "g6",
+              "label": "Langer Flur → Barrel Crabs (G06)"
+            }
+          ]
+        },
+        {
+          "id": "g4",
+          "name": "G04 – 🍳 Kitchen",
+          "descriptionHtml": "<div class='room room--g04'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Sozial</span> <span class='tag tag--tone'>Lebendig</span></p>\n    <p>Alles ist niedrig oder per Seilzug erreichbar. Fünf Gnome arbeiten – ausweichend bei „Problemen“.</p>\n  </div>\n\n  <div class='box box--npc'>\n    <h3>👩‍🍳 Gnome in der Küche</h3>\n\n    <div class='npcList'>\n      <div class='npcCard' id='g4-joybell'>\n        <h4>🔥 Joybell (w)</h4>\n        <ul>\n          <li>schneidet <b>blaue Pilze</b> in kleine, säuerliche Snacks</li>\n          <li>bedient das Herdfeuer nebenbei über einen <b>Pedalmechanismus</b></li>\n          <li><b>Merkmal:</b> rußgeschwärzte Lederschürze; silberner Ohrring (links)</li>\n          <li>redet schnell, praktisch veranlagt</li>\n        </ul>\n      </div>\n\n      <div class='npcCard' id='g4-dimble'>\n        <h4>🛢 Dimble (m)</h4>\n        <ul>\n          <li>bedient eine <b>presseartige Vorrichtung</b> zur Ölgewinnung aus <b>roten Pilzen</b></li>\n          <li>filtert sorgfältig in vier kleine Fläschchen</li>\n          <li><b>Merkmal:</b> extrem große, buschige Augenbrauen (verdecken fast die Augen)</li>\n          <li>konzentriert, leicht misstrauisch</li>\n        </ul>\n      </div>\n\n      <div class='npcCard' id='g4-pananna'>\n        <h4>🍞 Panana (w)</h4>\n        <ul>\n          <li>steht auf einem Tisch und benutzt eine <b>mechanische Nudelwalze</b></li>\n          <li>knetet <b>grünen Teig</b> mit fast militärischer Präzision</li>\n          <li><b>Merkmal:</b> zwei unterschiedliche Socken (grün/rot)</li>\n          <li>energisch, redet beim Arbeiten</li>\n        </ul>\n      </div>\n\n      <div class='npcCard' id='g4-uppendown'>\n        <h4>🍞 Uppendown (m)</h4>\n        <ul>\n          <li>formt Brote kunstvoll, als wären es <b>Skulpturen</b></li>\n          <li>Zunge leicht herausgestreckt vor Konzentration</li>\n          <li><b>Merkmal:</b> ungewöhnlich lange Nase; ständig Mehl im Bart</li>\n          <li>detailverliebt, leicht verträumt</li>\n        </ul>\n      </div>\n\n      <div class='npcCard' id='g4-tervaround'>\n        <h4>🍷 Tervaround (w)</h4>\n        <ul>\n          <li>balanciert auf einem Hocker und stopft <b>lila Pilze</b> in ein Fass</li>\n          <li>erstaunlich ruhig bei der Arbeit</li>\n          <li><b>Merkmal:</b> dicke Brille (Rahmen sitzt leicht schief)</li>\n          <li>neigt dazu, Sätze nicht zu beenden</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n<div class='box box--info'>\n    <h3>ℹ️ Hinweis</h3>\n    <p>Verweisen auf <b>Fibblestib</b> & <b>Dabbledob</b> (G11). Meiden Gespräche über Vermisste/Korboz.</p>\n  \n  <div class='box box--hook'>\n    <h3>🔥 Potentieller Charakterhook</h3>\n    <p>Das Herdfeuer wird nicht gewöhnlich entfacht, sondern durch einen <a href='https://www.dndbeyond.com/magic-items/9445144-foxfire-charm' target='_blank'>Foxfire Charm</a> stabil im Betrieb gehalten.</p>\n    <p>Das flackernde, fast lebendig wirkende Feuer verleiht dem Raum zusätzliches gnomisches Flair – und könnte <b>Noris Faszination für Feuer</b> wecken. Eventuell sogar als zukünftige Belohnung oder Tauschobjekt denkbar.</p>\n  </div>\n\n</div>\n</div>",
+          "exits": [
+            {
+              "to": "g3",
+              "label": "Flur → Speiseraum (G03)"
+            },
+            {
+              "to": "g5",
+              "label": "Treppe auf → Vorrat (G05)"
+            }
+          ]
+        },
+        {
+          "id": "g5",
+          "name": "G05 – 📦 Pantry",
+          "descriptionHtml": "<div class='room room--g05'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Vorrat</span> <span class='tag tag--theme'>Mystery</span></p>\n    <p>Viele kleine Kisten mit Vorräten. Etwas fehlt – und das ist beunruhigend.</p>\n  </div>\n  <div class='box box--gm'>\n    <h3>🐙 Hinweis</h3>\n    <ul><li><b>Fehlende Kiste:</b> Lücke/Abdruck im Staub. Investigation DC 12–15.</li><li>Keine Spuren (kein Blut, nichts liegen gelassen).</li></ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g4",
+              "label": "Treppe ab → Küche (G04)"
+            }
+          ]
+        },
+        {
+          "id": "g6",
+          "name": "G06 – 🦀 Barrel Crabs",
+          "descriptionHtml": "<div class='room room--g06'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Geräte</span> <span class='tag tag--tone'>Spielzeughaft</span></p>\n    <p>Zwei krabbenartige Fass-Konstruktionen – laut, klobig, aber nützlich (oder lustig).</p>\n  </div>\n  <div class='box box--mechanics'>\n    <h3>📊 Werte (kurz)</h3>\n    <ul><li><b>Large Object</b>, AC 15, 30 HP, STR 10, immun Poison/Psychic</li><li><b>Fahren:</b> 15 ft (Aktion) <i>oder</i> Klauenangriff +2, 2d4 Piercing, Grapple DC 10</li><li><b>Luke zu:</b> Insassen haben Total Cover</li></ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g3",
+              "label": "Langer Flur → Speiseraum (G03)"
+            },
+            {
+              "to": "g7",
+              "label": "Langer Flur → Plattform (G07)"
+            }
+          ]
+        },
+        {
+          "id": "g7",
+          "name": "G07 – 🎯 Autoloading Crossbow Platform",
+          "descriptionHtml": "<div class='room room--g07'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Setpiece</span> <span class='tag tag--tone'>Slapstickig gefährlich</span> <span class='tag tag--tone'>Laut/chaotisch</span></p>\n    <p>Rotierende Plattform mit 4 Armbrüsten, Nachlade-/Feuerhebeln und Pedalen. Wirkt bedrohlich, ist aber als <b>nicht-tödliche Testanlage</b> gedacht.</p>\n  </div>\n\n  <div class='box box--npc' id='npc-facktore'>\n    <h3>👩‍🔧 Facktoré (Rock Gnome)</h3>\n\n    <div class='cols'>\n      <div class='col'>\n        <h4>Erscheinung</h4>\n        <ul>\n          <li>Wirres, „elektrisiert“ wirkendes Haar</li>\n          <li>Schutzbrille (ein Glas gesprungen)</li>\n          <li>Hände voller Öl- und Rußflecken</li>\n          <li>Dicke Lederschürze mit Werkzeugschlaufen</li>\n        </ul>\n      </div>\n      <div class='col'>\n        <h4>Grundenergie</h4>\n        <ul>\n          <li>hyperfokussiert, begeistert</li>\n          <li>sozial komplett entkoppelt</li>\n          <li>nicht bösartig</li>\n          <li>Fremde = Feldstudie</li>\n        </ul>\n      </div>\n    </div>\n\n    <h4>Erste Reaktion (Zitat)</h4>\n    <div class='quote'>„Ohhh! Testsubjekte! Wunderbar! Bitte bewegt euch möglichst realistisch! Ausweichen erhöht die Datenqualität! Hihihi!“</div>\n    <p>Sie beginnt <b>sofort zu feuern</b>.</p>\n\n    <h4>Kommentar-Stil</h4>\n    <ul>\n      <li>„Interessant! Sehr interessant! Der Große da reagiert langsamer!“</li>\n      <li>„Oh! Das war knapp! Nochmal!“</li>\n    </ul>\n  </div>\n\n  <div class='box box--mechanics'>\n    <h3>⚙️ Mechanik (angepasst)</h3>\n    <h4>Plattform</h4>\n    <ul>\n      <li><b>Large Object</b></li>\n      <li><b>AC</b> 13</li>\n      <li><b>HP</b> 45</li>\n      <li>Immun gegen Poison &amp; Psychic</li>\n      <li>Alle <b>10 HP</b> → eine Armbrust bricht</li>\n    </ul>\n\n    <h4>Gepolsterte Trainingsbolzen</h4>\n    <ul>\n      <li><b>Angriff:</b> +5 to hit</li>\n      <li><b>Range:</b> 50/200 ft</li>\n      <li><b>Schaden:</b> 1d10 Bludgeoning (<b>nicht tödlich</b>)</li>\n      <li>SCs werden <b>bewusstlos statt sterbend</b>, wenn sie auf 0 HP fallen.</li>\n    </ul>\n  </div>\n\n  <div class='box box--gm'>\n    <h3>🧠 Wie stoppt man sie?</h3>\n    <ul>\n      <li>Plattform zerstört</li>\n      <li>Keine Ziele mehr sichtbar</li>\n      <li>Aktiv beruhigen: <b>Charisma DC 14–16</b></li>\n      <li>Oder Ruf: <b>„Wir sind hier wegen der verschwundenen Gnome!“</b></li>\n    </ul>\n    <div class='aside'><b>Optional:</b> „Was? Ach. Ja. Später. Zuerst Tests.“</div>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g6",
+              "label": "Langer Flur → Barrel Crabs (G06)"
+            },
+            {
+              "to": "g3",
+              "label": "Langer Flur → Speiseraum (G03)"
+            },
+            {
+              "to": "g1",
+              "label": "Klippe / Seilbahn → Außen (G01)"
+            },
+            {
+              "to": "g8",
+              "label": "Langer Flur → Weinlager (G08)"
+            },
+            {
+              "to": "g9",
+              "label": "Langer Flur → Wachposten (G09)"
+            }
+          ]
+        },
+        {
+          "id": "g8",
+          "name": "G08 – 🍷 Mimic and Mushroom Wine",
+          "descriptionHtml": "<div class='room room--g08'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Weinlager</span> <span class='tag tag--theme'>Mimic</span></p>\n    <p>12 große Fässer – eines davon ist ein Mimic. Das Encounter-Tempo bestimmst du.</p>\n  </div>\n  <div class='box box--details'>\n    <h3>🍷 Fässer</h3>\n    <ul><li>12× 40-Gallonen-Fässer</li><li>Süd: angezapft (2 halbvoll, 2 fast leer); Nord/Ost: voll</li></ul>\n  </div>\n  <div class='box box--gm'>\n    <h3>🐙 Mimic-Setup</h3>\n    <ul><li>Ein Fass ist der Mimic (frei wählen).</li><li>Trigger: Berührung/Manipulation/Öffnen/AoE.</li><li>1–2 Runden aggressiv, dann Flucht nach einigen Treffern.</li></ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g7",
+              "label": "Langer Flur → Plattform (G07)"
+            },
+            {
+              "to": "g9",
+              "label": "Langer Flur → Wachposten (G09)"
+            }
+          ]
+        },
+        {
+          "id": "g9",
+          "name": "G09 – 🛡️ Gnome Guard Post",
+          "descriptionHtml": "<div class='room room--g09'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Wachposten</span> <span class='tag tag--tone'>Komisch</span> <span class='tag tag--tone'>Überfordert</span></p>\n    <p>Zwei Rock Gnome stehen auf dem Felsvorsprung. Sie sind nicht feindselig – nur nervös, unerfahren und dem Befehl ausgeliefert.</p>\n  </div>\n\n  <div class='box box--npc'>\n    <h3>👥 Die Wachen</h3>\n    <div class='cols'>\n      <div class='col'>\n        <h4>Ulla (w)</h4>\n        <ul>\n          <li>ruft auf Gnomisch: <span class='quoteInline'>„Wer da?“</span></li>\n          <li><b>Detail:</b> roter Schal (trotz Nässe ordentlich)</li>\n          <li>übertrieben wachsam</li>\n        </ul>\n      </div>\n      <div class='col'>\n        <h4>Pog (m)</h4>\n        <ul>\n          <li>Common: <span class='quoteInline'>„Identify yourselves!“</span></li>\n          <li><b>Detail:</b> zu großer Helm (rutscht in die Stirn)</li>\n          <li>versucht besonders ernst</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n\n  <div class='box box--mechanics'>\n    <h3>🧠 Überzeugen statt Kämpfen</h3>\n    <p>Befehl: <b>„Gestaltwandler sofort angreifen.“</b></p>\n    <div class='callout callout--dc'>\n      <p><b>Ein erfolgreicher Check reicht:</b></p>\n      <ul>\n        <li>DC 10 Charisma (Deception)</li>\n        <li>DC 10 Charisma (Intimidation)</li>\n        <li>DC 10 Charisma (Persuasion)</li>\n      </ul>\n      <p class='muted'>Kein festes Argument nötig – niedriger DC spiegelt Nervosität/Unsicherheit wider.</p>\n    </div>\n  </div>\n\n  <div class='box box--gm'>\n    <h3>🎭 Ton (Beispiel)</h3>\n    <div class='quote'>\n      <p><b>SC droht ernsthaft.</b></p>\n      <p>Ulla: „Oh. Das klingt schlimm.“</p>\n      <p>Pog: „Ja. Wirklich schlimm.“</p>\n      <p>Ulla: „Dann… äh… geht bitte weiter.“</p>\n    </div>\n  </div>\n\n  <div class='box box--info'>\n    <h3>ℹ️ Nach erfolgreichem Check oder Kampf</h3>\n    <ul>\n      <li>Befehl von Korboz: <span class='quoteInline'>„Er sagt, alles könnte ein Gestaltwandler sein.“</span></li>\n      <li>Verweisen an Fibblestib &amp; Dabbledob (Werkstatt).</li>\n    </ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g8",
+              "label": "Langer Flur → Weinlager (G08)"
+            },
+            {
+              "to": "g2",
+              "label": "Treppe ab → Wasserfall/Brücke (G02)"
+            }
+          ]
+        },
+        {
+          "id": "g10",
+          "name": "G10 – ⚔️ Spinning Blades",
+          "descriptionHtml": "<div class='room room--g10'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Hazard</span> <span class='tag tag--tone'>Gefährlich</span></p>\n    <p>Neblige Halle mit zwei rotierenden Klingendrehkreuzen. Ein Hebel kann sie stoppen.</p>\n  </div>\n  <div class='box box--mechanics'>\n    <h3>⚔️ Klingen</h3>\n    <ul><li><b>DC 15 DEX Save</b> beim Betreten</li><li><b>4d8 Slashing</b> (halb bei Erfolg)</li><li>Hebel hoch: stoppt die Geräte</li></ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g2",
+              "label": "Treppe ab → Wasserfall/Brücke (G02)"
+            },
+            {
+              "to": "g11",
+              "label": "Treppe auf → Werkstatt (G11)"
+            }
+          ]
+        },
+        {
+          "id": "g11",
+          "name": "G11 – ⚙️ Inventors’ Workshop",
+          "descriptionHtml": "<div class='room room--g11'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Werkstatt</span> <span class='tag tag--theme'>Info/Belohnung</span></p>\n    <p>Hub-Raum: Fibblestib und Dabbledob streiten über Korboz’ Zustand. Werkstatt voller halbfertiger Geräte.</p>\n  </div>\n  <div class='box box--npc'>\n    <h3>🧠 Fibblestib</h3>\n    <ul><li>dünn, nervöse Finger, Mehrlinsen-Brille, rußige Ärmel</li><li>will „Sanity Ray“</li></ul>\n  </div>\n  <div class='box box--npc'>\n    <h3>🛠️ Dabbledob</h3>\n    <ul><li>kräftig, geflochtene Zöpfe, Werkzeuggürtel, Brandnarbe am Ohr</li><li>will „Straitjacket“</li></ul>\n  </div>\n  <div class='box box--details'>\n    <h3>✨ Erfindungen</h3>\n    <ul><li><b>Telefon</b> mit Kurbel (ein Exemplar)</li><li><b>Buchhalter</b> (Decken-Seilsystem)</li><li><b>Projektionsapparat</b> (Skizzenprojektion)</li></ul>\n  </div>\n  <div class='box box--details'>\n    <h3>📖 Spellbook</h3>\n    <ul><li><b>Magick of Gnomengarde</b> (Common &amp; Gnomish)</li><li>burning hands, detect magic, identify, mage armor, magic missile, shield, sleep</li><li>Ohne Identify nicht les-/nutzbar (2024).</li></ul>\n  </div>\n  <div class='box box--gm'>\n    <h3>🎁 Belohnungen (Notiz)</h3>\n    <ul><li>Clockwork Amulet + Pole of Collapsing (G13), Wand of Pyrotechnics (Gnerkli)</li><li><b>Hat of Vermin</b> + <b>Horn of Silent Alarm</b> (Korboz)</li></ul>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g10",
+              "label": "Treppe ab → Klingen (G10)"
+            },
+            {
+              "to": "g12",
+              "label": "Treppe ab → Wohnbereich (G12)"
+            },
+            {
+              "to": "g13",
+              "label": "Langer Flur → Schatzkammer (G13)",
+              "locked": true,
+              "key": "Fibblestib & Dabbledob"
+            },
+            {
+              "to": "g14",
+              "label": "Langer Flur → Thronsaal (G14)"
+            },
+            {
+              "to": "g15",
+              "label": "Langer Flur → Königsquartier (G15)",
+              "locked": true,
+              "key": "Korboz"
+            }
+          ]
+        },
+        {
+          "id": "g12",
+          "name": "G12 – 🛏️ Gnome Domiciles",
+          "descriptionHtml": "<div class='room room--g12'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Wohnbereich</span> <span class='tag tag--tone'>Ruhig</span></p>\n    <p>Seitennischen mit kleinen Pritschen. 8 Gnome schlafen (Schichtsystem/Alarmbereitschaft).</p>\n  </div>\n  <div class='box box--npc'>\n    <h3>😴 Schlafende Gnome</h3>\n    <ul><li><b>Caramip:</b> Schlafmütze</li><li><b>Jabby:</b> große Ohren, Werkzeug</li><li><b>Nyx:</b> murmelt (optional)</li><li><b>Quippy:</b> stachelige Haare</li><li><b>Anverth:</b> Augenklappe</li><li><b>Delebean:</b> sehr klein</li><li><b>Pallabar:</b> Schnurrbart</li><li><b>Zook:</b> bunt geflickt</li></ul>\n  </div>\n  <div class='box box--gm'>\n    <h3>🐙 Mimic-Notiz</h3>\n    <p>Potenzieller Rückzugsort, falls Mimic aus G08 vertrieben wurde.</p>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g1",
+              "label": "Klippe → Außen (G01)"
+            },
+            {
+              "to": "g11",
+              "label": "Treppe auf → Werkstatt (G11)"
+            }
+          ]
+        },
+        {
+          "id": "g13",
+          "name": "G13 – 💰 Treasury",
+          "descriptionHtml": "<div class='room room--g13'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Schatzkammer</span> <span class='tag tag--tone'>Verschlossen</span></p>\n    <p>Materiallager mit Zahnrädern, Metallteilen und nicht funktionierenden Gizmos.</p>\n  </div>\n  <div class='box box--treasure'>\n    <h3>🎁 Schatz</h3>\n    <ul><li><b>Clockwork Amulet</b></li><li><b>Pole of Collapsing</b></li></ul>\n  </div>\n  <div class='box box--gm'>\n    <h3>🔎 Finden</h3>\n    <p>Investigation DC 14–16 (systematisch) oder DC 12 (gezielt nach magisch/funktional).</p>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g11",
+              "label": "Langer Flur → Werkstatt (G11)"
+            },
+            {
+              "to": "g14",
+              "label": "Langer Flur → Thronsaal (G14)"
+            },
+            {
+              "to": "g15",
+              "label": "Langer Flur → Königsquartier (G15)",
+              "locked": true,
+              "key": "Korboz"
+            }
+          ]
+        },
+        {
+          "id": "g14",
+          "name": "G14 – 👑 Throne Room",
+          "descriptionHtml": "<div class='room room--g14'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Thronsaal</span> <span class='tag tag--tone'>Überkonstruiert</span></p>\n    <p>Im Zentrum ein Podest mit zwei Thronsitzen – stabil, aber klar für <b>Small creatures</b> gebaut.</p>\n  </div>\n\n  <div class='box box--details'>\n    <h3>🪨 Podest &amp; Throne</h3>\n    <ul>\n      <li><b>Podest:</b> steinern, ca. 1 ft erhöht</li>\n      <li><b>Throne:</b> zwei gedrungene Sitze aus zusammengesetztem Metall</li>\n      <li>Zahnräder, Federn, genietete Bleche, ungleichmäßige Armlehnen</li>\n      <li>Stabil – aber <i>überkonstruiert</i></li>\n    </ul>\n  </div>\n\n  <div class='box box--mechanics'>\n    <h3>⚙️ Thron-Mechanik</h3>\n    <ul>\n      <li>Hebel/Zahnräder drehen Throne zueinander/voneinander.</li>\n      <li><b>Komforthebel:</b> Liegesessel-Modus (Rückenlehne/Fußstütze/Armauflagen).</li>\n    </ul>\n  </div>\n\n  <div class='box box--gm'>\n    <h3>🕵 Geheimgang</h3>\n    <p>Geheime Steintür in der Nordwand → kurzer Tunnel nach G15.</p>\n  </div>\n</div>",
+          "exits": [
+            {
+              "to": "g15",
+              "label": "Geheimgang → Königsquartier (G15)",
+              "secret": true
+            },
+            {
+              "to": "g15",
+              "label": "Langer Flur → Königsquartier (G15)",
+              "locked": true,
+              "key": "Korboz"
+            },
+            {
+              "to": "g11",
+              "label": "Langer Flur → Werkstatt (G11)"
+            }
+          ]
+        },
+        {
+          "id": "g15",
+          "name": "G15 – 🛌 Gnome Kings’ Bedroom",
+          "descriptionHtml": "<div class='room room--g15'>\n  <div class='box box--summary'>\n    <p><span class='tag tag--area'>Finale</span> <span class='tag tag--tone'>Paranoia</span></p>\n    <p>Überraschend gemütliches gnomisches Schlafzimmer – gleichzeitig Privatgemach und Werkraum.</p>\n  </div>\n\n  <div class='box box--details'>\n    <h3>🛠️ Raumwirkung</h3>\n    <ul>\n      <li>Kleine, kunstvoll gearbeitete Möbel</li>\n      <li>Mechanische Nachttische</li>\n      <li>Mehrere Decken</li>\n      <li>Zwei Werkbänke</li>\n      <li>Wand voller Skizzen &amp; Notizen</li>\n    </ul>\n    <p class='muted'>Gezackte Metallkronen &amp; Patchwork-Umhänge aus Stoffresten und Metallplättchen.</p>\n  </div>\n\n  <div class='box box--npc'>\n    <h3>👥 Die Könige</h3>\n    <div class='cols'>\n      <div class='col'>\n        <h4>👑 Korboz – nervös-chaotisch</h4>\n        <ul>\n          <li>überdreht, schreckhaft, reagiert auf jedes Geräusch</li>\n          <li>redet schnell &amp; sprunghaft</li>\n          <li>glaubt fest: <b>Gestaltwandler im Komplex</b></li>\n          <li>spricht durch die Tür</li>\n        </ul>\n        <div class='quote'>„Bleibt wo ihr seid! Nennt eure wahre Form!“</div>\n      </div>\n      <div class='col'>\n        <h4>👑 Gnerkli – genervt, aber loyal</h4>\n        <ul>\n          <li>würdevoll, müde, trocken, sarkastisch</li>\n          <li>an Stuhl <b>angeklebt</b> und gefesselt</li>\n          <li>Korboz besitzt <b>Lösungsmittel</b></li>\n        </ul>\n        <div class='quote'>„Ich versichere euch, das war gut gemeint.“</div>\n        <p class='muted'>Er liebt Korboz – ist aber sichtbar erschöpft.</p>\n      </div>\n    </div>\n  </div>\n\n  <div class='box box--mechanics'>\n    <h3>🧠 Korboz beruhigen</h3>\n    <div class='callout callout--dc'>\n      <ul>\n        <li><b>Mimic wirklich tot:</b> kein Check nötig</li>\n        <li><b>Behauptung „tot“:</b> DC 12 CHA (Persuasion) oder DC 12 CHA (Deception)</li>\n      </ul>\n    </div>\n    <div class='aside'><b>Wenn Mimic noch lebt:</b> Restparanoia bleibt; späteres Auftauchen = emotionaler Einbruch.</div>\n  </div>\n\n  <div class='box box--treasure'>\n    <h3>💎 Schatz (als Geste)</h3>\n    <ul>\n      <li>Hat of Vermin</li>\n      <li>Horn of Silent Alarm</li>\n      <li>Wand of Pyrotechnics (voll geladen)</li>\n    </ul>\n  \n  <div class='box box--hook'>\n    <h3>🎨 Potentieller Charakterhook</h3>\n    <p>Korboz und/oder Gnerkli sind <b>Künstler</b>. An den Wänden hängen mehrere Gemälde – teils Landschaften aus Gnomensicht, teils überraschend <i>abstrakte Kunst</i> aus Metallpigmenten, Pilzfarben und pulverisierten Edelsteinen.</p>\n    <p>Die Werke bringen mehr „Farbe“ in den Raum und könnten besonders <b>Adantinns Liebe zur Kunst</b> ansprechen – Gesprächseinstieg, gemeinsame Wertschätzung oder sogar spätere Korrespondenz über Kunst.</p>\n  </div>\n\n</div>\n</div>",
+          "exits": [
+            {
+              "to": "g13",
+              "label": "Langer Flur → Schatzkammer (G13)",
+              "locked": true,
+              "key": "Fibblestib & Dabbledob"
+            },
+            {
+              "to": "g14",
+              "label": "Langer Flur → Thronsaal (G14)"
+            },
+            {
+              "to": "g11",
+              "label": "Langer Flur → Werkstatt (G11)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
