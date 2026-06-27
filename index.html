@@ -223,6 +223,49 @@
   }
 
 
+  /* Encounter / Statblock modal */
+  .encounterGroup{
+    background:#0f1117;
+    border:1px solid #2a3042;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:12px;
+  }
+  .encounterGroup h3{ margin:0 0 8px; font-size:15px; }
+  .encounterNotes{ margin:0 0 10px; }
+  .statLinkList{ display:grid; gap:8px; }
+  .statLink{
+    display:grid;
+    grid-template-columns: 1fr auto auto;
+    gap:10px;
+    align-items:center;
+    background:#1b1f2b;
+    border:1px solid #2a3042;
+    border-radius:10px;
+    padding:10px;
+    text-decoration:none;
+    color:#e8e8e8;
+  }
+  .statLink:hover{ background:#23283a; }
+  .statLinkName{ font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .statInfo{
+    font-size:12px;
+    opacity:.9;
+    background:#0f1117;
+    border:1px solid #2a3042;
+    border-radius:999px;
+    padding:4px 8px;
+    white-space:nowrap;
+  }
+  .statExternal{ opacity:.7; font-size:13px; }
+  .encounterTopRow{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .encounterTopRow .btnSmall{ flex-shrink:0; }
+  @media (max-width: 700px){
+    .statLink{ grid-template-columns: 1fr auto; }
+    .statInfo{ grid-column:1 / -1; width:max-content; max-width:100%; white-space:normal; }
+  }
+
+
   /* Collapsible Defaults */
   details.collapsible { border:1px solid #2a3042; border-radius:12px; padding:10px; background:#0f1117; }
   details.collapsible > summary { cursor:pointer; list-style:none; }
@@ -271,6 +314,7 @@
       <button id="btnExportClipboard" class="center">📋 Export JSON (Clipboard)</button>
       <button id="btnExport" class="center">⬆️ Export (Download)</button>
       <button id="btnReset" class="center danger">🧨 Reset</button>
+      <button id="btnStatblocks" class="center">📖 Statblocks</button>
     </div>
 
     <div class="hr"></div>
@@ -377,7 +421,7 @@
       <div class="mapHint muted" id="mapModalHint">Tipp: Auf Tablet kannst du zum Zoomen die Browser-Geste nutzen.</div>
     </div>
   </div>
-
+</div>
 
 <!-- Defaults Modal -->
 <div id="defaultsModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Dungeon-Defaults" style="display:none;">
@@ -394,6 +438,20 @@
 <!-- /Defaults Modal -->
 
 
+<!-- Encounter / Statblock Modal -->
+<div id="statblocksModal" class="modalOverlay" role="dialog" aria-modal="true" aria-label="Statblocks">
+  <div class="modalCard">
+    <div class="modalHeader">
+      <b>📖 Statblocks</b>
+      <button id="btnCloseStatblocks" class="btn">Schließen ✕</button>
+    </div>
+    <div class="modalBody">
+      <div id="statblocksBody" class="richtext"></div>
+    </div>
+  </div>
+</div>
+<!-- /Encounter / Statblock Modal -->
+
 
 <script>
 /* =========================
@@ -401,6 +459,7 @@
 ========================= */
 const REMOTE_DATA_URL = "data/data.json";
 const REMOTE_DUNGEONS_URL = "data/dungeons.json";
+const REMOTE_ENCOUNTERS_URL = "data/encounters.json";
 
 /* =========================
    STORAGE
@@ -409,6 +468,7 @@ const STORAGE_KEY = "kampagnen_tool_world_v1";
 let { NPCS, PLACES } = loadWorld();
 let DUNGEONS = [];
 let ROOMS = [];
+let ENCOUNTERS = [];
 
 function loadWorld(){
   try{
@@ -440,6 +500,10 @@ function applyDungeonData(raw){
   ROOMS = dungeons.flatMap(d =>
     (Array.isArray(d.rooms) ? d.rooms : []).map(r => ({ ...r, dungeonId: r.dungeonId || d.id }))
   );
+}
+
+function applyEncounterData(raw){
+  ENCOUNTERS = Array.isArray(raw?.encounters) ? raw.encounters : [];
 }
 
 /* =========================
@@ -1030,6 +1094,84 @@ mapModal.addEventListener("click", (e) => {
 });
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape" && mapModal.classList.contains("open")) closeMapModal();
+});
+
+
+/* =========================
+   ENCOUNTER / STATBLOCK MODAL
+========================= */
+const statblocksModal = document.getElementById("statblocksModal");
+const statblocksBody = document.getElementById("statblocksBody");
+const btnCloseStatblocks = document.getElementById("btnCloseStatblocks");
+const btnStatblocks = document.getElementById("btnStatblocks");
+
+function renderStatblocksModal(){
+  if(!statblocksBody) return;
+  const encounters = Array.isArray(ENCOUNTERS) ? ENCOUNTERS : [];
+  if(encounters.length === 0){
+    statblocksBody.innerHTML = `<div class="muted">Keine Encounter in <code>data/encounters.json</code> gefunden.</div>`;
+    return;
+  }
+
+  statblocksBody.innerHTML = encounters.map((enc, encIdx) => {
+    const title = enc.title || `Encounter ${encIdx + 1}`;
+    const notes = enc.notesHtml ? `<div class="encounterNotes">${sanitizeRichHtml(enc.notesHtml)}</div>` : "";
+    const links = Array.isArray(enc.links) ? enc.links : [];
+    const openAllButton = links.some(l => l.url) ? `<button class="btnSmall" type="button" onclick="window.__openEncounterLinks(${encIdx})">Alle öffnen ↗</button>` : "";
+    const linksHtml = links.length ? `
+      <div class="statLinkList">
+        ${links.map(link => {
+          const name = link.name || link.url || "Statblock";
+          const url = link.url || "#";
+          const info = link.info || link.details || "";
+          return `
+            <a class="statLink" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+              <span class="statLinkName">${escapeHtml(name)}</span>
+              ${info ? `<span class="statInfo">${escapeHtml(info)}</span>` : `<span></span>`}
+              <span class="statExternal">↗</span>
+            </a>
+          `;
+        }).join("")}
+      </div>
+    ` : `<div class="muted">Keine Links eingetragen.</div>`;
+
+    return `
+      <section class="encounterGroup">
+        <div class="encounterTopRow">
+          <h3>${escapeHtml(title)}</h3>
+          ${openAllButton}
+        </div>
+        ${notes}
+        ${linksHtml}
+      </section>
+    `;
+  }).join("");
+}
+
+function openStatblocksModal(){
+  renderStatblocksModal();
+  statblocksModal?.classList.add("open");
+}
+
+function closeStatblocksModal(){
+  statblocksModal?.classList.remove("open");
+}
+
+window.__openEncounterLinks = function(encIdx){
+  const enc = ENCOUNTERS?.[encIdx];
+  const links = Array.isArray(enc?.links) ? enc.links : [];
+  links.forEach(link => {
+    if(link?.url) window.open(link.url, "_blank", "noopener,noreferrer");
+  });
+};
+
+if(btnStatblocks) btnStatblocks.onclick = openStatblocksModal;
+if(btnCloseStatblocks) btnCloseStatblocks.onclick = closeStatblocksModal;
+if(statblocksModal){
+  statblocksModal.addEventListener("click", (e) => { if(e.target === statblocksModal) closeStatblocksModal(); });
+}
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && statblocksModal?.classList.contains("open")) closeStatblocksModal();
 });
 
 
@@ -2353,6 +2495,15 @@ async function syncLoad(){
     const dungeonData = await dungeonRes.json();
     applyDungeonData(dungeonData);
 
+    const encounterRes = await fetch(REMOTE_ENCOUNTERS_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if(encounterRes.ok){
+      const encounterData = await encounterRes.json();
+      applyEncounterData(encounterData);
+    } else {
+      applyEncounterData({ encounters: [] });
+      console.warn("Encounters konnten nicht geladen werden: HTTP " + encounterRes.status);
+    }
+
     saveWorld();
     state.selectedCategory = null;
     state.selectedEntityId = null;
@@ -2365,7 +2516,7 @@ async function syncLoad(){
     const now = new Date();
     const hh = String(now.getHours()).padStart(2,"0");
     const mm = String(now.getMinutes()).padStart(2,"0");
-    elSyncStatus.textContent = `Sync: geladen (NPCs: ${NPCS.length}, Orte: ${PLACES.length}, Dungeons: ${DUNGEONS.length}) · ${hh}:${mm}`;
+    elSyncStatus.textContent = `Sync: geladen (NPCs: ${NPCS.length}, Orte: ${PLACES.length}, Dungeons: ${DUNGEONS.length}, Encounter: ${ENCOUNTERS.length}) · ${hh}:${mm}`;
     showToast("Sync geladen ✅");
   }catch(err){
     elSyncStatus.textContent = "Sync: Fehler – " + (err?.message || String(err));
@@ -2393,12 +2544,23 @@ async function loadFixedDungeons(){
   }
 }
 
+async function loadFixedEncounters(){
+  try{
+    const res = await fetch(REMOTE_ENCOUNTERS_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const encounterData = await res.json();
+    applyEncounterData(encounterData);
+  }catch(err){
+    console.warn("Encounters konnten nicht geladen werden:", err);
+    applyEncounterData({ encounters: [] });
+  }
+}
+
 renderAll();
 applyMobileVisibility();
 loadFixedDungeons();
+loadFixedEncounters();
 </script>
-
-</div>
 
 </body>
 </html>

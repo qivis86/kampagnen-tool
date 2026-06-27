@@ -1,0 +1,15 @@
+{
+  "encounters": [
+    {
+      "title": "Ochre Jelly",
+      "notesHtml": "<p>Hängt an der Decke über dem Altar.<br>Beachte <strong>Blindsight 60 ft.</strong></p>",
+      "links": [
+        {
+          "name": "Ochre Jelly",
+          "url": "https://www.dndbeyond.com/monsters/5195148-ochre-jelly",
+          "info": "HP 62"
+        }
+      ]
+    }
+  ]
+}
