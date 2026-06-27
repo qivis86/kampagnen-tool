@@ -676,6 +676,45 @@
         "Entwicklung im Kampagnenverlauf": "Kann zu einem sympathischen Nebencharakter werden.",
         "Notizen für den SL": "Liefert Humor, ohne zur Witzfigur zu werden."
       }
+    },
+    {
+      "id": "abbathor",
+      "name": "🕯️ Abbathor",
+      "categories": [
+        "Gottheiten",
+        "Dwarven Excavation"
+      ],
+      "tags": [
+        "Zwergengott",
+        "Gier",
+        "Geheimnisse",
+        "Reichtum",
+        "böse Gottheit",
+        "Abbathor"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Zwergengottheit, männlich dargestellt",
+        "Rolle / Funktion": "Zwergischer Gott der Gier, des versteckten Reichtums und der eigennützigen Bereicherung",
+        "Portfolio / Zuständigkeit": "* Gier\n* Gehorteter Reichtum\n* Verborgene Schätze\n* Geheime Funde\n* Neid auf Besitz anderer\n* Verrat aus Habgier\n* Eigennutz vor Gemeinschaft",
+        "Symbol": "Ein juwelenbesetzter Dolch; häufig als kleiner Dolch, der Edelsteine oder Gold bewacht.",
+        "Farben / Motive": "* Dunkles Rot\n* Gold\n* Silber\n* Grün schimmernde Edelsteine\n* Versteckte Kammern\n* Schatztruhen\n* Dolche\n* Blut auf hellem Stein",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Abbathor wird oft als zwergische Gestalt mit gierigem Blick, finsterem Lächeln oder dolchartigen Schmuckelementen dargestellt. Seine Darstellungen wirken selten offen majestätisch, sondern eher verschlagen, besitzergreifend und bedrohlich.",
+        "Herkunft & kurze Vorgeschichte": "Abbathor gehört zum zwergischen Pantheon, verkörpert darin aber eine dunkle Seite der Zwergenkultur: den Punkt, an dem Stolz auf Handwerk, Besitz und Reichtum in Habgier, Neid und Verrat umschlägt.",
+        "Einstellung gegenüber den SCs (Start)": "Keine direkte Beziehung. Seine Spuren begegnen den SCs zunächst über alte Tempel, Symbole, Inschriften und Fallen.",
+        "Motivation (offen)": "Reichtum anhäufen, bewahren und vor anderen verbergen.",
+        "Motivation (verdeckt / langfristig)": "Gemeinschaft, Ehre und Loyalität zugunsten persönlicher Bereicherung zersetzen.",
+        "Beziehung zu Phandalin": "Keine offene Verehrung bekannt. Seine Themen können aber bei Schatzsuchern, Minern und habgierigen Auftraggebern mitschwingen.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Keine direkte Verbindung. Abbathor ist ein Gegenpol zum Kampagnenthema Akadi/Talos: nicht Sturm oder Glaube an Freiheit, sondern Besitz, Hortung und Eigennutz.",
+        "Wissen / Gerüchte": "* Abbathor ist keine allgemein verehrte Gottheit, sondern eine dunkle, beschämende oder gefürchtete Gestalt innerhalb zwergischer Religion.\n* Alte Tempel Abbathors sind oft mit versteckten Kammern, Schatzverstecken, Fallen und Symbolen der Gier verbunden.\n* Seine Priester könnten Reichtum nicht als Mittel, sondern als heiligen Selbstzweck betrachtet haben.",
+        "Was wissen die SCs aktuell über diese Person?": "Noch nichts Sicheres. In Dwarven Excavation können sie über Symbole, Inschriften und den Tempel erstmals von Abbathor erfahren.",
+        "Mögliche Interaktionen mit den SCs": "* Religiöse Einordnung durch Norbus Ironrune\n* Interpretation von Symbolen und Inschriften\n* Moralischer Kontrast zwischen Fund, Besitz und Teilen\n* Warnzeichen bei Fallen oder versteckten Schätzen",
+        "Entwicklung im Kampagnenverlauf": "Abbathor muss kein Hauptthema der Kampagne werden, kann aber als Welt-Lore auftauchen und zeigen, dass auch vertraute Völker wie Zwerge dunkle Gottheiten und problematische Glaubensrichtungen kennen.",
+        "Notizen für den SL": "* Abbathor nicht als „Zwergenreligion insgesamt“ darstellen, sondern als dunkle Randfigur des Pantheons.",
+        "Gute Merkhilfe": "Gold + Dolch + Gier + geheime Schätze.",
+        "In Dwarven Excavation besonders passend für": "rote Priestergewänder, blutbefleckter Altar, juwelenbesetzter Dolch, versteckte Kammern, Falle in der Halle der Gier.",
+        "Leitmotiv": "„Was gefunden wird, gehört nicht allen. Es gehört dem, der es behalten kann.“"
+      }
     }
   ],
   "places": [
