@@ -223,6 +223,40 @@
   }
 
 
+  /* Quick navigation */
+  details.quickNav{
+    border:1px solid #2a3042;
+    border-radius:12px;
+    padding:10px;
+    background:#0f1117;
+    margin-bottom:10px;
+  }
+  details.quickNav > summary{
+    cursor:pointer;
+    list-style:none;
+    font-weight:600;
+    font-size:14px;
+  }
+  details.quickNav > summary::-webkit-details-marker{ display:none; }
+  .quickNavLinks{
+    display:grid;
+    gap:8px;
+    margin-top:10px;
+  }
+  .quickNavLinks a{
+    display:block;
+    background:#1b1f2b;
+    color:#e8e8e8;
+    border:1px solid #2a3042;
+    border-radius:10px;
+    padding:10px;
+    text-decoration:none;
+    font-size:13px;
+    line-height:1.25;
+  }
+  .quickNavLinks a:hover{ background:#23283a; }
+
+
   /* Encounter / Statblock modal */
   .encounterGroup{
     background:#0f1117;
@@ -293,6 +327,21 @@
   <!-- Navigation -->
   <div class="panel" id="panelCats">
     <h1 id="catsHeader">📚 Kategorien</h1>
+
+
+
+    <details class="quickNav" open>
+      <summary>🧭 Navigation</summary>
+      <div class="quickNavLinks">
+        <a href="https://www.dndbeyond.com/en" target="_blank" rel="noopener noreferrer">🧭 D&D Beyond</a>
+        <a href="https://www.dndbeyond.com/sources/dnd/doip" target="_blank" rel="noopener noreferrer">📖 Kampagne</a>
+        <a href="https://www.dndbeyond.com/sources/dnd/phb-2024/rules-glossary" target="_blank" rel="noopener noreferrer">📚 PHB Glossar</a>
+        <a href="https://www.dndbeyond.com/equipment" target="_blank" rel="noopener noreferrer">🎒 Equipment</a>
+        <a href="https://www.dndbeyond.com/magic-items?filter-type=0&amp;filter-search=&amp;filter-requires-attunement=&amp;filter-effect-type=&amp;filter-effect-subtype=&amp;filter-has-charges=&amp;filter-partnered-content=t" target="_blank" rel="noopener noreferrer">✨ Magic Items</a>
+        <a href="https://www.dndbeyond.com/spells" target="_blank" rel="noopener noreferrer">🪄 Spells</a>
+        <a href="https://www.dndbeyond.com/monsters" target="_blank" rel="noopener noreferrer">🐉 Monster</a>
+      </div>
+    </details>
 
     <div class="seg" style="margin-bottom:10px;">
       <button id="btnModeNpcs" class="active">🧑 NPCs</button>
