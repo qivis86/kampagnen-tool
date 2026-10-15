@@ -666,6 +666,603 @@
           ]
         }
       ]
+    },
+    {
+      "id": "tresendar-mansion",
+      "name": "🏰 Tresendar Mansion",
+      "mapUrl": "assets/maps/mapTresendarMansion.png",
+      "defaultsHtml": "<h2>Grundstimmung</h2><ul><li>Ehemals wohlhabendes Herrenhaus, später kurzzeitig Gildenstützpunkt von Acquisitions Incorporated.</li><li>Seit Jahren verlassen und verwahrlost, aber überwiegend strukturell intakt.</li><li>Keine fest eingeplanten Gegner; Erkundung, Atmosphäre und mögliche neue Heimat stehen im Vordergrund.</li></ul><h2>Licht &amp; Geräusche</h2><ul><li>Tagsüber Licht durch Fenster, in Keller und fensterlosen Räumen Dunkelheit.</li><li>Knarrende Dielen, Zugluft, klappernde Fensterläden und Marder erzeugen Spukatmosphäre ohne echten Geist.</li></ul><h2>Besitz &amp; Zukunft</h2><ul><li>Harbin Wester ist Eigentümer. Mietfreie Nutzung ist denkbar, wenn die Gruppe weiter für Phandalin arbeitet und das Anwesen erhält.</li><li>Bastion-Regeln erst nach Absprache mit den Spielern; Renovierung zunächst erzählerisch handhaben.</li></ul><h2>Wichtige Funde</h2><ul><li>T17: 3 Flaschen Tresendar-Wein à 10 gp.</li><li>T18: Silberner Tresendar-Siegelring, 25 gp.</li><li>T20: SL-Nachschlagekarte für Gerüchte, kein Kartenraum.</li></ul>",
+      "rooms": [
+        {
+          "id": "tm-t00",
+          "dungeonId": "tresendar-mansion",
+          "name": "T00 – Anwesen & Garten",
+          "short": "Verwildertes Grundstück mit Brunnen und Stallungen.",
+          "tags": [
+            "Außenbereich",
+            "Ankunft"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Hinter einem verwilderten Garten erhebt sich ein großes, lange vernachlässigtes Herrenhaus. Efeu rankt an den Mauern, der Kiesweg ist überwuchert. Ein alter Brunnen und ein kleiner Stall stehen abseits des Hauptgebäudes.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Die Außenmauern sind größtenteils intakt; Fensterläden hängen schief, einige Scheiben fehlen.</li><li>Der Brunnen ist alt, aber nicht verschüttet; seine Wasserqualität müsste geprüft werden.</li><li>Stall und Garten brauchen Pflege, sind aber grundsätzlich wieder nutzbar.</li><li>Am Eingang finden sich keine frischen Spuren regelmäßiger Bewohner.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Das Anwesen wirkt verwahrlost, nicht grundsätzlich einsturzgefährdet.</li><li>DC 10 Nature: Zwischen dem Wildwuchs wachsen einige gewöhnliche Küchen- und Heilkräuter.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Gerüchte über Spuk sind im Dorf verbreitet, aber kein Monster ist hier fest eingeplant.</li><li>Das Anwesen gehört Harbin Wester. Die Gruppe darf selbst entscheiden, wie sie vorgeht.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Garten, Brunnen und Stall können schrittweise hergerichtet werden.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t01",
+              "label": "Haupteingang"
+            },
+            {
+              "to": "tm-t06",
+              "label": "Seiteneingang zur Küche"
+            }
+          ]
+        },
+        {
+          "id": "tm-t01",
+          "dungeonId": "tresendar-mansion",
+          "name": "T01 – Eingangshalle",
+          "short": "Wappen, Staub und ein verblichenes Gildenschild.",
+          "tags": [
+            "Erdgeschoss",
+            "Wappen"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Die schweren Eingangstüren geben den Blick auf eine hohe Halle frei. Unter Staub und Spinnweben zeichnen sich ein altes Familienwappen und die verblassten Buchstaben einer einst hier ansässigen Abenteurergilde ab.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Das Wappen der Tresendars zeigt Motive von Bergen und Wohlstand; die endgültige genaue Heraldik kann noch festgelegt werden.</li><li>Ein verblasstes Schild nennt Acquisitions Incorporated. Die Niederlassung ist längst geschlossen.</li><li>Ein alter Teppich liegt zusammengerollt am Rand, und an den Wänden hängen leere Haken.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Die Gildenspuren sind älter als die jüngste Vernachlässigung.</li><li>Eine Tür kann bei Zugluft laut zuschlagen, ohne dass etwas Übernatürliches dahintersteckt.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Acquisitions Incorporated bleibt ein Hintergrunddetail, kein eigener Handlungsstrang.</li><li>Familie Tresendar war früher wohlhabend; Bergbau und Handel mit Edelmetallen sind als Herkunft des Vermögens vorgesehen.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Eingangshalle mit Platz für Garderobe, Wappen oder Trophäen.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t00",
+              "label": "Vorplatz"
+            },
+            {
+              "to": "tm-t02",
+              "label": "Salon"
+            },
+            {
+              "to": "tm-t03",
+              "label": "Ehemaliges Gildenbüro"
+            },
+            {
+              "to": "tm-t05",
+              "label": "Flur & Treppe"
+            }
+          ]
+        },
+        {
+          "id": "tm-t02",
+          "dungeonId": "tresendar-mansion",
+          "name": "T02 – Alter Salon",
+          "short": "Kaminzimmer mit verborgenem Familiengeheimnis.",
+          "tags": [
+            "Erdgeschoss",
+            "Kamin",
+            "Geheimraum"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>In einem geräumigen Salon stehen abgedeckte Sessel und ein schwerer Tisch. Ein breiter Kamin beherrscht die Wand; kalte Asche und Ruß verraten, dass hier seit Jahren kein Feuer mehr gebrannt hat.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Möbel sind staubig, aber teils restaurierbar.</li><li>Eine Fensterklappe klappert bei Wind; gelegentlich klingt es, als würde jemand gegen das Mauerwerk tippen.</li><li>Hinter dem Kaminmauerwerk liegt ein sehr gut verborgener kleiner Raum (T18).</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Kaminzug und tragende Wand erscheinen stabil, benötigen aber Reinigung.</li><li>DC 18 Investigation bei gezielter Untersuchung des Kamins: Ein lockerer Stein gibt einen verborgenen Mechanismus frei.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Die Geheimkammer soll wirklich leicht übersehen werden können – auch monatelang.</li><li>Keinen automatischen Hinweis auf T18 geben; eine spätere Renovierung darf zur Entdeckung führen.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Gemütlicher Gemeinschaftsraum mit Feuerstelle.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t01",
+              "label": "Eingangshalle"
+            },
+            {
+              "to": "tm-t04",
+              "label": "Speisesaal"
+            },
+            {
+              "to": "tm-t18",
+              "label": "Geheime Öffnung hinter dem Kamin",
+              "secret": true
+            }
+          ]
+        },
+        {
+          "id": "tm-t03",
+          "dungeonId": "tresendar-mansion",
+          "name": "T03 – Ehemaliges Gildenbüro",
+          "short": "Verstaubte Akten und unbrauchbare Ausrüstung.",
+          "tags": [
+            "Erdgeschoss",
+            "Acquisitions Incorporated"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Zwischen Regalen, Schreibtischen und halb geöffneten Kisten liegen vergilbte Papiere. An einer Wand hängt noch ein schiefes Schild der ehemaligen Abenteurergilde.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Buchhaltung, veraltete Auftragsformulare, Lieferscheine und belanglose Korrespondenz.</li><li>Abgenutzte Seile, zerbrochene Werkzeuge und unvollständige Ausrüstung; nichts davon ist als nennenswerter Schatz gedacht.</li><li>Die Akten zeigen einen ehemals geschäftigen Außenposten, aber keinen dramatischen Untergang.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Die Gilde hat ihre Arbeit vor Jahren eingestellt; es gibt keine aktuellen Aufträge.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Keine neue Acquisitions-Incorporated-Questkette eröffnen.</li><li>Einzelne alte Dokumente dürfen als humorvolle Requisiten dienen.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Büro, Bibliothek, Lager oder Organisationsraum.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t01",
+              "label": "Eingangshalle"
+            },
+            {
+              "to": "tm-t05",
+              "label": "Flur"
+            }
+          ]
+        },
+        {
+          "id": "tm-t04",
+          "dungeonId": "tresendar-mansion",
+          "name": "T04 – Speisesaal",
+          "short": "Großer Tisch und zweiter Kamin.",
+          "tags": [
+            "Erdgeschoss",
+            "Gemeinschaft"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Ein langer Holztisch steht unter einer staubigen Deckenleuchte. Die hohen Fenster lassen gedämpftes Tageslicht herein. Ein zweiter Kamin ist von dunklen Rußspuren gezeichnet.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Der Tisch ist überraschend solide.</li><li>Alte Stühle knarren; einige müssen neu verleimt werden.</li><li>Durch den Kamin zieht Wind und lässt eine Tür gelegentlich ins Schloss fallen.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Der Kamin kann nach Reinigung wieder genutzt werden.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Besonders geeigneter Ort für eine erste gemeinsame Mahlzeit im neuen Heim.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Gemeinsamer Speiseraum, Besprechungen und Feste.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t02",
+              "label": "Salon"
+            },
+            {
+              "to": "tm-t05",
+              "label": "Flur"
+            },
+            {
+              "to": "tm-t06",
+              "label": "Küche"
+            }
+          ]
+        },
+        {
+          "id": "tm-t05",
+          "dungeonId": "tresendar-mansion",
+          "name": "T05 – Flur & Treppenhaus",
+          "short": "Knarrende Dielen und Zugang nach oben.",
+          "tags": [
+            "Erdgeschoss",
+            "Treppen",
+            "Gefahr"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Eine breite Holztreppe führt in das obere Stockwerk. Im Flur liegen Holzsplitter und Putzstücke; einzelne Dielen geben beim Auftreten hörbar nach.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Die tragenden Balken wirken überwiegend stabil.</li><li>Eine klar erkennbare Stelle des Fußbodens ist morsch; sie lässt sich umgehen.</li><li>Manchmal hallen Schritte durch das Haus, obwohl niemand zu sehen ist: Geräusche übertragen sich durch Treppenhaus und alte Rohre.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Perception: Morsche Dielen frühzeitig erkennen.</li><li>Wer trotz erkennbarer Warnzeichen darüberläuft, kann einbrechen oder stolpern; Gefahr situationsabhängig und nicht als tödliche Falle ausspielen.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Das Haus soll renovierungsbedürftig sein, nicht zu einem tödlichen Dungeon werden.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Zentrale Verbindung der Stockwerke.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t01",
+              "label": "Eingangshalle"
+            },
+            {
+              "to": "tm-t03",
+              "label": "Gildenbüro"
+            },
+            {
+              "to": "tm-t04",
+              "label": "Speisesaal"
+            },
+            {
+              "to": "tm-t07",
+              "label": "Vorratskammer"
+            },
+            {
+              "to": "tm-t08",
+              "label": "Treppe ins Obergeschoss"
+            }
+          ]
+        },
+        {
+          "id": "tm-t06",
+          "dungeonId": "tresendar-mansion",
+          "name": "T06 – Küche",
+          "short": "Alte Feuerstelle, robuste Arbeitsflächen.",
+          "tags": [
+            "Erdgeschoss",
+            "Küche"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Die Küche riecht nach kaltem Stein und altem Holz. Auf einer langen Arbeitsfläche stehen leere Krüge; der Herd ist verrußt, aber weitgehend unbeschädigt.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Großer Herd, Spülbecken und Schränke sind vorhanden.</li><li>Ein Fenster schließt nicht mehr richtig.</li><li>Töpfe und Messer sind größtenteils verrostet oder fehlen.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Herd und Abzug sind reparabel; eine gründliche Reinigung ist nötig.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Küche nach Reinigung und kleiner Instandsetzung.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t00",
+              "label": "Hinterhof"
+            },
+            {
+              "to": "tm-t04",
+              "label": "Speisesaal"
+            },
+            {
+              "to": "tm-t07",
+              "label": "Vorratskammer"
+            }
+          ]
+        },
+        {
+          "id": "tm-t07",
+          "dungeonId": "tresendar-mansion",
+          "name": "T07 – Vorratskammer & Kellertür",
+          "short": "Staubige Vorräte und blockierter Kellerzugang.",
+          "tags": [
+            "Erdgeschoss",
+            "Kellerzugang"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Schmale Regale stehen entlang der Wände. In einer Ecke ist eine schwere Tür von umgestürzten Brettern und Kisten versperrt. Dahinter führt eine Treppe hinab in die Dunkelheit.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Lebensmittel sind längst verdorben.</li><li>Die Blockade besteht aus altem Holz und Gerümpel, nicht aus einer magischen Versiegelung.</li><li>Der Keller ist von hier aus erreichbar, sobald die Tür freigeräumt ist.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>Mit Zeit und Werkzeug ohne Probe freizuräumen.</li><li>Alternativ DC 13 Athletics für ein rasches Aufbrechen; dabei können Tür und Rahmen Schaden nehmen.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Die blockierte Tür ist ein kleines Renovierungshindernis, kein Story-Gate.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Vorratsraum und Kellerzugang.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t05",
+              "label": "Flur"
+            },
+            {
+              "to": "tm-t06",
+              "label": "Küche"
+            },
+            {
+              "to": "tm-t15",
+              "label": "Treppe in den Keller"
+            }
+          ]
+        },
+        {
+          "id": "tm-t08",
+          "dungeonId": "tresendar-mansion",
+          "name": "T08 – Obere Galerie",
+          "short": "Flur mit Blick auf die Eingangshalle.",
+          "tags": [
+            "Obergeschoss",
+            "Galerie"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Die Treppe endet auf einer Galerie. Staubige Porträtrahmen und verschlossene Türen säumen den Flur. Bei jedem Schritt knackt das Holz leise.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Einige Bilder wurden entfernt; ihre helleren Umrisse sind an der Tapete zu sehen.</li><li>Durch ein Fenster fällt Licht auf den Treppenabsatz.</li><li>Die Galerie verbindet die Wohnräume.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Geländer und Haupttreppe sind im Wesentlichen solide.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Galerie und Verbindung der Privaträume.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t05",
+              "label": "Treppe ins Erdgeschoss"
+            },
+            {
+              "to": "tm-t09",
+              "label": "Hauptschlafzimmer"
+            },
+            {
+              "to": "tm-t10",
+              "label": "Gästezimmer"
+            },
+            {
+              "to": "tm-t11",
+              "label": "Karten- und Studierzimmer"
+            },
+            {
+              "to": "tm-t12",
+              "label": "Waschraum"
+            },
+            {
+              "to": "tm-t13",
+              "label": "Abstellkammer"
+            },
+            {
+              "to": "tm-t14",
+              "label": "Kleines Zimmer"
+            },
+            {
+              "to": "tm-t19",
+              "label": "Treppe zum Dachboden"
+            }
+          ]
+        },
+        {
+          "id": "tm-t09",
+          "dungeonId": "tresendar-mansion",
+          "name": "T09 – Hauptschlafzimmer",
+          "short": "Großes, staubiges Zimmer.",
+          "tags": [
+            "Obergeschoss",
+            "Schlafraum"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Ein breites Bettgestell und ein schwerer Kleiderschrank stehen in einem hellen Zimmer. Vorhänge hängen schief, und der Wind spielt mit einer losen Fensterverriegelung.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Bettgestell und Schrank sind noch brauchbar.</li><li>Kleidung und Bettwäsche sind längst unbrauchbar.</li><li>Keine wertvollen Schmuckstücke offen zu finden.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Großes Schlafzimmer oder gemeinsamer Rückzugsraum.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t10",
+          "dungeonId": "tresendar-mansion",
+          "name": "T10 – Gästezimmer",
+          "short": "Mehrere kleine, leerstehende Schlafräume.",
+          "tags": [
+            "Obergeschoss",
+            "Schlafraum"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Hinter mehreren Türen liegen kleinere Zimmer mit schmalen Bettgestellen, leeren Kommoden und einer dicken Staubschicht.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Die Zimmer unterscheiden sich im Erhaltungszustand.</li><li>Einige Matratzen müssen entsorgt werden.</li><li>Eine schief stehende Tür öffnet sich bei einem Luftzug von selbst.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Schlafräume für die Gruppe und spätere Gäste.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t11",
+          "dungeonId": "tresendar-mansion",
+          "name": "T11 – Karten- & Studierzimmer",
+          "short": "Alte Karten ohne neue Questhinweise.",
+          "tags": [
+            "Obergeschoss",
+            "Studium"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Ein Schreibpult steht unter einem hohen Fenster. An der Wand hängen verblichene Karten der Umgebung von Phandalin und der Sword Mountains.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Die Karten zeigen alte Handelswege, Bergbaugebiete und überholte Ortsnamen.</li><li>Tinte ist eingetrocknet; das Papier ist brüchig.</li><li>Keine versteckten Schatzkarten oder neuen Abenteueraufträge.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Die Karten sind historisch interessant, für aktuelle Navigation nur eingeschränkt brauchbar.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Die Karten dürfen die bergbauliche Vergangenheit der Tresendars andeuten, ohne eine Nebenquest auszulösen.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Bibliothek, Kartenzimmer oder persönliches Arbeitszimmer.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t12",
+          "dungeonId": "tresendar-mansion",
+          "name": "T12 – Waschraum",
+          "short": "Wasserbecken und veraltete Einrichtung.",
+          "tags": [
+            "Obergeschoss",
+            "Alltag"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>In einem gefliesten Raum stehen ein großes Wasserbecken, Krüge und ein hölzernes Gestell für Handtücher. Die Luft riecht nach Staub und trockenem Kalk.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Abfluss und Wasserzufuhr müssen überprüft werden.</li><li>Ein alter Spiegel ist blind geworden.</li><li>Kein Schatz oder besonderes Geheimnis.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Waschraum nach Reparatur.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t13",
+          "dungeonId": "tresendar-mansion",
+          "name": "T13 – Wäsche- & Abstellkammer",
+          "short": "Bettzeug und verstaubtes Haushaltsgerät.",
+          "tags": [
+            "Obergeschoss",
+            "Lager"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>In einem engen Raum stapeln sich leere Körbe, Holzkisten und zerfallenes Leinen. Ein Regal steht schief an der Wand.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Alte Bettwäsche ist unbrauchbar.</li><li>Einige Körbe, Truhen und Regale können wiederverwendet werden.</li><li>Kleine Kratzspuren stammen vermutlich von Nagern.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Lagerraum, Wäschekammer oder zusätzlicher Stauraum.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t14",
+          "dungeonId": "tresendar-mansion",
+          "name": "T14 – Kleines ehemaliges Familienzimmer",
+          "short": "Unscheinbares Zimmer mit persönlichen Resten.",
+          "tags": [
+            "Obergeschoss",
+            "Atmosphäre"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Ein kleines Zimmer liegt etwas abseits der größeren Schlafräume. Ein niedriger Tisch, ein einzelner Stuhl und ein leeres Regal stehen darin.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>An einer Wand sind blasse Spuren ehemaliger Dekoration zu erkennen.</li><li>Ein vergilbtes, unbedeutendes Familienbild liegt hinter dem Regal.</li><li>Keine Hinweise auf ein Verbrechen oder eine tragische Familiengeschichte.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Die Geschichte der Tresendars bleibt bewusst offen; Atmosphäre statt Plot-Hook.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Atelier, Lesezimmer, Hobbyraum oder zusätzlicher Schlafraum.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t15",
+          "dungeonId": "tresendar-mansion",
+          "name": "T15 – Kellerlager",
+          "short": "Kühle Gewölbe unter dem Haus.",
+          "tags": [
+            "Keller",
+            "Lager"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Eine enge Steintreppe führt in einen kühlen Keller. Regale und leere Kisten stehen zwischen den Gewölbepfeilern. Die Luft ist trocken genug, dass manches Holz noch erhalten ist.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Einige Regale sind solide, andere morsch.</li><li>Alte Nägel, leere Behälter und Gerümpel sind zurückgeblieben.</li><li>Die Kellerwände zeigen keine akuten Einsturzzeichen.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Investigation: Der Keller ist im Grundsatz nutzbar.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Lager, Vorräte, Werkzeuge.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t07",
+              "label": "Treppe zur Vorratskammer"
+            },
+            {
+              "to": "tm-t16",
+              "label": "Werkstatt"
+            },
+            {
+              "to": "tm-t17",
+              "label": "Weinkeller"
+            }
+          ]
+        },
+        {
+          "id": "tm-t16",
+          "dungeonId": "tresendar-mansion",
+          "name": "T16 – Kellerwerkstatt",
+          "short": "Stabile Werkbank und altes Handwerkszeug.",
+          "tags": [
+            "Keller",
+            "Werkstatt"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Eine schwere Werkbank steht an der Wand. Darüber hängen rostige Haken und die Umrisse längst entfernter Werkzeuge.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Werkbank ist stabil und gut aufzuarbeiten.</li><li>Wenige zurückgelassene Werkzeuge sind stumpf oder beschädigt.</li><li>Ein schmaler Lüftungsschacht erzeugt gelegentlich ein leises Pfeifen.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Das Pfeifen kann für einen kurzen Spukmoment sorgen, ist aber natürlich erklärbar.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Werkstatt für Reparaturen und künftige Bastion-Aktivitäten, falls die Gruppe diese Regeln nutzen möchte.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t15",
+              "label": "Kellerlager"
+            }
+          ]
+        },
+        {
+          "id": "tm-t17",
+          "dungeonId": "tresendar-mansion",
+          "name": "T17 – Alter Weinkeller",
+          "short": "Drei erhaltene Flaschen Tresendar-Wein.",
+          "tags": [
+            "Keller",
+            "Schatz",
+            "Wein"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Hinter einer schweren Tür liegen gemauerte Weinregale. Die meisten Flaschen sind leer, zerbrochen oder längst verdorben. Drei sorgfältig gelagerte Flaschen tragen noch das alte Wappen der Tresendars.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Die drei Flaschen stammen aus dem früheren Familienbestand.</li><li>Auf den Etiketten ist das Tresendar-Wappen zu erkennen.</li><li>Die restlichen Vorräte haben keinen Handelswert.</li></ul><hr><h2>Funde</h2><ul><li>3 gut erhaltene Flaschen Tresendar-Wein, jeweils 10 gp wert (insgesamt 30 gp).</li></ul><hr><h2>SL-Notizen</h2><ul><li>Die Gruppe hat kürzlich Wein für 10 gp als Geschenk für Falcon gekauft: schöner Wiedererkennungsmoment.</li><li>Die Flaschen dürfen verkauft, verschenkt oder bei einer Einweihungsfeier getrunken werden.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Weinkeller und Getränkelager.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t15",
+              "label": "Kellerlager"
+            }
+          ]
+        },
+        {
+          "id": "tm-t18",
+          "dungeonId": "tresendar-mansion",
+          "name": "T18 – Geheimkammer hinter dem Kamin",
+          "short": "Verborgener privater Tresendar-Raum.",
+          "tags": [
+            "Geheimraum",
+            "Schatz",
+            "Familie Tresendar"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Hinter einer kaum sichtbaren Öffnung im Kaminmauerwerk liegt ein kleiner, erstaunlich gut erhaltener Raum. Ein Schreibtisch, ein verhülltes Porträt und einige persönliche Gegenstände stehen im stillen Staub.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Privates Kabinett der Tresendar-Familie, keine Gildenanlage.</li><li>Ein altes Tagebuch enthält alltägliche Notizen zu Haushalt, Geschäften und Familienleben.</li><li>Ein kleines Porträt und harmlose Erbstücke sind erhalten.</li><li>Der Mechanismus wird durch einen lockeren Stein im Kamin von T02 ausgelöst.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>Zugang nur nach Entdeckung in T02 (DC 18 Investigation bei gezielter Kaminsuche).</li><li>Keine Probe erforderlich, wenn der Zugang später durch Renovierungsarbeiten freigelegt wird.</li></ul><hr><h2>Funde</h2><ul><li>Silberner Siegelring mit Tresendar-Wappen, Wert 25 gp.</li><li>Familientagebuch und persönliche Erinnerungsstücke ohne besonderen Verkaufswert.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Kein notwendiger Plot-Hook; die Kammer kann unentdeckt bleiben.</li><li>Die Tagebucheinträge sollen die Tresendars menschlich und alltäglich wirken lassen.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Geheimes Arbeitszimmer, Archiv oder Rückzugsort.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t02",
+              "label": "Versteckter Durchgang zum Salon",
+              "secret": true
+            }
+          ]
+        },
+        {
+          "id": "tm-t19",
+          "dungeonId": "tresendar-mansion",
+          "name": "T19 – Dachboden",
+          "short": "Alte Möbel, Marder und undichte Dachstelle.",
+          "tags": [
+            "Dachboden",
+            "Renovierung"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Eine schmale Treppe führt unter die Dachbalken. Im Halbdunkel stapeln sich alte Möbel unter Leinentüchern. Aus einer Ecke raschelt es, und durch eine schadhafte Stelle im Dach fällt ein dünner Lichtstreifen.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Ein paar Marder haben sich zwischen den Möbeln eingenistet; sie sind nicht als Kampfbegegnung gedacht.</li><li>Alte Truhen enthalten wertlosen Hausrat und beschädigte Stoffe.</li><li>An einer Stelle ist das Dach undicht, die übrigen Balken wirken tragfähig.</li><li>Wind lässt lose Ziegel klappern und erzeugt die vermeintlichen Schritte, von denen manche Dorfbewohner erzählen.</li></ul><hr><h2>Checks &amp; Gefahren</h2><ul><li>DC 10 Nature: Die Geräusche stammen von kleinen Tieren.</li><li>DC 10 Investigation: Das Dach braucht örtliche Reparaturen, keine vollständige Neueindeckung.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Die Dachschäden erklären einen Teil der Spukgerüchte.</li><li>Marder können bei vorsichtigem Umgang verscheucht werden; keine Kinder- oder Tiergewalt nötig.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>Stauraum nach Dachreparatur; Platz für spätere Ausbauideen.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "tm-t08",
+              "label": "Treppe zur Galerie"
+            }
+          ]
+        },
+        {
+          "id": "tm-t20",
+          "dungeonId": "tresendar-mansion",
+          "name": "T20 – Gerüchte & Geschichte",
+          "short": "SL-Nachschlagekarte für Tresendar und Spukgeschichten.",
+          "tags": [
+            "SL-Information",
+            "Gerüchte",
+            "Geschichte"
+          ],
+          "descriptionHtml": "<h2>Vorlesetext</h2><p>Dies ist kein eigener betretbarer Raum, sondern eine Sammlung von Informationen, die die Gruppe in Phandalin über das Anwesen hören kann.</p><hr><h2>Erkundung &amp; Details</h2><ul><li>Familie Tresendar: Früher wohlhabend und angesehen; vermutlich Vermögen aus Bergbau, Erz- und Edelmetallhandel. Warum die Familie fortging, bleibt bewusst ungeklärt.</li><li>Acquisitions Incorporated nutzte das Haus später zeitweise als Gildenstützpunkt und zog vor Jahren wieder aus. Keine dramatische Verschwörung nötig.</li><li>Eigentümer ist derzeit Harbin Wester; er hat selbst wenig Interesse an dem Gebäude.</li></ul><hr><h2>SL-Notizen</h2><ul><li>Toblen Stonehill: Der letzte Tresendar sei sehr stolz gewesen und habe sogar Besteck aus Neverwinter kommen lassen. Plausibles Alltagsgerücht; Details ungesichert.</li><li>Halia Thornton: Angeblich liegt noch ein verborgener Schatz im Haus. Übertrieben, aber tatsächlich gibt es die kleine Geheimkammer T18.</li><li>Daran Edermath: Die Tresendars waren eine angesehene Familie; die Gründe ihres Verschwindens kennt er nicht. Im Kern verlässlich.</li><li>Linene Graywind: Geschichten von einer weißen Frau am Fenster oder einer Banshee sind für sie Unsinn. Übernatürliches ist nicht bestätigt.</li><li>Elmar „Barthen“: Man erzählt sich von geheimen Türen im Haus. Tatsächlich gibt es den Zugang zu T18.</li><li>Harbin Wester: Weiß wenig über die Vergangenheit und würde der Gruppe das Haus mietfrei zur Nutzung überlassen, solange sie weiter Aufträge für Phandalin übernehmen und das Gebäude vor weiterem Verfall bewahren. Er bleibt vorerst Eigentümer.</li><li>Spukwahrheit: Wind, Türen, Dielen, Marder und alte Geräuschübertragung erklären viele Beobachtungen; kein echter Geist ist festgelegt.</li><li>Bastion-Regeln (2024): Erst mit den Spielern außerhalb der Spielwelt klären, ob und wann sie sie verwenden wollen; keine Mechanik vorwegnehmen.</li></ul><hr><h2>Spätere Nutzung</h2><ul><li>SL-Referenz für Gespräche im Dorf und Verhandlungen mit Harbin.</li></ul>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": []
+        }
+      ]
     }
   ]
 }
