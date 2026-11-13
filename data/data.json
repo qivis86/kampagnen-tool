@@ -716,6 +716,38 @@
         "Leitmotiv": "„Was gefunden wird, gehört nicht allen. Es gehört dem, der es behalten kann.“"
       }
     }
+        {
+      "id": "falcon-the-hunter",
+      "name": "Falcon the Hunter",
+      "categories": [
+        "Neverwinter Wood"
+      ],
+      "tags": [
+        "Jäger",
+        "Gastgeber",
+        "Woodland Manse",
+        "Crackskins",
+        "Führer"
+      ],
+      "placeIds": [],
+      "fields": {
+        "ID": "",
+        "Volk / Geschlecht / Statur": "Mensch, männlich; 6 ft 6 in (ca. 1,98 m), breitschultrig",
+        "Rolle / Funktion": "Jäger, Führer für Adlige aus Neverwinter; Besitzer von Falcon’s Hunting Lodge",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Schwarzes Haar, eisblaue, scharfe Augen, sauber gestutzter Bart; fellgefütterter Umhang über beschlagener Lederrüstung. Bewegt sich mit gelassener Selbstsicherheit, begrüßt Sorgen mit ungerührter Gleichgültigkeit.",
+        "Herkunft & kurze Vorgeschichte": "Bürgerlicher Name Gustaf Stellern, den er längst abgelegt hat. Den Namen Falcon verdankt er seinen Jagdfertigkeiten. Verabscheut das Stadtleben und bevorzugt die Einfachheit des Waldes, ohne auf Komfort und guten Wein zu verzichten.",
+        "Einstellung gegenüber den SCs (Start)": "Gastfreundlich, fair und geduldig, solange sie sich anständig verhalten.",
+        "Motivation (offen)": "Seine Lodge betreiben, den Wald kennen und Adlige sicher auf Jagdausflüge führen.",
+        "Motivation (verdeckt / langfristig)": "Wachsende Unruhe über die Störenfriede im Wald; will die Umgebung seiner Lodge sicher halten.",
+        "Beziehung zu Phandalin": "Keine direkte Verbindung in der Vorlage genannt.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Sieht zunehmend Unruhestifter im Wald, darunter einige Crackskins. Er unterscheidet ihre Gruppierungen nicht sicher und hält sie für gefährlich; keine pauschale Feindschaft gegen alle Greyveins festgelegt.",
+        "Wissen / Gerüchte": "In letzter Zeit mehr Unruhestifter im Wald; einige tragen die charakteristischen Crackskin-Merkmale. Er vermutet Verbindungen zu einer gefährlichen Gruppe südöstlich der Lodge, die mit kleinen, unheimlichen Waldwesen gesehen wurde. Diese Gruppe hält sich in einem überwucherten steinernen Herrenhaus etwa zehn Meilen entfernt auf. Das Haus soll einst einem Gelehrten gehört haben, der elfische Ruinen untersuchte.",
+        "Was wissen die SCs aktuell über diese Person?": "Noch offen – abhängig von der Begegnung.",
+        "Mögliche Interaktionen mit den SCs": "Kostenloses Essen und Schlafplatz im Gästehaus; privates Zimmer für 10 gp/Nacht. Hinweise auf Woodland Manse. Für den Abschluss der Woodland-Manse-Quest bietet er Boots of Elvenkind an. Er begleitet die Gruppe nicht: Er muss für mögliche Gäste aus Neverwinter anwesend bleiben.",
+        "Entwicklung im Kampagnenverlauf": "Kann als verlässlicher Kontaktpunkt im Neverwinter Wood dienen.",
+        "Notizen für den SL": "Greyveins-Variante: Original-Aussagen über Orks und Halborks durch Unruhestifter und Crackskins ersetzen. Keine pauschale Orkfeindschaft. Corwin (Koch) und Pell (stummer Stallbursche, 12) sind Nichtkämpfer. Pferd: grauer Hengst Baatorius."
+      }
+    }
   ],
   "places": [
     {
