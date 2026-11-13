@@ -1263,8 +1263,8 @@
           "exits": []
         }
       ]
-    }
-        {
+    },
+    {
       "id": "falcons-hunting-lodge",
       "name": "🌲 Falcon’s Hunting Lodge",
       "mapUrl": "assets/maps/mapFalconsLodge.png",
