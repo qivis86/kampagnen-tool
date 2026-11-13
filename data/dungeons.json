@@ -1267,7 +1267,7 @@
     {
       "id": "falcons-hunting-lodge",
       "name": "🌲 Falcon’s Hunting Lodge",
-      "mapUrl": "assets/maps/mapFalconsLodge.png",
+      "mapUrl": "assets/maps/mapFalconsLodge.jpg",
       "defaultsHtml": "<h3>🌲 Überblick</h3><p>Befestigte Jagdlodge mitten im Neverwinter Wood; Falcon beherbergt Adlige aus Neverwinter und bietet Führerdienste an. Gäste können kostenlos im Gästehaus schlafen und mit ihm speisen. Ein privates Zimmer (F12) kostet 10 gp/Nacht.</p><h3>🏡 Anlage</h3><ul><li>Haupthaus aus Stein und Holz, Gästehaus, Stallgebäude mit Schmiede, Nebengebäude, Tiergehege und Turm.</li><li>Holzpalisade: 10 ft hoch; Überklettern mit DC 15 Strength (Athletics). Sie hält Wildtiere fern, keine Armee.</li><li>Innenräume: flache Decken, 9 ft hoch (sofern nicht anders beschrieben).</li><li>Tierhaltung: zwei Dutzend Hühner und ein Hahn, sechs Schweine und vier Ziegen; ungefährlich und gepflegt.</li><li>Falcon hält umfangreiche Vorräte für lange Winter bereit und ergänzt sie mit Wildbret.</li></ul><h3>👥 Bewohner</h3><ul><li><b>Falcon:</b> Gastgeber, Jäger und Führer.</li><li><b>Corwin:</b> älterer, welterfahrener Koch; kein Kämpfer.</li><li><b>Pell:</b> stummer, zwölfjähriger Stallbursche; kein Kämpfer.</li></ul><h3>🎭 Ankunft</h3><p>Die Gruppe nähert sich von Westen über die Steinbrücke. Dünner Nebel liegt um die Palisade. Corwin mustert die Ankommenden vom Torhaus aus, öffnet bei friedlicher Absicht und führt sie über das Gästehaus zur Trophäenhalle, um Falcon zu holen.</p><h3>🗺️ Quelle / Karte</h3><p><a href=\"https://www.dndbeyond.com/sources/dnd/doip/falcons-hunting-lodge\" target=\"_blank\" rel=\"noopener noreferrer\">D&amp;D Beyond – Falcon’s Hunting Lodge</a>. Kartenbild lokal ergänzen, wenn verfügbar.</p>",
       "rooms": [
         {
