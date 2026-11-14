@@ -1685,7 +1685,13 @@ function renderDetail(ent){
   if(tags.length) subtitleParts.push(`Tags: ${tags.join(", ")}`);
   elDetailSub.textContent = subtitleParts.join(" · ") || "—";
 
-  const entries = Object.entries(ent.fields || {});
+  // NPCs: consistent quick-reference order; places keep their existing order.
+  const npcFieldOrder = ["Volk / Geschlecht / Alter / Statur","Rolle / Funktion","Auftreten & Eindruck (inkl. Aussehen)","Persönlichkeit","Situation bei Ankunft","Typische Aussagen","Einstellung gegenüber den SCs (Start)","Was wissen die SCs aktuell über diese Person?","Wissen / Gerüchte","Was er freiwillig erzählt","Was er verschweigt / beschönigt","Mögliche Interaktionen mit den SCs","Statblock","Portfolio / Zuständigkeit","Symbol","Farben / Motive","Gute Merkhilfe","Herkunft & kurze Vorgeschichte","Ausbildung / Fähigkeiten (narrativ)","Beziehung zu Phandalin","Haltung zu Greyveins / Stormveins / Talos","Motivation (offen)","Motivation (verdeckt / langfristig)","Entwicklung im Kampagnenverlauf","Notizen für den SL"];
+  const entries = Object.entries(ent.fields || {}).sort(([a],[b]) => {
+    if(state.mode !== "npcs") return 0;
+    const ai = npcFieldOrder.indexOf(a), bi = npcFieldOrder.indexOf(b);
+    return (ai < 0 ? 1000 : ai) - (bi < 0 ? 1000 : bi);
+  });
 
   let linksHtml = "";
   if(state.mode === "npcs"){
