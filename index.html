@@ -1056,7 +1056,9 @@ function sanitizeRichHtml(html){
    NAV HELPERS (strict IDs)
 ========================= */
 function openNpcById(npcId){
-  setMode("npcs");
+  // Avoid recording the temporary empty selection rendered by setMode.
+  restoringNavigationHistory = true;
+  try { setMode("npcs"); } finally { restoringNavigationHistory = false; }
   const npc = NPCS.find(n => n.id === npcId);
   if(!npc){ alert(`NPC-ID nicht gefunden: ${npcId}`); return; }
   state.selectedEntityId = npcId;
@@ -1066,7 +1068,9 @@ function openNpcById(npcId){
   applyMobileVisibility();
 }
 function openPlaceById(placeId){
-  setMode("places");
+  // Avoid recording the temporary empty selection rendered by setMode.
+  restoringNavigationHistory = true;
+  try { setMode("places"); } finally { restoringNavigationHistory = false; }
   const p = PLACES.find(x => x.id === placeId);
   if(!p){ alert(`Ort-ID nicht gefunden: ${placeId}`); return; }
   state.selectedEntityId = placeId;
@@ -1077,7 +1081,9 @@ function openPlaceById(placeId){
 }
 
 function openRoomById(roomId){
-  setMode("dungeons");
+  // Avoid recording the temporary empty selection rendered by setMode.
+  restoringNavigationHistory = true;
+  try { setMode("dungeons"); } finally { restoringNavigationHistory = false; }
   const r = getRoomById(roomId);
   if(!r){ alert(`Raum-ID nicht gefunden: ${roomId}`); return; }
   state.selectedCategory = r.dungeonId; // dungeonId
