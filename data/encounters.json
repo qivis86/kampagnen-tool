@@ -9,6 +9,17 @@
           "details": "HP 20 | 18 | 16 | 24"
         }
       ]
+    },
+    {
+      "title": "Loggers' Camp – Ankhegs",
+      "notesHtml": "<p><b>2024er Ankheg:</b> Sämtlichen Acid Damage durch Lightning Damage ersetzen. Zahl und Timing der Begegnungen dynamisch gemäß Dungeon-Defaults von Loggers' Camp.</p>",
+      "links": [
+        {
+          "name": "Ankheg (2024)",
+          "url": "https://www.dndbeyond.com/monsters/5194897-ankheg",
+          "details": "Lightning statt Acid Damage; Anzahl flexibel"
+        }
+      ]
     }
   ]
 }
