@@ -1127,6 +1127,17 @@ document.addEventListener("keydown", (e) => {
 });
 
 
+// Dungeon room illustration links reuse the existing map image modal.
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link) return;
+  const url = link.getAttribute("href") || "";
+  if (url === "https://raw.githubusercontent.com/qivis86/kampagnen-tool/main/assets/images/loggerscamp/totem.png") {
+    event.preventDefault();
+    openMapModal(url, "Talos-Totem – Loggers' Camp");
+  }
+});
+
 function openMapModal(url, title){
   if(!url) return;
   mapModalImg.src = url;
