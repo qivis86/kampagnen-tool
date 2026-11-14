@@ -763,6 +763,91 @@
         "Motivation (verdeckt / langfristig)": "Seine Mitschuld am Tod und Verschwinden von Arbeitern nicht eingestehen müssen; wirtschaftliche Verantwortung und Ansehen bewahren.",
         "Notizen für den SL": "Bei Entscheidungen zunächst feigste, eigennützigste Option. Nicht dumm: Seine Tisch-Strategie beruht auf korrekter Beobachtung. Ob er echte Schuldgefühle hat, bleibt offen. Er kennt keine Erklärung für das Totem."
       }
+    },
+    {
+      "id": "akadi",
+      "name": "🌬️ Akadi",
+      "categories": [
+        "Gottheiten"
+      ],
+      "tags": [
+        "Elementarluft",
+        "Wind",
+        "Freiheit",
+        "Wandel",
+        "Greyveins",
+        "Akadi"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Volk / Geschlecht / Alter / Statur": "Gottheit der Elementarluft; häufig als weibliche Gestalt oder als Wind und Wolken dargestellt",
+        "Rolle / Funktion": "Akadi, Herrin der Luft; elementare Gottheit des Windes, der Bewegung und der Freiheit",
+        "Portfolio / Zuständigkeit": "* Luft und Wind\n* Bewegung und Wandel\n* Freiheit und Ungebundenheit\n* Elementare Kräfte der Luft",
+        "Symbol": "Eine weiße Wolke auf blauem Grund (traditionelles Symbol). In der Greyveins-Kultur können eigene Schmuckstücke und Zeichen darauf Bezug nehmen.",
+        "Farben / Motive": "* Himmelblau und Weiß\n* Wolken und offene Horizonte\n* Wind, wehende Stoffe und Federn\n* Bewegung statt Stillstand",
+        "Gute Merkhilfe": "Luft + Freiheit + Bewegung + Wandel.",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Akadi ist keine Gottheit mit einer einzigen festen menschlichen Erscheinung. Ihre Gegenwart lässt sich durch Luftströmungen, Wolken und unvorhersehbare Bewegung darstellen. Eine Verkörperung oder direkte Intervention ist für die Kampagne nicht festgelegt.",
+        "Herkunft & kurze Vorgeschichte": "Forgotten-Realms-Lore: Akadi ist eine der elementaren Gottheiten und verkörpert die Macht der Luft. Sie ist nicht mit Talos gleichzusetzen: Luft und Freiheit sind andere Schwerpunkte als der zerstörerische Sturm.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Kampagnen-Lore: Akadi ist die verehrte Gottheit der Greyveins. Die Greyveins sind eine vertriebene Kultur verschiedener Spezies, deren Glauben und Bräuche mit ihr verbunden sind. Die radikalisierten Stormveins werden dagegen von Talos-Zellen beeinflusst. Die beiden Glaubensrichtungen dürfen nicht pauschal gleichgesetzt werden.",
+        "Leitmotiv": "Ein leiser Windzug als mögliches, nie eindeutiges Zeichen.",
+        "Was wissen die SCs aktuell über diese Person?": "Die Gruppe ist einem mysteriösen Händler begegnet, bei dem Akadis Symbol deutlich beschrieben wurde. Welche Schlüsse die Charaktere daraus ziehen, bleibt offen.",
+        "Wissen / Gerüchte": "* Akadi steht für die elementare Luft, nicht für den Talos-Kult.\n* Die Greyveins verehren Akadi; ihr Glaube ist ein wichtiger Teil ihrer Kultur.\n* Die genaue Bedeutung einzelner Greyvein-Rituale und Zeichen kann im Spiel nach und nach erschlossen werden.",
+        "Mögliche Interaktionen mit den SCs": "* Religiöse Symbole erkennen und einordnen\n* Greyvein-Glauben von Talos-Radikalisierung unterscheiden\n* Subtile Windmotive in Begegnungen wiederaufgreifen\n* Fragen zur Bedeutung des Händlers offenhalten",
+        "Entwicklung im Kampagnenverlauf": "Akadi bleibt ein wichtiger kultureller und religiöser Hintergrund der Greyveins. Ob ihre Zeichen auf tatsächliches göttliches Eingreifen hindeuten, ist bewusst offen.",
+        "Notizen für den SL": "* Windzeichen sparsam und subtil einsetzen; nicht jede Brise ist eine Botschaft.\n* Der mysteriöse Händler erhält später einen eigenen NPC-Eintrag, sobald die tatsächliche Begegnung rekonstruiert ist.\n* Eine mögliche Verbindung zu Mara Stonehill ist nur eine Idee, keine festgelegte Tatsache.\n* Keine pauschale Gleichsetzung von Akadi-Glauben, Greyveins und Stormveins."
+      }
+    },
+    {
+      "id": "talos",
+      "name": "⚡ Talos",
+      "categories": [
+        "Gottheiten",
+        "Talos-Kult"
+      ],
+      "tags": [
+        "Sturmgott",
+        "Donner",
+        "Blitz",
+        "Zerstörung",
+        "Stormveins",
+        "Talos-Kult"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Volk / Geschlecht / Alter / Statur": "Gottheit; gewöhnlich als männlicher, gewaltiger Sturmgott dargestellt",
+        "Rolle / Funktion": "Talos, der Sturmfürst; Gott der Stürme und zerstörerischen Naturgewalten",
+        "Portfolio / Zuständigkeit": "* Stürme und Unwetter\n* Donner und Blitze\n* Zerstörung und Verwüstung\n* Furcht vor unkontrollierbaren Naturgewalten",
+        "Symbol": "Drei Blitze, die von einem gemeinsamen Punkt ausgehen (traditionelles Talos-Symbol).",
+        "Farben / Motive": "* Dunkle Sturmwolken\n* Grelles Blitzlicht\n* Donner und peitschender Regen\n* Verwüstete Bäume und zerstörte Bauwerke\n* Wildschweine und Ebergestalten als kampagnenspezifische Kultmotive",
+        "Gute Merkhilfe": "Sturm + Blitz + Zerstörung + Radikalisierung der Stormveins.",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Bedrohlich, gewaltsam und unberechenbar. Seine Macht kann sich in zerstörerischen Gewittern und der Angst vor ihnen spiegeln. Ein persönlicher Auftritt der Gottheit ist nicht festgelegt.",
+        "Herkunft & kurze Vorgeschichte": "Forgotten-Realms-Lore: Talos ist eine Gottheit zerstörerischer Stürme und Naturgewalten. Seine Anhänger können Verwüstung als Ausdruck göttlicher Macht verstehen.",
+        "Haltung zu Greyveins / Stormveins / Talos": "Kampagnen-Lore: Talos-Zellen radikalisieren Teile der vertriebenen Greyveins. Die daraus hervorgegangene radikale Fraktion wird Stormveins genannt. Greyveins insgesamt sind nicht automatisch Anhänger von Talos.",
+        "Leitmotiv": "Der Wind wird zum zerstörerischen Sturm – ein Gegensatz zur subtilen Akadi-Symbolik.",
+        "Was wissen die SCs aktuell über diese Person?": "Der genaue Wissensstand der SCs zum Talos-Kult ist noch nicht vollständig festgehalten. Die Begegnung mit Drethna im Neverwinter Wood ist als Kampagnenereignis notiert.",
+        "Wissen / Gerüchte": "* Mehrere Talos-Zellen wirken in der Region.\n* Im Neverwinter Wood besteht eine Verbindung zum Circle of Thunder.\n* Der Tower of Storms ist mit einem Relikt verbunden.\n* Eine weitere Zelle in den Bergen beschäftigt sich mit Artefakten.\n* Auch der Kryptgarden Forest kann später relevant werden.",
+        "Mögliche Interaktionen mit den SCs": "* Kultsymbole, Rituale und Hinweise auf Zellen untersuchen\n* Zwischen Greyvein-Kultur und Stormvein-Radikalisierung unterscheiden\n* Zusammenhänge zwischen regionalen Ereignissen erkennen\n* Entscheidungen über den Umgang mit radikalisierten Personen treffen",
+        "Entwicklung im Kampagnenverlauf": "Die Stormveins und der Talos-Kult werden bis Axeholm schrittweise wichtiger. Der Ausgang der Ereignisse dort beeinflusst den weiteren Status des Kults. Ein Thunder Boar ist als mögliche Eskalation vorgesehen.",
+        "Notizen für den SL": "* Zellen: Circle of Thunder (Neverwinter Wood), Tower of Storms (Relikt), Berg-Zelle (Artefakte), möglicher Kryptgarden-Anknüpfungspunkt.\n* Stormveins sind eine radikalisierte Fraktion, keine Bezeichnung für sämtliche Greyveins.\n* Aufnahme und Kultpraktiken können Anchorites und Ebergestalten einschließen.\n* Einzelne Kultmitglieder, konkrete Rituale und Motive erst festlegen, wenn sie ausgearbeitet werden.\n* Talos-Kult-Kategorie künftig mit NPCs füllen; Drethna ist der erste Platzhalter."
+      }
+    },
+    {
+      "id": "drethna",
+      "name": "Drethna",
+      "categories": [
+        "Talos-Kult"
+      ],
+      "tags": [
+        "Talos-Kult",
+        "Neverwinter Wood",
+        "Begegnung"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Rolle / Funktion": "Eintrag für die spätere Ausarbeitung des Talos-Kults",
+        "Was wissen die SCs aktuell über diese Person?": "Die Gruppe ist Drethna im Neverwinter Wood begegnet.",
+        "Notizen für den SL": "Platzhalter: Begegnung und weitere Einzelheiten später anhand der Session-Notizen ergänzen. Noch keine zusätzlichen Eigenschaften oder Hintergründe festgelegt."
+      }
     }
   ],
   "places": [
