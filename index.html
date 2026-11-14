@@ -388,6 +388,10 @@
     </div>
     <div class="hr" id="detailActionsHr" style="display:none;"></div>
 
+    <div class="actions" id="navigationHistory" style="display:flex; gap:8px; margin-bottom:10px;">
+      <button id="btnHistoryBack" type="button" disabled title="Zum vorherigen Eintrag">← Zurück</button>
+      <button id="btnHistoryForward" type="button" disabled title="Zum nächsten Eintrag">Vorwärts →</button>
+    </div>
     <h2 id="detailTitle">Auswählen</h2>
     <div class="muted" id="detailSub">—</div>
     <div class="hr"></div>
@@ -1377,7 +1381,54 @@ function renderEntityList(){
   });
 }
 
+// In-app navigation history: remembers entries across NPCs, places and dungeons.
+const navigationHistory = [];
+let navigationHistoryIndex = -1;
+let restoringNavigationHistory = false;
+const btnHistoryBack = document.getElementById("btnHistoryBack");
+const btnHistoryForward = document.getElementById("btnHistoryForward");
+function navigationSnapshot(){
+  return {mode:state.mode, category:state.selectedCategory, entityId:state.selectedEntityId, search:state.search};
+}
+function updateHistoryButtons(){
+  btnHistoryBack.disabled = navigationHistoryIndex <= 0;
+  btnHistoryForward.disabled = navigationHistoryIndex >= navigationHistory.length - 1;
+}
+function recordNavigation(){
+  if(restoringNavigationHistory) return;
+  const snapshot = navigationSnapshot();
+  const current = navigationHistory[navigationHistoryIndex];
+  if(current && JSON.stringify(current) === JSON.stringify(snapshot)) return;
+  navigationHistory.splice(navigationHistoryIndex + 1);
+  navigationHistory.push(snapshot);
+  navigationHistoryIndex = navigationHistory.length - 1;
+  // Keep the most recent 100 navigation steps.
+  if(navigationHistory.length > 100){ navigationHistory.shift(); navigationHistoryIndex--; }
+  updateHistoryButtons();
+}
+function navigateHistory(delta){
+  const nextIndex = navigationHistoryIndex + delta;
+  if(nextIndex < 0 || nextIndex >= navigationHistory.length) return;
+  navigationHistoryIndex = nextIndex;
+  const snapshot = navigationHistory[nextIndex];
+  restoringNavigationHistory = true;
+  try {
+    state.mode = snapshot.mode;
+    state.selectedCategory = snapshot.category;
+    state.selectedEntityId = snapshot.entityId;
+    state.search = snapshot.search || "";
+    elSearch.value = state.search;
+    state.view = snapshot.entityId ? "detail" : (snapshot.category ? "list" : "cats");
+    updateModeUi();
+    renderAll();
+    applyMobileVisibility();
+  } finally { restoringNavigationHistory = false; updateHistoryButtons(); }
+}
+btnHistoryBack.addEventListener("click", () => navigateHistory(-1));
+btnHistoryForward.addEventListener("click", () => navigateHistory(1));
+
 function renderDetail(ent){
+  recordNavigation();
   // ===== Dungeon overview (when a dungeon is selected but no room) =====
   if(state.mode === "dungeons" && !ent && state.selectedCategory){
     const d = getDungeonById(state.selectedCategory);
