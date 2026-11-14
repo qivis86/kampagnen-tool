@@ -747,6 +747,39 @@
         "Entwicklung im Kampagnenverlauf": "Kann als verlässlicher Kontaktpunkt im Neverwinter Wood dienen.",
         "Notizen für den SL": "Greyveins-Variante: Original-Aussagen über Orks und Halborks durch Unruhestifter und Crackskins ersetzen. Keine pauschale Orkfeindschaft. Corwin (Koch) und Pell (stummer Stallbursche, 12) sind Nichtkämpfer. Pferd: grauer Hengst Baatorius."
       }
+    },
+    {
+      "id": "tibor-wester",
+      "name": "Tibor Wester",
+      "categories": [
+        "Loggers' Camp"
+      ],
+      "tags": [
+        "Mensch",
+        "Lagerleiter",
+        "Commoner",
+        "Harbin Wester",
+        "Feige",
+        "Ankhegs"
+      ],
+      "placeIds": [],
+      "fields": {
+        "Volk / Geschlecht / Statur": "Mensch, männlich, etwas untersetzt, Mitte fünfzig",
+        "Rolle / Funktion": "Leiter des Holzfällerlagers am Neverwinter River; Halbbruder von Harbin Wester",
+        "Statblock": "Commoner (gewöhnlicher Bürger)",
+        "Auftreten & Eindruck (inkl. Aussehen)": "Schütteres, sorgfältig gescheiteltes braunes Haar, gepflegter Schnurrbart; dunkelrote Weste, helles Hemd, Stoffhose und für Waldarbeit ungeeignete Lederschuhe. Weiche Hände ohne Schwielen. Nach zwei Tagen im Versteck zerknittert, schmutzig, übermüdet, gerötete Augen.",
+        "Persönlichkeit": "Feige, eigennützig und verantwortungsscheu, aber nicht dumm. Kaufmännisch orientiert; gibt lieber Anweisungen, als selbst körperlich zu arbeiten. Unter Stress schrille Stimme und schnelles Reden.",
+        "Herkunft & kurze Vorgeschichte": "Führt das Lager, das Bauholz nach Neverwinter liefert. Vor etwa einem Zehntag begannen mysteriöse Vorfälle. Er verharmloste die ersten Angriffe als normale Waldgefahr und gab unachtsamen Arbeitern die Schuld. Trotz weiterer Warnungen verzögerte er die Einstellung des Betriebs.",
+        "Motivation (offen)": "Lebend aus dem Lager kommen und wieder Sicherheit gewinnen.",
+        "Motivation (verdeckt / langfristig)": "Seine Mitschuld am Tod und Verschwinden von Arbeitern nicht eingestehen müssen; wirtschaftliche Verantwortung und Ansehen bewahren.",
+        "Wissen / Gerüchte": "Erster verschwundener Arbeiter; weitere Angriffe durch riesige grabende Kreaturen; großer Angriff vor etwa zwei Tagen mit Toten, Vermissten und fliehenden Überlebenden. Vorher ungewöhnlich viele Wildschweine gesichtet. Ankhegs reagieren auf Schritte und Erschütterungen. Kennt weder das Totem noch den Taloskult-Zusammenhang.",
+        "Was er freiwillig erzählt": "Betont die Unvorhersehbarkeit der Angriffe, den gefährlichen Wald und sein angeblich umsichtiges Handeln. Warnt ausdrücklich, nicht fest aufzutreten: Die Kreaturen spüren Schritte. Erwähnt Wildschweine eher auf Nachfrage.",
+        "Was er verschweigt / beschönigt": "Hat erste Warnzeichen bewusst verharmlost, den Arbeitsstopp verzögert und Arbeiter für die Gefahr verantwortlich gemacht. Behauptet möglicherweise, er habe sofort reagiert und sei nur wegen wichtiger Unterlagen im Büro geblieben.",
+        "Situation bei Ankunft": "Seit ungefähr zwei Tagen im kleinen Büro (L3) eingeschlossen. Schreibtisch vor die Tür geschoben; sitzt darauf, um möglichst keine Erschütterungen über den Fußboden auszulösen. Hat etwas Wasser und Proviant, ist erschöpft und verängstigt. Ruft vorsichtig nach Hilfe und verlangt anschließend, in Sicherheit gebracht zu werden.",
+        "Typische Aussagen": "„Wir sind hier mitten im Wald. Wilde Tiere sind nun wirklich nichts Ungewöhnliches.“ / „Diese Männer wussten, dass die Arbeit im Wald Gefahren mit sich bringt.“ / „Nicht so fest auftreten! Die Dinger hören das!“ / „Mein Bruder hat Sie geschickt? Na endlich!“ / „Ich habe selbstverständlich alles getan, was in meiner Macht stand!“",
+        "Mögliche Interaktionen mit den SCs": "Rettung, Befragung zum Verlauf der Angriffe, Widersprüche in seinen Rechtfertigungen; nützliche Information über Tremorsense. Möchte die Gruppe von weiteren Untersuchungen abhalten.",
+        "Notizen für den SL": "Bei Entscheidungen zunächst feigste, eigennützigste Option. Nicht dumm: Seine Tisch-Strategie beruht auf korrekter Beobachtung. Ob er echte Schuldgefühle hat, bleibt offen. Er kennt keine Erklärung für das Totem."
+      }
     }
   ],
   "places": [
