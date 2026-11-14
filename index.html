@@ -86,6 +86,16 @@
   .seg { display:flex; gap:8px; }
   .seg button{ flex:1; text-align:center; }
 
+  /* Global search */
+  .global-search-launch { margin: 0 0 12px; text-align:left; }
+  .global-search-dialog { width:min(760px,100%); height:min(78vh,720px); grid-template-rows:auto 1fr; }
+  .global-search-head { display:flex; gap:8px; align-items:center; }
+  .global-search-head input { flex:1; min-width:0; font-size:16px; }
+  .global-search-head button { width:auto; }
+  .global-search-results { padding:12px; overflow:auto; display:grid; gap:8px; align-content:start; }
+  .global-search-results button { display:grid; gap:4px; }
+  .global-search-results .sub { font-size:12px; opacity:.75; overflow-wrap:anywhere; }
+  .global-search-results mark { background:#334e78; color:#fff; border-radius:3px; }
   .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; padding:14px; z-index:200; }
   .modal { background:#14161c; border:1px solid #2a3042; border-radius:12px; width:min(980px,100%); max-height:90vh; display:grid; grid-template-rows:auto 1fr auto; overflow:hidden; height:90vh; }
   .modal header, .modal footer { padding:10px; background:#10131a; }
@@ -319,6 +329,7 @@
 <div class="topbar" id="topbar">
   <button id="btnBack">← Zurück</button>
   <div class="title" id="topbarTitle">Kategorien</div>
+  <button id="btnTopGlobalSearch" title="Globale Suche">🔎</button>
   <button id="btnTopMode" title="Modus wechseln">🧑</button>
   <button id="btnTopSync" title="Sync laden">🔄</button>
 </div>
@@ -329,6 +340,8 @@
     <h1 id="catsHeader">📚 Kategorien</h1>
 
 
+
+    <button id="btnGlobalSearch" class="global-search-launch" type="button">🔎 Globale Suche <span class="muted">(Strg+K)</span></button>
 
     <details class="quickNav">
       <summary>🔗 Nützliche Links</summary>
@@ -396,6 +409,20 @@
     <div class="muted" id="detailSub">—</div>
     <div class="hr"></div>
     <div id="detailBody">—</div>
+  </div>
+</div>
+
+<!-- Global search modal -->
+<div class="modal-bg" id="globalSearchBg" role="dialog" aria-modal="true" aria-label="Globale Suche">
+  <div class="modal global-search-dialog">
+    <header>
+      <div class="global-search-head">
+        <input id="globalSearchInput" type="search" placeholder="NPCs, Orte, Dungeons und Räume durchsuchen…" aria-label="Suchbegriff" autocomplete="off" />
+        <button id="btnCloseGlobalSearch" type="button" aria-label="Suche schließen">✕</button>
+      </div>
+      <div class="muted" style="margin-top:8px;" id="globalSearchCount">Suchbegriff eingeben · Strg+K öffnet die Suche</div>
+    </header>
+    <div class="global-search-results" id="globalSearchResults"></div>
   </div>
 </div>
 
@@ -1756,6 +1783,128 @@ updateModeUi();
 elSearch.addEventListener("input", (e) => {
   state.search = e.target.value.trim();
   renderEntityList();
+});
+
+
+/* =========================
+   GLOBAL SEARCH (all modules)
+========================= */
+const globalSearchBg = document.getElementById("globalSearchBg");
+const globalSearchInput = document.getElementById("globalSearchInput");
+const globalSearchResults = document.getElementById("globalSearchResults");
+const globalSearchCount = document.getElementById("globalSearchCount");
+let globalSearchPreviousFocus = null;
+
+function globalSearchPlain(value){
+  const html = String(value ?? "");
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return (doc.body.textContent || "").replace(/\\s+/g, " ").trim();
+}
+function globalSearchText(value){
+  if(value == null) return "";
+  if(Array.isArray(value)) return value.map(globalSearchText).join(" ");
+  if(typeof value === "object") return Object.entries(value).map(([k,v]) => k + " " + globalSearchText(v)).join(" ");
+  return globalSearchPlain(value);
+}
+function globalSearchItems(){
+  const items = [];
+  NPCS.forEach(n => items.push({kind:"NPC", title:n.name || n.id, id:n.id, mode:"npcs", data:n}));
+  PLACES.forEach(p => items.push({kind:"Ort", title:p.name || p.id, id:p.id, mode:"places", data:p}));
+  DUNGEONS.forEach(d => {
+    items.push({kind:"Dungeon", title:d.name || d.id, id:d.id, mode:"dungeon", data:{name:d.name, id:d.id, defaultsHtml:d.defaultsHtml, description:d.description, tags:d.tags}});
+    (d.rooms || []).forEach(r => items.push({kind:"Raum", title:r.name || r.id, id:r.id, mode:"room", parent:d.name || d.id, data:r}));
+  });
+  return items;
+}
+function globalSearchSnippet(item, terms){
+  const fields = item.data || {};
+  const values = [fields.short, fields.description, fields.descriptionHtml, fields.fields, fields.tags, fields.defaultsHtml, fields.type];
+  const text = globalSearchText(values);
+  const lower = text.toLocaleLowerCase("de");
+  const pos = terms.map(t => lower.indexOf(t)).filter(i => i >= 0).sort((a,b)=>a-b)[0];
+  if(pos === undefined) return item.parent || "";
+  const start = Math.max(0, pos - 55);
+  const end = Math.min(text.length, pos + 105);
+  return (start ? "…" : "") + text.slice(start,end) + (end < text.length ? "…" : "");
+}
+function renderGlobalSearch(){
+  const terms = globalSearchInput.value.trim().toLocaleLowerCase("de").split(/\\s+/).filter(Boolean);
+  globalSearchResults.replaceChildren();
+  if(!terms.length){
+    globalSearchCount.textContent = "Suche über NPCs, Orte, Dungeons und alle Raumtexte";
+    return;
+  }
+  const hits = globalSearchItems().map(item => {
+    const title = globalSearchText(item.title).toLocaleLowerCase("de");
+    const content = globalSearchText(item.data).toLocaleLowerCase("de");
+    const parent = (item.parent || "").toLocaleLowerCase("de");
+    const id = String(item.id || "").toLocaleLowerCase("de");
+    if(!terms.every(t => title.includes(t) || content.includes(t) || parent.includes(t) || id.includes(t))) return null;
+    const score = terms.reduce((n,t)=>n + (title.includes(t) ? 5 : 0) + (id.includes(t) ? 3 : 0) + (parent.includes(t) ? 1 : 0),0);
+    return {item,score};
+  }).filter(Boolean).sort((a,b)=>b.score-a.score || a.item.title.localeCompare(b.item.title,"de"));
+  globalSearchCount.textContent = hits.length + " Treffer" + (hits.length > 100 ? " · erste 100 angezeigt" : "");
+  if(!hits.length){
+    const empty = document.createElement("div");
+    empty.className = "muted";
+    empty.textContent = "Keine passenden Einträge gefunden.";
+    globalSearchResults.appendChild(empty);
+    return;
+  }
+  hits.slice(0,100).forEach(({item}) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    const label = document.createElement("b");
+    label.textContent = item.title;
+    const sub = document.createElement("div");
+    sub.className = "sub";
+    sub.textContent = item.kind + (item.parent ? " · " + item.parent : "") + " · " + globalSearchSnippet(item,terms);
+    btn.append(label,sub);
+    btn.addEventListener("click", () => {
+      closeGlobalSearch();
+      if(item.mode === "npcs") openNpcById(item.id);
+      else if(item.mode === "places") openPlaceById(item.id);
+      else if(item.mode === "room") openRoomById(item.id);
+      else if(item.mode === "dungeon"){
+        setMode("dungeons");
+        state.selectedCategory = item.id;
+        renderAll();
+        if(isMobile()) setView("list");
+        applyMobileVisibility();
+      }
+    });
+    globalSearchResults.appendChild(btn);
+  });
+}
+function openGlobalSearch(){
+  globalSearchPreviousFocus = document.activeElement;
+  globalSearchBg.style.display = "flex";
+  globalSearchInput.value = "";
+  renderGlobalSearch();
+  globalSearchInput.focus();
+}
+function closeGlobalSearch(){
+  globalSearchBg.style.display = "none";
+  globalSearchPreviousFocus?.focus?.();
+}
+document.getElementById("btnGlobalSearch").addEventListener("click",openGlobalSearch);
+document.getElementById("btnTopGlobalSearch").addEventListener("click",openGlobalSearch);
+document.getElementById("btnCloseGlobalSearch").addEventListener("click",closeGlobalSearch);
+globalSearchBg.addEventListener("click",e=>{if(e.target===globalSearchBg)closeGlobalSearch();});
+globalSearchInput.addEventListener("input",renderGlobalSearch);
+globalSearchInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    const first=globalSearchResults.querySelector("button");
+    if(first){e.preventDefault();first.click();}
+  }
+});
+document.addEventListener("keydown",e=>{
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase()==="k"){
+    e.preventDefault();
+    openGlobalSearch();
+  }else if(e.key==="Escape" && globalSearchBg.style.display==="flex"){
+    closeGlobalSearch();
+  }
 });
 
 /* =========================
