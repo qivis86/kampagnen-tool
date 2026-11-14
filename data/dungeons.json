@@ -1367,6 +1367,306 @@
           "exits": []
         }
       ]
+    },
+    {
+      "id": "loggers-camp",
+      "name": "🌲 Loggers' Camp",
+      "mapUrl": "assets/maps/mapLoggersCamp.jpg",
+      "defaultsHtml": "<h3>🌲 Atmosphäre &amp; Zustand</h3><p>Das gesamte Holzfällerlager vermittelt Zerstörung, Verwüstung und Chaos. Wiederholte Angriffe hinterließen beschädigte Gebäude, eingestürzte Dächer, zerbrochene Arbeitsgeräte und verstreute Materialien. Die Arbeitsplätze sind verlassen, der Betrieb wurde überstürzt aufgegeben. Nicht jeder Schaden stammt zwingend von Ankhegs; manche Bauten waren bereits zuvor baufällig oder anders beschädigt.</p>\n<h3>🐜 Dynamische Ankheg-Begegnungen</h3><p>Ankhegs sollen eine echte Bedrohung sein, aber nicht durch monotone Wiederholungen langweilen. Anzahl und Zeitpunkt der Angriffe flexibel an bisherige Begegnungen, Ressourcen der Gruppe und Stimmung am Tisch anpassen.</p><ul><li><b>L2 zuerst:</b> sofort ein Ankheg; zweiter in Runde 2 oder 3.</li><li><b>L2 nach anderen Kämpfen:</b> nach Ermessen 0, 1 oder 2.</li><li><b>L6:</b> Original drei Ankhegs an markierten Ausbruchspunkten, flexibel reduzieren oder entfallen lassen.</li><li><b>L1:</b> normalerweise keine, aber optional durch festen Fels möglich.</li><li><b>Totem zerstört:</b> Noch nicht angreifende Ankhegs verlieren das Interesse und graben sich fort; bereits angreifende bleiben zunächst.</li></ul>\n<h3>⚡ Ankheg-Variante</h3><p>Den <a href=\"https://www.dndbeyond.com/monsters/5194897-ankheg\" target=\"_blank\" rel=\"noopener noreferrer\">Ankheg-Statblock (2024)</a> verwenden. <b>Lightning Damage statt Acid Damage</b> bei entsprechenden Angriffen und Fähigkeiten; übrige Werte unverändert. Tunneler erlaubt Graben durch massiven Fels mit halber Grabgeschwindigkeit und hinterlässt 10-ft-Tunnel. Die Säureschäden des Originals erscheinen als Blitz-/Brandspuren.</p>\n<h3>🗺️ Überblick</h3><p><b>L0</b> enthält die Vorgeschichte über einen Zehntag. <b>L7</b> die Reise von Falcon's Lodge. Tibor Wester hat einen eigenen NPC-Eintrag. Der Brief aus L5 ist ein separates Handout und nicht im Tool gespeichert.</p>",
+      "rooms": [
+        {
+          "id": "lc-l0",
+          "dungeonId": "loggers-camp",
+          "name": "L0 – Vorgeschichte",
+          "short": "Eskalation der Angriffe über einen Zehntag.",
+          "tags": [
+            "SL-Wissen",
+            "Vorgeschichte"
+          ],
+          "descriptionHtml": "<div class=\"box box--gm\"><h3>⚡ Auslöser</h3><p>Talos-Anhänger platzieren heimlich ein verfluchtes Totem im Kamin von L2. Es zieht Ankhegs an. Im Wald werden zuvor ungewöhnlich viele Wildschweine beobachtet.</p></div>\n<div class=\"box box--details\"><h3>📅 Chronologie</h3><ul><li><b>Tag 1–2:</b> Totem platziert; Wildschweinsichtungen.</li><li><b>Tag 3:</b> Erster Holzfäller verschwindet; Tibor verharmlost die Gefahr als gewöhnliches Waldtier-Risiko und gibt dem Opfer die Schuld.</li><li><b>Tag 5–6:</b> Weitere Angriffe; Augenzeugen sehen große grabende Kreaturen. Arbeiter wollen den Betrieb einstellen oder fliehen; Tibor zögert aus wirtschaftlichen Gründen.</li><li><b>Tag 8:</b> Mehrere Ankhegs greifen das Lager an. Tote und Vermisste, die Überlebenden fliehen. Tibor verbarrikadiert sich im Büro.</li><li><b>Tag 10:</b> Die Gruppe erreicht das verwüstete Lager; Tibor sitzt seit etwa zwei Tagen fest.</li></ul></div>\n<div class=\"box box--details\"><h3>🧭 Spuren in den Bereichen</h3><p>L1: verwüstete Ruinen. L2: Ursache im Kamin. L3: Schäden eines früheren Angriffs und Tibors Versteck. L5/L6: Spuren von Angriffen und überstürzter Flucht. L4: unterbrochener Holztransport.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l7",
+              "label": "L7"
+            },
+            {
+              "to": "lc-l1",
+              "label": "L1"
+            },
+            {
+              "to": "lc-l2",
+              "label": "L2"
+            },
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l4",
+              "label": "L4"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            },
+            {
+              "to": "lc-l6",
+              "label": "L6"
+            }
+          ]
+        },
+        {
+          "id": "lc-l1",
+          "dungeonId": "loggers-camp",
+          "name": "L1 – Hütten auf den Felsen",
+          "short": "Ruinen auf einem zehn Fuß hohen Felsvorsprung.",
+          "tags": [
+            "Ruinen",
+            "Felsvorsprung"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>🏚️ Zustand</h3><p>Auf einem <b>10 ft (ca. 3 m) hohen Felsvorsprung</b> stehen nur noch die Überreste der Arbeiterhütten. Die Gebäude sind größtenteils abgetragen oder zerstört; zerbrochene Balken und Planken liegen zwischen den Fundamenten. Kaum Schutz oder Unterkunft.</p></div>\n<div class=\"box box--gm\"><h3>🐜 Ankhegs</h3><p>Hier erscheint <b>standardmäßig kein Ankheg</b>. Der massive Fels erschwert das Graben, ist aber keine absolute Barriere: Nach dem 2024er-Statblock können Ankhegs mit halber Grabgeschwindigkeit durch festen Fels tunneln und hinterlassen dabei 10 ft breite Tunnel.</p><p><b>Optionale Eskalation:</b> Bleibt das Totem aktiv und hält sich die Gruppe länger hier auf, können Ankhegs auch L1 erreichen. Vorher etwa Knacken und Vibrationen aus dem Fels beschreiben.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l2",
+              "label": "L2"
+            },
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            }
+          ]
+        },
+        {
+          "id": "lc-l2",
+          "dungeonId": "loggers-camp",
+          "name": "L2 – Alter Kamin und Fundament",
+          "short": "Totem des Taloskults; möglicher Ankheg-Überfall.",
+          "tags": [
+            "Totem",
+            "Ankhegs",
+            "Schlüsselort"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>🧱 Ruine</h3><p>Von der Hütte sind nur das steinerne Fundament und eine verfallene Feuerstelle geblieben. Der Schornstein ist größtenteils eingestürzt. Trümmer liegen im Kamin; das Fundament ist massiv, aber nach den 2024er-Regeln nicht grundsätzlich unpassierbar für Ankhegs.</p></div>\n<div class=\"box box--mechanics\"><h3>⚔️ Ankheg-Angriff</h3><p><b>Falls die Gruppe L2 als ersten Bereich aufsucht:</b> Ein Ankheg bricht <b>sofort beim Eintreffen, noch vor der Untersuchung</b>, neben dem Fundament aus dem Erdreich. Ein zweiter folgt in <b>Runde 2 oder 3</b> (SL-Entscheidung). Erschütterungen können den zweiten ankündigen.</p><p><b>Falls bereits Ankhegs bekämpft wurden:</b> flexibel <b>0, 1 oder 2</b> Ankhegs einsetzen; siehe Dungeon-Defaults. Kein verpflichtender Wiederholungskampf.</p></div>\n<div class=\"box box--details\"><h3>⚡ Totem</h3><p>Wer die Schornsteintrümmer durchsucht, findet ein Bündel aus <b>13 winzigen, geschlechtslosen Zweigfiguren</b>, in <b>Schweineblut</b> getaucht, mit kleinen <b>Blitzsymbolen</b> versehen und mit <b>Haaren</b> zusammengebunden.</p><p><b>DC 15 Intelligence (Religion):</b> Der Zweck ist, allen Bewohnern in seiner Nähe Unglück zu bringen.</p><p><a href=\"https://raw.githubusercontent.com/qivis86/kampagnen-tool/main/assets/images/loggerscamp/totem.png\" title=\"Totem als Bild öffnen\">⚡ Totem anzeigen</a></p></div>\n<div class=\"box box--gm\"><h3>🔨 Zerstören oder Mitnehmen</h3><p><b>Zerstörung:</b> Ankhegs, die noch nicht angegriffen haben, verlieren das Interesse am Lager und graben sich fort. Bereits angreifende Ankhegs ziehen sich dadurch nicht automatisch zurück.</p><p><b>Mitnahme:</b> Das intakte Totem zieht weiterhin Ankhegs an. Auf dem Rückweg kann ein weiterer Angriff den Zusammenhang erkennbar machen. Spätestens Falcon erkennt das gefährliche Objekt und zerstört es. Kein geplanter Angriff auf Phandalin.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l1",
+              "label": "L1"
+            },
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            },
+            {
+              "to": "lc-l6",
+              "label": "L6"
+            }
+          ]
+        },
+        {
+          "id": "lc-l3",
+          "dungeonId": "loggers-camp",
+          "name": "L3 – Büro und Werkzeuglager",
+          "short": "Tibors Versteck; Spuren eines früheren Ankheg-Angriffs.",
+          "tags": [
+            "NPC",
+            "Unterschlupf"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>🪚 Werkzeuglager</h3><p>Die Hütte besitzt einen Holzboden und zwei Räume. Im größeren liegen Sägen, Ledergurte zum Baumklettern und anderes Holzfällerwerkzeug. Ein früherer Ankheg-Angriff hat Dielen aufgebrochen, Regale umgestürzt und einen inzwischen eingestürzten Tunnel hinterlassen.</p><p><b>Kein fest platzierter Ankheg unter dem Boden.</b> Weitere Begegnungen nur nach Bedarf gemäß Dungeon-Defaults.</p></div>\n<div class=\"box box--npc\"><h3>🚪 Tibors Büro</h3><p>Im kleineren nördlichen Raum hat <b>Tibor Wester</b> die Tür mit seinem Schreibtisch verbarrikadiert und sitzt <b>oben auf dem Tisch</b>. Er hat erkannt, dass die Kreaturen auf Schritte und Bodenerschütterungen reagieren, und vermeidet deshalb den Kontakt mit dem Boden. Seit etwa zwei Tagen eingeschlossen; etwas Wasser und Proviant vorhanden, erschöpft und verängstigt.</p></div>\n<div class=\"box box--gm\"><h3>🗣️ Gespräch</h3><p>Tibor ist feige, eigennützig und versucht, seine Verantwortung für die eskalierten Angriffe herunterzuspielen. Er kann den zeitlichen Verlauf, die Angriffe, die ungewöhnlichen Wildschweinsichtungen und die Reaktion der Ankhegs auf Erschütterungen schildern. <b>Einzelheiten, Ausflüchte und Rollenspiel im NPC-Eintrag Tibor Wester.</b></p></div>",
+          "contentRefs": {
+            "npcs": [
+              "tibor-wester"
+            ],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l1",
+              "label": "L1"
+            },
+            {
+              "to": "lc-l2",
+              "label": "L2"
+            },
+            {
+              "to": "lc-l4",
+              "label": "L4"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            },
+            {
+              "to": "lc-l6",
+              "label": "L6"
+            }
+          ]
+        },
+        {
+          "id": "lc-l4",
+          "dungeonId": "loggers-camp",
+          "name": "L4 – Flussanleger",
+          "short": "Verlassener Anleger ohne Boote.",
+          "tags": [
+            "Fluss",
+            "Ruhe"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>🚣 Anleger</h3><p>Hier können normalerweise Ruderboote und Lastkähne festmachen, um geschlagenes Holz auf dem Neverwinter River nach Neverwinter zu transportieren. Bei Ankunft ist <b>kein Boot</b> vorhanden. Einige bereits vorbereitete <b>Holzstämme warten noch auf ihren Abtransport</b>. Der Betrieb ist vollständig zum Erliegen gekommen.</p></div>\n<div class=\"box box--gm\"><h3>SL-Hinweis</h3><p>Keine Begegnung und keine besonderen Funde.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            },
+            {
+              "to": "lc-l6",
+              "label": "L6"
+            }
+          ]
+        },
+        {
+          "id": "lc-l5",
+          "dungeonId": "loggers-camp",
+          "name": "L5 – Nördliches Lager",
+          "short": "Sechs Zelte, Spuren verschleppter Arbeiter und persönliche Gegenstände.",
+          "tags": [
+            "Spuren",
+            "Untersuchung"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>⛺ Lager</h3><p>Eine erloschene Feuerstelle ist von <b>sechs Zelten</b> umgeben. Jedes enthält eine Schlafrolle und ein Essgeschirr. Zeltbahnen und Schlafrollen sind stellenweise <b>versengt</b>, mit verzweigten Brandspuren statt der Säureschäden des Originals.</p></div>\n<div class=\"box box--mechanics\"><h3>🔎 Spuren</h3><p>Fußabdrücke und ungewöhnliche Schleifspuren im Sand deuten darauf hin, dass mehrere Menschen angegriffen und fortgezogen wurden.</p><p><b>DC 10 Intelligence (Investigation):</b> Die Opfer wurden von grabenden Kreaturen getötet und unter den Sand gezogen. Die Tunnel sind hinter ihnen eingestürzt und nicht verfolgbar.</p></div>\n<div class=\"box box--details\"><h3>🧸 Zurückgelassene Gegenstände</h3><ul><li>Ein fertiger, noch nicht abgeschickter <b>Brief von Tomas an Elina</b> in Neverwinter; berichtet von Familie, Alltag, zunehmender Angst und Tibors Verharmlosung. <b>Separates Handout, nicht im Tool hinterlegt.</b></li><li>Ein fast fertig geschnitztes <b>Holzpferd</b> neben der Schlafrolle.</li><li>Ein unterbrochenes <b>Würfelspiel</b> mit einigen Kupfermünzen auf einer umgestürzten Kiste.</li></ul><p>Atmosphärische Funde ohne verpflichtende Folgequest; Tomas’ Schicksal bleibt offen.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l2",
+              "label": "L2"
+            },
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l6",
+              "label": "L6"
+            }
+          ]
+        },
+        {
+          "id": "lc-l6",
+          "dungeonId": "loggers-camp",
+          "name": "L6 – Südliches Lager",
+          "short": "Weitere Angriffsstellen; flexible Ankheg-Begegnung.",
+          "tags": [
+            "Ankhegs",
+            "Gefahr"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>⛺ Lager</h3><p>Ähnlich wie L5: verlassene Zelte, Schlafrollen und zurückgelassene Ausrüstung. Spuren panischer Flucht und stellenweise verzweigte Blitzschäden.</p></div>\n<div class=\"box box--mechanics\"><h3>🐜 Ankheg-Ausbruch</h3><p>Im Original lauern hier <b>drei Ankhegs</b> unter dem Lager. Kommt eine Kreatur bis auf <b>20 ft</b> an einen auf der Karte markierten Ausbruchspunkt heran, kann dort ein Ankheg hervorbrechen.</p><p><b>Flexible Anpassung:</b> Drei sind ein Ausgangswert, keine Pflicht. Je nach bisherigen Kämpfen, Ressourcen und Tischstimmung weniger oder gar keine Ankhegs. 2024er-Statblock mit <b>Lightning statt Acid Damage</b>; siehe Ressourcen und Dungeon-Defaults.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l4",
+              "label": "L4"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            }
+          ]
+        },
+        {
+          "id": "lc-l7",
+          "dungeonId": "loggers-camp",
+          "name": "L7 – Weg zum Camp",
+          "short": "Anreise ab Falcon's Lodge aus dem Süden.",
+          "tags": [
+            "Reise",
+            "Spuren",
+            "Taloskult"
+          ],
+          "descriptionHtml": "<div class=\"box box--summary\"><h3>🌲 Anreise</h3><p>Die Gruppe reist von <b>Falcon's Hunting Lodge</b> zum Holzfällerlager und erreicht es <b>von Süden</b>. Die Lodge wurde gegenüber dem Original verlegt. Falcon hat eine <b>Karte und konkrete Weghinweise</b> gegeben. Laut Falcon halten sich die Unruhestifter vor allem im Nordosten des Waldes bei der Woodland Manse auf; ihre Spuren reichen inzwischen weiter.</p></div>\n<div class=\"box box--mechanics\"><h3>🧭 Navigation</h3><p><b>Ein einzelner Wisdom (Survival)-Check mit Vorteil</b> statt einer Serie von Reiseproben. Das Ergebnis beeinflusst Umwege und Reisezeit, nicht das grundsätzliche Erreichen des Camps.</p><ul><li><b>Unter 10:</b> Umweg / zusätzliche Reisezeit.</li><li><b>10–14:</b> normale Reisezeit.</li><li><b>15–19:</b> gute Route / etwas Zeitersparnis.</li><li><b>20+:</b> besonders günstige Route.</li></ul><p>Konkrete Reisezeiten nach der angepassten Karte festlegen.</p></div>\n<div class=\"box box--details\"><h3>🦌 Gewildertes Tier</h3><p>Unterwegs entdeckt die Gruppe ein totes Wildtier, etwa einen Hirsch. Neben Verletzungen durch Jagd oder Gewalt zeigt es <b>verzweigte, dunkel verfärbte Blitzspuren</b>. <b>SL-Wissen:</b> Stormveins haben das Tier gewildert und dabei Blitzmagie eingesetzt. Die SCs können die Spuren später fälschlich den angepassten Ankhegs zuordnen.</p><p>Bei Untersuchung können Nature/Arcana/Survival die ungewöhnlichen Verletzungen, elektrische Magie oder fehlende Verwertung als Nahrung erkennen; keine festen DCs festgelegt.</p></div>\n<div class=\"box box--mechanics\"><h3>🐗 Wildschweinspuren</h3><p>Da die Gruppe vor Gefahren gewarnt wurde, ist aufmerksames Beobachten zu erwarten. <b>DC 14 Wisdom (Perception):</b> Wildschweinspuren am Wegesrand. Es bleibt offen, ob gewöhnliche Tiere oder verwandelte Anchoriten sie hinterließen. Nicht künstlich verdächtig machen.</p></div>\n<div class=\"box box--gm\"><h3>Fraktionen</h3><p><b>Taloskult</b> umfasst unterschiedliche Anhänger; <b>Stormveins</b> sind radikalisierte Greyveins innerhalb des Kults, aber nicht alle Kultisten sind Greyveins. Greyveins sind nicht automatisch Kultisten.</p></div>",
+          "contentRefs": {
+            "npcs": [],
+            "places": [],
+            "quests": []
+          },
+          "fields": {},
+          "exits": [
+            {
+              "to": "lc-l1",
+              "label": "L1"
+            },
+            {
+              "to": "lc-l2",
+              "label": "L2"
+            },
+            {
+              "to": "lc-l3",
+              "label": "L3"
+            },
+            {
+              "to": "lc-l4",
+              "label": "L4"
+            },
+            {
+              "to": "lc-l5",
+              "label": "L5"
+            },
+            {
+              "to": "lc-l6",
+              "label": "L6"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
