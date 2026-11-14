@@ -1798,7 +1798,7 @@ let globalSearchPreviousFocus = null;
 function globalSearchPlain(value){
   const html = String(value ?? "");
   const doc = new DOMParser().parseFromString(html, "text/html");
-  return (doc.body.textContent || "").replace(/\\s+/g, " ").trim();
+  return (doc.body.textContent || "").replace(/\s+/g, " ").trim();
 }
 function globalSearchText(value){
   if(value == null) return "";
@@ -1828,7 +1828,7 @@ function globalSearchSnippet(item, terms){
   return (start ? "…" : "") + text.slice(start,end) + (end < text.length ? "…" : "");
 }
 function renderGlobalSearch(){
-  const terms = globalSearchInput.value.trim().toLocaleLowerCase("de").split(/\\s+/).filter(Boolean);
+  const terms = globalSearchInput.value.trim().toLocaleLowerCase("de").split(/\s+/).filter(Boolean);
   globalSearchResults.replaceChildren();
   if(!terms.length){
     globalSearchCount.textContent = "Suche über NPCs, Orte, Dungeons und alle Raumtexte";
